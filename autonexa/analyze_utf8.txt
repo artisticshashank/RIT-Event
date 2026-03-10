@@ -1,0 +1,14 @@
+﻿Analyzing autonexa...                                           
+
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\screens\signup_screen.dart:65:31 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\screens\signup_screen.dart:71:49 - deprecated_member_use
+   info - The constant name 'regular_user' isn't a lowerCamelCase identifier - lib\models\enums.dart:2:3 - constant_identifier_names
+   info - The constant name 'petrol_bunk' isn't a lowerCamelCase identifier - lib\models\enums.dart:4:3 - constant_identifier_names
+   info - The constant name 'towing_agency' isn't a lowerCamelCase identifier - lib\models\enums.dart:5:3 - constant_identifier_names
+   info - The constant name 'parts_seller' isn't a lowerCamelCase identifier - lib\models\enums.dart:6:3 - constant_identifier_names
+   info - The constant name 'fuel_share' isn't a lowerCamelCase identifier - lib\models\enums.dart:11:3 - constant_identifier_names
+   info - The constant name 'mechanical_repair' isn't a lowerCamelCase identifier - lib\models\enums.dart:13:3 - constant_identifier_names
+   info - The constant name 'flat_tire' isn't a lowerCamelCase identifier - lib\models\enums.dart:14:3 - constant_identifier_names
+   info - The constant name 'jump_start' isn't a lowerCamelCase identifier - lib\models\enums.dart:15:3 - constant_identifier_names
+   info - The constant name 'parts_delivery' isn't a lowerCamelCase identifier - lib\models\enums.dart:16:3 - constant_identifier_names
+

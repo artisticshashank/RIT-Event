@@ -92,6 +92,22 @@ class AuthRepository {
     }
   }
 
+  FutureEither<UserModel> getUserData(String uid) async {
+    try {
+      final userData = await _supabase
+          .from('users')
+          .select()
+          .eq('id', uid)
+          .maybeSingle();
+      if (userData == null) {
+        return left(Failure('User profile not found.'));
+      }
+      return right(UserModel.fromMap(userData));
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   FutureVoid logOut() async {
     try {
       await _supabase.auth.signOut();

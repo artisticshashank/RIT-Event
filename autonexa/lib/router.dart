@@ -17,25 +17,43 @@ final loggedOutRoute = RouteMap(
 );
 
 final userRoute = RouteMap(
-  routes: {'/': (_) => const MaterialPage(child: UserDashboardScreen())},
+  routes: {
+    '/': (_) => const MaterialPage(child: UserDashboardScreen()),
+    '/signup': (_) => const Redirect('/'),
+  },
 );
 
 final mechanicRoute = RouteMap(
-  routes: {'/': (_) => const MaterialPage(child: MechanicDashboardScreen())},
+  routes: {
+    '/': (_) => const MaterialPage(child: MechanicDashboardScreen()),
+    '/signup': (_) => const Redirect('/'),
+  },
 );
 
 final sellerRoute = RouteMap(
-  routes: {'/': (_) => const MaterialPage(child: SellerDashboardScreen())},
+  routes: {
+    '/': (_) => const MaterialPage(child: SellerDashboardScreen()),
+    '/signup': (_) => const Redirect('/'),
+  },
 );
 
 final towingRoute = RouteMap(
-  routes: {'/': (_) => const MaterialPage(child: TowingDashboardScreen())},
+  routes: {
+    '/': (_) => const MaterialPage(child: TowingDashboardScreen()),
+    '/signup': (_) => const Redirect('/'),
+  },
 );
 
 final fuelRoute = RouteMap(
-  routes: {'/': (_) => const MaterialPage(child: FuelDashboardScreen())},
+  routes: {
+    '/': (_) => const MaterialPage(child: FuelDashboardScreen()),
+    '/signup': (_) => const Redirect('/'),
+  },
 );
 
 final adminRoute = RouteMap(
-  routes: {'/': (_) => const MaterialPage(child: AdminDashboardScreen())},
+  routes: {
+    '/': (_) => const MaterialPage(child: AdminDashboardScreen()),
+    '/signup': (_) => const Redirect('/'),
+  },
 );

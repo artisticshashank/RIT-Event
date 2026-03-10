@@ -44,9 +44,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   void _checkSession() async {
     final session = Supabase.instance.client.auth.currentSession;
     if (session != null) {
-      // In a real app, you would fetch the user profile from the database here
-      // and update the userProvider. For now, we'll let the userProvider handle it
-      // when the user logs in fresh.
+      final user = session.user;
+      ref.read(authControllerProvider.notifier).getUserData(user.id);
     }
     setState(() {
       _isLoading = false;
@@ -65,7 +64,10 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       title: 'AutoNexa',
       debugShowCheckedModeBanner: false,
-      theme: Pallete.darkModeAppTheme,
+      theme: Pallete.lightModeAppTheme,
+      darkTheme: Pallete.darkModeAppTheme,
+      themeMode: ThemeMode
+          .light, // Added this line to force the light theme based on UI mockup
       routerDelegate: RoutemasterDelegate(
         routesBuilder: (context) {
           final user = ref.watch(userProvider);
