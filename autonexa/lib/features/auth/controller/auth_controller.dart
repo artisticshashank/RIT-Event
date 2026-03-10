@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/models/user_model.dart';
+import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/auth/repository/auth_repository.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -27,12 +28,14 @@ class AuthController extends StateNotifier<bool> {
     required String email,
     required String password,
     required String name,
+    required ProviderCategory role,
   }) async {
     state = true;
     final res = await _authRepository.signUpWithEmail(
       email: email,
       password: password,
       name: name,
+      role: role,
     );
     state = false;
 

@@ -4,8 +4,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 import 'package:autonexa/core/failure.dart';
 import 'package:autonexa/core/type_defs.dart';
 import 'package:autonexa/models/user_model.dart';
+import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/core/providers/supabase_provider.dart';
-import 'package:autonexa/core/constants/constants.dart';
 
 final authRepositoryProvider = Provider((ref) {
   return AuthRepository(supabase: ref.read(supabaseProvider));
@@ -23,31 +23,35 @@ class AuthRepository {
     required String email,
     required String password,
     required String name,
+    required ProviderCategory role,
   }) async {
     try {
+      // 1. Create the Auth User
       final response = await _supabase.auth.signUp(
         email: email,
         password: password,
+        data: {'name': name, 'role': role.name},
       );
 
       final user = response.user;
       if (user == null) {
-        return left(Failure('User creation failed'));
+        return left(Failure('User creation failed in Auth.'));
       }
 
       final userModel = UserModel(
-        uid: user.id,
+        id: user.id,
         email: email,
         name: name,
-        profilePic: Constants.avatarDefault,
-        banner: Constants.bannerDefault,
+        role: role,
       );
 
-      // Save user to a 'users' table in Supabase
-      await _supabase.from('users').insert(userModel.toMap());
+      // 2. Insert into custom table (using upsert to prevent unique constraint crashes)
+      await _supabase.from('users').upsert(userModel.toMap());
 
       return right(userModel);
     } catch (e) {
+      // If the insert fails, it will be caught here.
+      // In a production app, you might want to delete the auth user here to prevent orphaned accounts.
       return left(Failure(e.toString()));
     }
   }
@@ -57,6 +61,7 @@ class AuthRepository {
     required String password,
   }) async {
     try {
+      // 1. Authenticate
       final response = await _supabase.auth.signInWithPassword(
         email: email,
         password: password,
@@ -64,15 +69,22 @@ class AuthRepository {
 
       final user = response.user;
       if (user == null) {
-        return left(Failure('Login failed'));
+        return left(Failure('Invalid login credentials.'));
       }
 
-      // Fetch user data from 'users' table
+      // 2. Fetch User Profile
+      // Using maybeSingle() instead of single() prevents a hard crash if the profile is missing
       final userData = await _supabase
           .from('users')
           .select()
-          .eq('uid', user.id)
-          .single();
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (userData == null) {
+        return left(
+          Failure('Auth succeeded, but no public profile found for this user.'),
+        );
+      }
 
       return right(UserModel.fromMap(userData));
     } catch (e) {

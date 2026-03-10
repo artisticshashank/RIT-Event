@@ -1,57 +1,93 @@
+import 'package:autonexa/models/enums.dart';
+
 class UserModel {
-  final String uid;
-  final String email;
+  final String id; // maps to uid/id
+  final String? email;
   final String name;
+  final String? phone;
+  final ProviderCategory role;
+  final bool isAvailableForP2p;
+  final double? lastKnownLat;
+  final double? lastKnownLng;
+  final DateTime? createdAt;
   final String profilePic;
-  final String banner;
 
   UserModel({
-    required this.uid,
-    required this.email,
+    required this.id,
+    this.email,
     required this.name,
-    required this.profilePic,
-    required this.banner,
+    this.phone,
+    this.role = ProviderCategory.regular_user,
+    this.isAvailableForP2p = false,
+    this.lastKnownLat,
+    this.lastKnownLng,
+    this.createdAt,
+    this.profilePic = '',
   });
 
   UserModel copyWith({
-    String? uid,
+    String? id,
     String? email,
     String? name,
+    String? phone,
+    ProviderCategory? role,
+    bool? isAvailableForP2p,
+    double? lastKnownLat,
+    double? lastKnownLng,
+    DateTime? createdAt,
     String? profilePic,
-    String? banner,
   }) {
     return UserModel(
-      uid: uid ?? this.uid,
+      id: id ?? this.id,
       email: email ?? this.email,
       name: name ?? this.name,
+      phone: phone ?? this.phone,
+      role: role ?? this.role,
+      isAvailableForP2p: isAvailableForP2p ?? this.isAvailableForP2p,
+      lastKnownLat: lastKnownLat ?? this.lastKnownLat,
+      lastKnownLng: lastKnownLng ?? this.lastKnownLng,
+      createdAt: createdAt ?? this.createdAt,
       profilePic: profilePic ?? this.profilePic,
-      banner: banner ?? this.banner,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
-      'email': email,
+      'id': id,
+      if (email != null) 'email': email,
       'name': name,
-      'profilePic': profilePic,
-      'banner': banner,
+      if (phone != null) 'phone': phone,
+      'role': role.value,
+      'is_available_for_p2p': isAvailableForP2p,
+      if (lastKnownLat != null) 'last_known_lat': lastKnownLat,
+      if (lastKnownLng != null) 'last_known_lng': lastKnownLng,
+      if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
+      'profile_pic': profilePic,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      uid: map['uid'] ?? '',
-      email: map['email'] ?? '',
+      id: map['id'] ?? map['uid'] ?? '',
+      email: map['email'],
       name: map['name'] ?? '',
-      profilePic: map['profilePic'] ?? '',
-      banner: map['banner'] ?? '',
+      phone: map['phone'],
+      role: map['role'] != null
+          ? parseProviderCategory(map['role'])
+          : ProviderCategory.regular_user,
+      isAvailableForP2p: map['is_available_for_p2p'] ?? false,
+      lastKnownLat: map['last_known_lat']?.toDouble(),
+      lastKnownLng: map['last_known_lng']?.toDouble(),
+      createdAt: map['created_at'] != null
+          ? DateTime.tryParse(map['created_at'])
+          : null,
+      profilePic: map['profile_pic'] ?? map['profilePic'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, email: $email, name: $name, profilePic: $profilePic, banner: $banner)';
+    return 'UserModel(id: $id, name: $name, role: $role)';
   }
 
   @override
@@ -59,19 +95,16 @@ class UserModel {
     if (identical(this, other)) return true;
 
     return other is UserModel &&
-        other.uid == uid &&
+        other.id == id &&
         other.email == email &&
         other.name == name &&
-        other.profilePic == profilePic &&
-        other.banner == banner;
+        other.phone == phone &&
+        other.role == role &&
+        other.isAvailableForP2p == isAvailableForP2p;
   }
 
   @override
   int get hashCode {
-    return uid.hashCode ^
-        email.hashCode ^
-        name.hashCode ^
-        profilePic.hashCode ^
-        banner.hashCode;
+    return id.hashCode ^ name.hashCode ^ email.hashCode ^ role.hashCode;
   }
 }

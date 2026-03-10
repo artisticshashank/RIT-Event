@@ -8,6 +8,8 @@ import 'package:autonexa/router.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/core/common/loader.dart';
 
+import 'package:autonexa/models/enums.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,16 +38,15 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     super.initState();
-    // In a real scenario, fetch the current user to initialize App state.
-    // We'll mimic finishing load after checking session.
     _checkSession();
   }
 
-  void _checkSession() {
+  void _checkSession() async {
     final session = Supabase.instance.client.auth.currentSession;
     if (session != null) {
-      // Simulate mapping session data to our userProvider
-      // A more robust app does this via a futureProvider to fetch user data.
+      // In a real app, you would fetch the user profile from the database here
+      // and update the userProvider. For now, we'll let the userProvider handle it
+      // when the user logs in fresh.
     }
     setState(() {
       _isLoading = false;
@@ -64,13 +65,25 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       title: 'AutoNexa',
       debugShowCheckedModeBanner: false,
-      theme: Pallete.darkModeAppTheme, // Default to a premium dark mode
+      theme: Pallete.darkModeAppTheme,
       routerDelegate: RoutemasterDelegate(
         routesBuilder: (context) {
-          // If the user data is populated we return 'loggedInRoute'
           final user = ref.watch(userProvider);
           if (user != null) {
-            return loggedInRoute;
+            switch (user.role) {
+              case ProviderCategory.mechanic:
+                return mechanicRoute;
+              case ProviderCategory.parts_seller:
+                return sellerRoute;
+              case ProviderCategory.towing_agency:
+                return towingRoute;
+              case ProviderCategory.petrol_bunk:
+                return fuelRoute;
+              case ProviderCategory.admin:
+                return adminRoute;
+              case ProviderCategory.regular_user:
+                return userRoute;
+            }
           }
           return loggedOutRoute;
         },
