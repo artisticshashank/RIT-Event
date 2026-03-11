@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/core/common/floating_bottom_nav_bar.dart';
 import 'package:autonexa/features/dashboard_towing/screens/towing_requests_screen.dart';
+import 'package:autonexa/features/dashboard_towing/screens/towing_history_screen.dart';
+import 'package:autonexa/features/dashboard_towing/screens/towing_earnings_screen.dart';
+import 'package:autonexa/features/dashboard_towing/screens/towing_settings_screen.dart';
 
 class TowingDashboardScreen extends ConsumerStatefulWidget {
   const TowingDashboardScreen({super.key});
@@ -15,9 +18,9 @@ class _TowingDashboardScreenState extends ConsumerState<TowingDashboardScreen> {
 
   final List<Widget> _pages = const [
     TowingRequestsScreen(),
-    Center(child: Text('Drivers List Placeholder', style: TextStyle(color: Colors.white))),
-    Center(child: Text('Fleet Map Placeholder', style: TextStyle(color: Colors.white))),
-    Center(child: Text('Settings Placeholder', style: TextStyle(color: Colors.white))),
+    TowingHistoryScreen(),
+    TowingEarningsScreen(),
+    TowingSettingsScreen(),
   ];
 
   @override
@@ -44,8 +47,8 @@ class _TowingDashboardScreenState extends ConsumerState<TowingDashboardScreen> {
         },
         items: [
           NavBarItem(icon: Icons.list_alt, label: 'REQUESTS'),
-          NavBarItem(icon: Icons.person, label: 'DRIVERS'),
-          NavBarItem(icon: Icons.local_shipping, label: 'FLEET'),
+          NavBarItem(icon: Icons.history, label: 'HISTORY'),
+          NavBarItem(icon: Icons.bar_chart, label: 'STATS'),
           NavBarItem(icon: Icons.settings, label: 'SETTINGS'),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_towing/controller/towing_controller.dart';
 import 'package:autonexa/features/dashboard_towing/widgets/towing_stat_card.dart';
 import 'package:autonexa/features/dashboard_towing/widgets/towing_request_card.dart';
+import 'package:autonexa/features/dashboard_towing/screens/towing_request_accepted_screen.dart';
 
 class TowingRequestsScreen extends ConsumerWidget {
   const TowingRequestsScreen({super.key});
@@ -190,7 +191,14 @@ class TowingRequestsScreen extends ConsumerWidget {
                       children: requests.map((request) {
                         return TowingRequestCard(
                           request: request,
-                          onAssign: () {},
+                          onAssign: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TowingRequestAcceptedScreen(request: request),
+                              ),
+                            );
+                          },
                           onDecline: () {},
                         );
                       }).toList(),
