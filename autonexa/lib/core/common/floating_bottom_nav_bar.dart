@@ -4,8 +4,9 @@ import 'package:autonexa/theme/pallete.dart';
 class NavBarItem {
   final IconData icon;
   final String label;
+  final bool isHighlighted;
 
-  NavBarItem({required this.icon, required this.label});
+  NavBarItem({required this.icon, required this.label, this.isHighlighted = false});
 }
 
 class FloatingBottomNavBar extends StatelessWidget {
@@ -43,6 +44,36 @@ class FloatingBottomNavBar extends StatelessWidget {
             int idx = entry.key;
             NavBarItem item = entry.value;
             bool isSelected = currentIndex == idx;
+
+            if (item.isHighlighted) {
+              return GestureDetector(
+                onTap: () => onTap(idx),
+                behavior: HitTestBehavior.opaque,
+                child: Transform.translate(
+                  offset: const Offset(0, -8),
+                  child: Container(
+                    height: 56,
+                    width: 56,
+                    decoration: BoxDecoration(
+                      color: Pallete.secondaryColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Pallete.secondaryColor.withValues(alpha: 0.4),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      item.icon,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                ),
+              );
+            }
 
             return GestureDetector(
               onTap: () => onTap(idx),
