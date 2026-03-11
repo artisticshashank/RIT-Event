@@ -78,7 +78,11 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
               items: [
                 NavBarItem(icon: Icons.home_filled, label: 'Home'),
                 NavBarItem(icon: Icons.storefront, label: 'Market'),
-                NavBarItem(icon: Icons.chat_bubble, label: 'AI Chat', isHighlighted: true),
+                NavBarItem(
+                  icon: Icons.chat_bubble,
+                  label: 'AI Chat',
+                  isHighlighted: true,
+                ),
                 NavBarItem(icon: Icons.warning_rounded, label: 'SOS'),
                 NavBarItem(icon: Icons.person_outline, label: 'Profile'),
               ],

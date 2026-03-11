@@ -42,7 +42,7 @@ class MarketAppBar extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                   IconButton(
+                  IconButton(
                     icon: const Icon(Icons.shopping_cart_outlined),
                     color: Theme.of(context).iconTheme.color,
                     onPressed: () {
@@ -63,9 +63,16 @@ class MarketAppBar extends StatelessWidget {
                         color: Pallete.secondaryColor,
                         shape: BoxShape.circle,
                       ),
-                      child: const Text('3', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        '3',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               IconButton(

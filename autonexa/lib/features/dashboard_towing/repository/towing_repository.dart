@@ -51,7 +51,9 @@ class TowingRepository {
   }
 
   // ── Incoming requests: service_requests WHERE type=towing + JOIN users ────
-  Future<List<TowingRequestModel>> fetchIncomingRequests(String stationId) async {
+  Future<List<TowingRequestModel>> fetchIncomingRequests(
+    String stationId,
+  ) async {
     try {
       final res = await _supabase
           .from('service_requests')
@@ -67,7 +69,9 @@ class TowingRepository {
         return (res as List).map((e) {
           final requester = e['requester'] as Map<String, dynamic>? ?? {};
           final issueType = e['issue_type'] as String? ?? 'Breakdown';
-          final issueColor = (issueType.toLowerCase().contains('accident')) ? 'red' : 'orange';
+          final issueColor = (issueType.toLowerCase().contains('accident'))
+              ? 'red'
+              : 'orange';
           return TowingRequestModel(
             id: e['id'] ?? '',
             customerName: requester['name'] ?? 'Customer',
@@ -89,14 +93,26 @@ class TowingRepository {
     await Future.delayed(const Duration(milliseconds: 400));
     return [
       TowingRequestModel(
-        id: '1', customerName: 'David Chen', carInfo: 'Tesla Model Y',
-        issueType: 'Flat Tire', issueColor: 'orange',
-        distance: '3.2 km away', price: 120.00, status: 'searching', imageUrl: '',
+        id: '1',
+        customerName: 'David Chen',
+        carInfo: 'Tesla Model Y',
+        issueType: 'Flat Tire',
+        issueColor: 'orange',
+        distance: '3.2 km away',
+        price: 120.00,
+        status: 'searching',
+        imageUrl: '',
       ),
       TowingRequestModel(
-        id: '2', customerName: 'Sarah Williams', carInfo: 'BMW X5',
-        issueType: 'Accident', issueColor: 'red',
-        distance: '0.8 km away', price: 350.00, status: 'searching', imageUrl: '',
+        id: '2',
+        customerName: 'Sarah Williams',
+        carInfo: 'BMW X5',
+        issueType: 'Accident',
+        issueColor: 'red',
+        distance: '0.8 km away',
+        price: 350.00,
+        status: 'searching',
+        imageUrl: '',
       ),
     ];
   }
@@ -125,7 +141,9 @@ class TowingRepository {
             customerName: requester['name'] ?? 'Customer',
             carInfo: e['vehicle_info'] ?? '',
             issueType: issueType,
-            issueColor: issueType.toLowerCase().contains('accident') ? 'red' : 'orange',
+            issueColor: issueType.toLowerCase().contains('accident')
+                ? 'red'
+                : 'orange',
             distance: e['distance_km'] ?? '',
             price: (e['price'] as num?)?.toDouble() ?? 0.0,
             imageUrl: requester['avatar_url'] ?? '',
@@ -140,12 +158,19 @@ class TowingRepository {
   }
 
   // ── Assign driver: set this station as responder ──────────────────────────
-  Future<void> assignDriver(String requestId, String stationId, double agreedPrice) async {
-    await _supabase.from('service_requests').update({
-      'responder_id': stationId,
-      'status': ServiceStatus.accepted.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+  Future<void> assignDriver(
+    String requestId,
+    String stationId,
+    double agreedPrice,
+  ) async {
+    await _supabase
+        .from('service_requests')
+        .update({
+          'responder_id': stationId,
+          'status': ServiceStatus.accepted.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
 
     await _supabase.from('service_transactions').insert({
       'service_request_id': requestId,
@@ -158,17 +183,21 @@ class TowingRepository {
 
   // ── Decline ───────────────────────────────────────────────────────────────
   Future<void> declineRequest(String requestId) async {
-    await _supabase.from('service_requests').update({
-      'status': ServiceStatus.cancelled.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+    await _supabase
+        .from('service_requests')
+        .update({
+          'status': ServiceStatus.cancelled.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
   }
 
   // ── Mark payment received ─────────────────────────────────────────────────
   Future<void> markPaymentReceived(String transactionId) async {
-    await _supabase.from('service_transactions').update({
-      'payment_status': PaymentStatus.received.value,
-    }).eq('id', transactionId);
+    await _supabase
+        .from('service_transactions')
+        .update({'payment_status': PaymentStatus.received.value})
+        .eq('id', transactionId);
   }
 
   // ── Fetch earnings ────────────────────────────────────────────────────────
@@ -179,7 +208,9 @@ class TowingRepository {
           .select()
           .eq('provider_id', stationId)
           .order('created_at', ascending: false);
-      return (res as List).map((e) => ServiceTransactionModel.fromMap(e)).toList();
+      return (res as List)
+          .map((e) => ServiceTransactionModel.fromMap(e))
+          .toList();
     } catch (e) {
       print('Towing earnings fetch error: $e');
       return [];
@@ -188,18 +219,24 @@ class TowingRepository {
 
   // ── Mark provider arriving at location ──────────────────────────────────
   Future<void> markArriving(String requestId) async {
-    await _supabase.from('service_requests').update({
-      'status': ServiceStatus.arriving.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+    await _supabase
+        .from('service_requests')
+        .update({
+          'status': ServiceStatus.arriving.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
   }
 
   // ── Mark tow job complete ───────────────────────────────────────────────
   Future<void> markComplete(String requestId) async {
-    await _supabase.from('service_requests').update({
-      'status': ServiceStatus.completed.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+    await _supabase
+        .from('service_requests')
+        .update({
+          'status': ServiceStatus.completed.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
   }
 
   Future<String> _getRequesterId(String requestId) async {

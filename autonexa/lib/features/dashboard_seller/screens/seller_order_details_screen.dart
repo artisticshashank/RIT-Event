@@ -40,8 +40,7 @@ class _SellerOrderDetailsScreenState
   }
 
   bool _canAdvance() {
-    return !['DELIVERED', 'CANCELLED']
-        .contains(_currentStatus.toUpperCase());
+    return !['DELIVERED', 'CANCELLED'].contains(_currentStatus.toUpperCase());
   }
 
   Future<void> _advanceStatus() async {
@@ -59,8 +58,9 @@ class _SellerOrderDetailsScreenState
           content: Text('Order updated to $next'),
           backgroundColor: Pallete.secondaryColor,
           behavior: SnackBarBehavior.floating,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           margin: const EdgeInsets.all(16),
         ),
       );
@@ -441,11 +441,10 @@ class _SellerOrderDetailsScreenState
                                     fontSize: 16,
                                   ),
                                 ),
-                                if (_canAdvance()) ...
-                                  const [
-                                    SizedBox(width: 8),
-                                    Icon(Icons.arrow_forward_rounded, size: 20),
-                                  ],
+                                if (_canAdvance()) ...const [
+                                  SizedBox(width: 8),
+                                  Icon(Icons.arrow_forward_rounded, size: 20),
+                                ],
                               ],
                             ),
                           ),

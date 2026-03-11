@@ -35,7 +35,9 @@ class NearbyRequestCard extends StatelessWidget {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isEmergency ? Pallete.secondaryColor : (isDark ? Colors.white12 : Colors.black12),
+          color: isEmergency
+              ? Pallete.secondaryColor
+              : (isDark ? Colors.white12 : Colors.black12),
           width: isEmergency ? 1.5 : 1.0,
         ),
         boxShadow: const [
@@ -43,7 +45,7 @@ class NearbyRequestCard extends StatelessWidget {
             color: Color(0x0A000000),
             blurRadius: 10,
             offset: Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: Stack(
@@ -62,7 +64,11 @@ class NearbyRequestCard extends StatelessWidget {
                         color: isDark ? Colors.white12 : Colors.grey[200],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Icon(Icons.directions_car, color: Pallete.textSecondaryColor, size: 30),
+                      child: Icon(
+                        Icons.directions_car,
+                        color: Pallete.textSecondaryColor,
+                        size: 30,
+                      ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
@@ -73,9 +79,14 @@ class NearbyRequestCard extends StatelessWidget {
                             children: [
                               if (!isEmergency) ...[
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: statusColor.withAlpha(isDark ? 50 : 30),
+                                    color: statusColor.withAlpha(
+                                      isDark ? 50 : 30,
+                                    ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
@@ -92,7 +103,9 @@ class NearbyRequestCard extends StatelessWidget {
                               Text(
                                 distance,
                                 style: TextStyle(
-                                  color: isEmergency ? Pallete.secondaryColor : Colors.white,
+                                  color: isEmergency
+                                      ? Pallete.secondaryColor
+                                      : Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                 ),
@@ -128,7 +141,9 @@ class NearbyRequestCard extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          isEmergency ? Icons.access_time : Icons.calendar_today,
+                          isEmergency
+                              ? Icons.access_time
+                              : Icons.calendar_today,
                           size: 14,
                           color: Pallete.textSecondaryColor,
                         ),
@@ -145,16 +160,26 @@ class NearbyRequestCard extends StatelessWidget {
                     ElevatedButton(
                       onPressed: onAccept ?? () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isPrimaryAction ? Pallete.secondaryColor : (isDark ? Colors.white12 : Colors.black12),
-                        foregroundColor: isPrimaryAction ? Colors.white : (isDark ? Colors.white : Colors.black),
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        backgroundColor: isPrimaryAction
+                            ? Pallete.secondaryColor
+                            : (isDark ? Colors.white12 : Colors.black12),
+                        foregroundColor: isPrimaryAction
+                            ? Colors.white
+                            : (isDark ? Colors.white : Colors.black),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Text('Accept', style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text(
+                            'Accept',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           if (isPrimaryAction) ...[
                             const SizedBox(width: 4),
                             const Icon(Icons.arrow_forward, size: 16),
@@ -172,7 +197,10 @@ class NearbyRequestCard extends StatelessWidget {
               top: 0,
               right: 16,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: const BoxDecoration(
                   color: Pallete.secondaryColor,
                   borderRadius: BorderRadius.only(

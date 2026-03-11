@@ -88,7 +88,8 @@ class RequestTrackingScreen extends StatelessWidget {
                 color: _etaColor(context).withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                    color: _etaColor(context).withValues(alpha: 0.4)),
+                  color: _etaColor(context).withValues(alpha: 0.4),
+                ),
               ),
               child: Row(
                 children: [
@@ -127,8 +128,7 @@ class RequestTrackingScreen extends StatelessWidget {
                 ),
                 const Row(
                   children: [
-                    Icon(Icons.circle,
-                        color: Pallete.secondaryColor, size: 8),
+                    Icon(Icons.circle, color: Pallete.secondaryColor, size: 8),
                     SizedBox(width: 4),
                     Text(
                       'LIVE UPDATE',
@@ -163,29 +163,32 @@ class RequestTrackingScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0xFF1E2436)
-                      : Colors.white,
+                  color: isDark ? const Color(0xFF1E2436) : Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.05)
-                          : Colors.black.withValues(alpha: 0.05)),
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.05)
+                        : Colors.black.withValues(alpha: 0.05),
+                  ),
                 ),
                 child: Row(
                   children: [
                     // Avatar
                     CircleAvatar(
                       radius: 24,
-                      backgroundColor: Pallete.secondaryColor
-                          .withValues(alpha: 0.15),
-                      backgroundImage: responder.avatarUrl != null &&
+                      backgroundColor: Pallete.secondaryColor.withValues(
+                        alpha: 0.15,
+                      ),
+                      backgroundImage:
+                          responder.avatarUrl != null &&
                               responder.avatarUrl!.isNotEmpty
                           ? NetworkImage(responder.avatarUrl!)
                           : null,
                       child: responder.avatarUrl == null
-                          ? const Icon(Icons.person,
-                              color: Pallete.secondaryColor)
+                          ? const Icon(
+                              Icons.person,
+                              color: Pallete.secondaryColor,
+                            )
                           : null,
                     ),
                     const SizedBox(width: 16),
@@ -204,21 +207,25 @@ class RequestTrackingScreen extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             _providerTitle,
-                            style: TextStyle(
-                                color: subText, fontSize: 12),
+                            style: TextStyle(color: subText, fontSize: 12),
                           ),
                           if (responder.rating != null)
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.star,
-                                      color: Colors.orange, size: 14),
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.orange,
+                                    size: 14,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     responder.rating!.toStringAsFixed(1),
                                     style: TextStyle(
-                                        color: textColor, fontSize: 12),
+                                      color: textColor,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -230,14 +237,16 @@ class RequestTrackingScreen extends StatelessWidget {
                     Row(
                       children: [
                         _contactBtn(
-                            icon: Icons.phone,
-                            isDark: isDark,
-                            onTap: () {}),
+                          icon: Icons.phone,
+                          isDark: isDark,
+                          onTap: () {},
+                        ),
                         const SizedBox(width: 8),
                         _contactBtn(
-                            icon: Icons.message,
-                            isDark: isDark,
-                            onTap: () {}),
+                          icon: Icons.message,
+                          isDark: isDark,
+                          onTap: () {},
+                        ),
                       ],
                     ),
                   ],
@@ -272,19 +281,22 @@ class RequestTrackingScreen extends StatelessWidget {
                 children: [
                   if (request.locationAddress != null)
                     _detailRow(
-                        Icons.location_on,
-                        request.locationAddress!,
-                        isDark),
+                      Icons.location_on,
+                      request.locationAddress!,
+                      isDark,
+                    ),
                   if (request.price != null)
                     _detailRow(
-                        Icons.payments,
-                        '\$${request.price!.toStringAsFixed(2)} agreed price',
-                        isDark),
+                      Icons.payments,
+                      '\$${request.price!.toStringAsFixed(2)} agreed price',
+                      isDark,
+                    ),
                   if (request.fuelType != null)
                     _detailRow(
-                        Icons.local_gas_station,
-                        '${request.fuelQuantity ?? ''} ${request.fuelType}',
-                        isDark),
+                      Icons.local_gas_station,
+                      '${request.fuelQuantity ?? ''} ${request.fuelType}',
+                      isDark,
+                    ),
                 ],
               ),
             ),
@@ -309,9 +321,11 @@ class RequestTrackingScreen extends StatelessWidget {
               : Colors.black.withValues(alpha: 0.06),
           shape: BoxShape.circle,
         ),
-        child: Icon(icon,
-            size: 18,
-            color: isDark ? Colors.white70 : Colors.black87),
+        child: Icon(
+          icon,
+          size: 18,
+          color: isDark ? Colors.white70 : Colors.black87,
+        ),
       ),
     );
   }
@@ -327,8 +341,9 @@ class RequestTrackingScreen extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                  fontSize: 12,
-                  color: isDark ? Colors.white60 : Colors.black54),
+                fontSize: 12,
+                color: isDark ? Colors.white60 : Colors.black54,
+              ),
             ),
           ),
         ],

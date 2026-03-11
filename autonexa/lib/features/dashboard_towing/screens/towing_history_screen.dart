@@ -24,8 +24,10 @@ class TowingHistoryScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: pageBgColor,
       appBar: AppBar(
-        title: const Text('Job History',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Job History',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -39,8 +41,10 @@ class TowingHistoryScreen extends ConsumerWidget {
       body: historyAsync.when(
         loading: () => const Center(child: Loader()),
         error: (e, _) => Center(
-          child: Text('Error loading history: $e',
-              style: TextStyle(color: textColor)),
+          child: Text(
+            'Error loading history: $e',
+            style: TextStyle(color: textColor),
+          ),
         ),
         data: (history) {
           if (history.isEmpty) {
@@ -48,12 +52,16 @@ class TowingHistoryScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.commute,
-                      size: 72,
-                      color: Pallete.secondaryColor.withValues(alpha: 0.3)),
+                  Icon(
+                    Icons.commute,
+                    size: 72,
+                    color: Pallete.secondaryColor.withValues(alpha: 0.3),
+                  ),
                   const SizedBox(height: 16),
-                  Text('No completed jobs yet.',
-                      style: TextStyle(color: Colors.white60, fontSize: 16)),
+                  Text(
+                    'No completed jobs yet.',
+                    style: TextStyle(color: Colors.white60, fontSize: 16),
+                  ),
                 ],
               ),
             );
@@ -62,8 +70,7 @@ class TowingHistoryScreen extends ConsumerWidget {
             color: Pallete.secondaryColor,
             onRefresh: () async => ref.invalidate(towingHistoryProvider),
             child: ListView.builder(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               itemCount: history.length,
               itemBuilder: (context, index) {
                 final job = history[index];
@@ -100,8 +107,7 @@ class _TowingHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAccident =
-        job.issueType.toLowerCase().contains('accident');
+    final isAccident = job.issueType.toLowerCase().contains('accident');
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -148,29 +154,36 @@ class _TowingHistoryCard extends StatelessWidget {
                 Text(
                   job.carInfo.isNotEmpty ? job.carInfo : 'Vehicle',
                   style: TextStyle(
-                      color: isDark ? Colors.white54 : Colors.black54,
-                      fontSize: 12),
+                    color: isDark ? Colors.white54 : Colors.black54,
+                    fontSize: 12,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    Icon(Icons.location_on,
-                        color: Pallete.secondaryColor, size: 12),
+                    Icon(
+                      Icons.location_on,
+                      color: Pallete.secondaryColor,
+                      size: 12,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       job.distance.isNotEmpty
                           ? '${job.distance} towed'
                           : job.issueType,
                       style: TextStyle(
-                          color: isDark ? Colors.white54 : Colors.black54,
-                          fontSize: 12),
+                        color: isDark ? Colors.white54 : Colors.black54,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.green.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),

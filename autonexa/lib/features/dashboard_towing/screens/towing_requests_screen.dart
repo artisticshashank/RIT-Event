@@ -20,8 +20,10 @@ class TowingRequestsScreen extends ConsumerWidget {
     final accentColor = Pallete.secondaryColor;
     final textColor = isDark ? Colors.white : Colors.black;
     // Deep slate background from the mockup
-    final pageBgColor = isDark ? const Color(0xFF141A28) : Theme.of(context).scaffoldBackgroundColor;
-    
+    final pageBgColor = isDark
+        ? const Color(0xFF141A28)
+        : Theme.of(context).scaffoldBackgroundColor;
+
     return Scaffold(
       backgroundColor: pageBgColor,
       body: SafeArea(
@@ -35,7 +37,10 @@ class TowingRequestsScreen extends ConsumerWidget {
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,7 +55,11 @@ class TowingRequestsScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Center(
-                        child: Icon(Icons.car_crash, color: Colors.white, size: 28),
+                        child: Icon(
+                          Icons.car_crash,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -82,10 +91,16 @@ class TowingRequestsScreen extends ConsumerWidget {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF232B42) : Colors.grey[200],
+                        color: isDark
+                            ? const Color(0xFF232B42)
+                            : Colors.grey[200],
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.notifications, color: isDark ? Colors.white : Colors.black54, size: 20),
+                      child: Icon(
+                        Icons.notifications,
+                        color: isDark ? Colors.white : Colors.black54,
+                        size: 20,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Container(
@@ -94,15 +109,19 @@ class TowingRequestsScreen extends ConsumerWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: const DecorationImage(
-                          image: AssetImage('assets/images/placeholder_part.png'), // generic placeholder
+                          image: AssetImage(
+                            'assets/images/placeholder_part.png',
+                          ), // generic placeholder
                           fit: BoxFit.cover,
                         ),
-                        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.1),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                
+
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 24),
                   child: Divider(color: Colors.white12, height: 1),
@@ -116,9 +135,12 @@ class TowingRequestsScreen extends ConsumerWidget {
                         title: 'STATUS',
                         value: overview.isOnline ? 'Online' : 'Offline',
                         prefixIcon: Container(
-                          width: 8, height: 8,
+                          width: 8,
+                          height: 8,
                           decoration: BoxDecoration(
-                            color: overview.isOnline ? Colors.greenAccent : Colors.redAccent,
+                            color: overview.isOnline
+                                ? Colors.greenAccent
+                                : Colors.redAccent,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -129,13 +151,18 @@ class TowingRequestsScreen extends ConsumerWidget {
                       ),
                       TowingStatCard(
                         title: 'DRIVERS',
-                        value: '${overview.activeDrivers}/${overview.totalDrivers}',
+                        value:
+                            '${overview.activeDrivers}/${overview.totalDrivers}',
                         leftBorderColor: accentColor,
                       ),
                     ],
                   ),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Text('Error loading stats: $error', style: TextStyle(color: textColor)),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Text(
+                    'Error loading stats: $error',
+                    style: TextStyle(color: textColor),
+                  ),
                 ),
 
                 const SizedBox(height: 32),
@@ -154,11 +181,16 @@ class TowingRequestsScreen extends ConsumerWidget {
                     ),
                     overviewFuture.when(
                       data: (overview) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: accentColor.withValues(alpha: 0.5)),
+                          border: Border.all(
+                            color: accentColor.withValues(alpha: 0.5),
+                          ),
                         ),
                         child: Text(
                           '${overview.pendingRequests} Pending',
@@ -171,7 +203,7 @@ class TowingRequestsScreen extends ConsumerWidget {
                       ),
                       loading: () => const SizedBox(),
                       error: (_, __) => const SizedBox(),
-                    )
+                    ),
                   ],
                 ),
 
@@ -186,12 +218,16 @@ class TowingRequestsScreen extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(vertical: 40),
                           child: Column(
                             children: [
-                              Icon(Icons.car_crash,
-                                  size: 56,
-                                  color: accentColor.withValues(alpha: 0.3)),
+                              Icon(
+                                Icons.car_crash,
+                                size: 56,
+                                color: accentColor.withValues(alpha: 0.3),
+                              ),
                               const SizedBox(height: 16),
-                              Text('No active requests right now.',
-                                  style: TextStyle(color: Colors.white60)),
+                              Text(
+                                'No active requests right now.',
+                                style: TextStyle(color: Colors.white60),
+                              ),
                             ],
                           ),
                         ),
@@ -204,8 +240,10 @@ class TowingRequestsScreen extends ConsumerWidget {
                     );
                   },
                   loading: () => const Loader(),
-                  error: (error, stack) =>
-                      Text(error.toString(), style: TextStyle(color: textColor)),
+                  error: (error, stack) => Text(
+                    error.toString(),
+                    style: TextStyle(color: textColor),
+                  ),
                 ),
 
                 const SizedBox(height: 16),
@@ -230,12 +268,22 @@ class TowingRequestsScreen extends ConsumerWidget {
                           top: 16,
                           right: 16,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: accentColor,
                               borderRadius: BorderRadius.circular(100),
                             ),
-                            child: const Text('LIVE', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10)),
+                            child: const Text(
+                              'LIVE',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                              ),
+                            ),
                           ),
                         ),
                         Center(
@@ -249,17 +297,32 @@ class TowingRequestsScreen extends ConsumerWidget {
                                   color: accentColor,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(Icons.map, color: Colors.white, size: 24),
+                                child: const Icon(
+                                  Icons.map,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
                               ),
                               const SizedBox(height: 12),
-                              const Text('Live Fleet Map', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                              const Text(
+                                'Live Fleet Map',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const SizedBox(height: 4),
-                              Text('${overview.activeJobPins} Active job pins • ${overview.liveTrucks} Trucks live', 
-                                style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 13),
+                              Text(
+                                '${overview.activeJobPins} Active job pins • ${overview.liveTrucks} Trucks live',
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.8),
+                                  fontSize: 13,
+                                ),
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -328,7 +391,8 @@ class _TowingRequestCardWrapper extends ConsumerWidget {
                     backgroundColor: Colors.orange.shade700,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     margin: const EdgeInsets.all(16),
                   ),
                 );

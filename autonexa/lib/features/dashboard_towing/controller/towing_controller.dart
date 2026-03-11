@@ -12,24 +12,27 @@ final towingOverviewProvider = FutureProvider<TowingOverviewModel>((ref) async {
 });
 
 // ── Incoming (searching) requests ────────────────────────────────────────────
-final towingRequestsProvider =
-    FutureProvider<List<TowingRequestModel>>((ref) async {
+final towingRequestsProvider = FutureProvider<List<TowingRequestModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(towingRepositoryProvider).fetchIncomingRequests(user.id);
 });
 
 // ── Completed job history ────────────────────────────────────────────────────
-final towingHistoryProvider =
-    FutureProvider<List<TowingRequestModel>>((ref) async {
+final towingHistoryProvider = FutureProvider<List<TowingRequestModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(towingRepositoryProvider).fetchHistory(user.id);
 });
 
 // ── Earnings / transactions ──────────────────────────────────────────────────
-final towingEarningsProvider =
-    FutureProvider<List<ServiceTransactionModel>>((ref) async {
+final towingEarningsProvider = FutureProvider<List<ServiceTransactionModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(towingRepositoryProvider).fetchEarnings(user.id);
@@ -61,7 +64,8 @@ class AssignTowingDriverNotifier extends AsyncNotifier<bool> {
 
 final assignTowingDriverProvider =
     AsyncNotifierProvider<AssignTowingDriverNotifier, bool>(
-        AssignTowingDriverNotifier.new);
+      AssignTowingDriverNotifier.new,
+    );
 
 // ── Decline request ──────────────────────────────────────────────────────────
 class DeclineTowingRequestNotifier extends AsyncNotifier<bool> {
@@ -85,7 +89,8 @@ class DeclineTowingRequestNotifier extends AsyncNotifier<bool> {
 
 final declineTowingRequestProvider =
     AsyncNotifierProvider<DeclineTowingRequestNotifier, bool>(
-        DeclineTowingRequestNotifier.new);
+      DeclineTowingRequestNotifier.new,
+    );
 
 // ── Mark payment received ────────────────────────────────────────────────────
 class TowingMarkPaymentNotifier extends AsyncNotifier<bool> {
@@ -110,7 +115,8 @@ class TowingMarkPaymentNotifier extends AsyncNotifier<bool> {
 
 final towingMarkPaymentProvider =
     AsyncNotifierProvider<TowingMarkPaymentNotifier, bool>(
-        TowingMarkPaymentNotifier.new);
+      TowingMarkPaymentNotifier.new,
+    );
 
 // ── Mark Arriving ────────────────────────────────────────────────────────────
 class TowingMarkArrivingNotifier extends AsyncNotifier<bool> {
@@ -132,7 +138,8 @@ class TowingMarkArrivingNotifier extends AsyncNotifier<bool> {
 
 final towingMarkArrivingProvider =
     AsyncNotifierProvider<TowingMarkArrivingNotifier, bool>(
-        TowingMarkArrivingNotifier.new);
+      TowingMarkArrivingNotifier.new,
+    );
 
 // ── Mark Complete ────────────────────────────────────────────────────────────
 class TowingMarkCompleteNotifier extends AsyncNotifier<bool> {
@@ -156,4 +163,5 @@ class TowingMarkCompleteNotifier extends AsyncNotifier<bool> {
 
 final towingMarkCompleteProvider =
     AsyncNotifierProvider<TowingMarkCompleteNotifier, bool>(
-        TowingMarkCompleteNotifier.new);
+      TowingMarkCompleteNotifier.new,
+    );

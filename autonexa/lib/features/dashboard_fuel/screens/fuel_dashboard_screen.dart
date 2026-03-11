@@ -10,7 +10,8 @@ class FuelDashboardScreen extends ConsumerStatefulWidget {
   const FuelDashboardScreen({super.key});
 
   @override
-  ConsumerState<FuelDashboardScreen> createState() => _FuelDashboardScreenState();
+  ConsumerState<FuelDashboardScreen> createState() =>
+      _FuelDashboardScreenState();
 }
 
 class _FuelDashboardScreenState extends ConsumerState<FuelDashboardScreen> {
@@ -27,15 +28,14 @@ class _FuelDashboardScreenState extends ConsumerState<FuelDashboardScreen> {
   Widget build(BuildContext context) {
     // Exact deep background from mockup
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF1E140D) : Theme.of(context).scaffoldBackgroundColor;
+    final bgColor = isDark
+        ? const Color(0xFF1E140D)
+        : Theme.of(context).scaffoldBackgroundColor;
 
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: IndexedStack(
-          index: _currentIndex,
-          children: _pages,
-        ),
+        child: IndexedStack(index: _currentIndex, children: _pages),
       ),
       extendBody: true,
       bottomNavigationBar: FloatingBottomNavBar(

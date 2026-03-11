@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/theme/pallete.dart';
+import 'package:autonexa/features/dashboard_seller/controller/seller_controller.dart';
+import 'package:autonexa/core/common/loader.dart';
 
 class SellerProfileScreen extends ConsumerStatefulWidget {
   const SellerProfileScreen({super.key});
@@ -496,27 +498,38 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
                     const SizedBox(height: 16),
                     SizedBox(
                       height: 250,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          _buildProductCard(
-                            'ENGINE PARTS',
-                            'V3 Turbocharger Kit',
-                            '\$1,249',
-                            isDark,
-                            cardColor,
-                            accentColor,
-                          ),
-                          _buildProductCard(
-                            'BRAKES',
-                            'Ceramic Brake Pads',
-                            '\$185',
-                            isDark,
-                            cardColor,
-                            accentColor,
-                          ),
-                        ],
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                          final inventoryFuture = ref.watch(
+                            sellerInventoryProvider,
+                          );
+                          return inventoryFuture.when(
+                            data: (products) {
+                              if (products.isEmpty) {
+                                return const Center(
+                                  child: Text("No inventory available."),
+                                );
+                              }
+                              return ListView(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                children: products.map((p) {
+                                  return _buildProductCard(
+                                    p.iconCode.toUpperCase(),
+                                    p.name,
+                                    '\$${p.price.toStringAsFixed(2)}',
+                                    isDark,
+                                    cardColor,
+                                    accentColor,
+                                  );
+                                }).toList(),
+                              );
+                            },
+                            loading: () => const Loader(),
+                            error: (err, stack) =>
+                                Center(child: Text('Error: $err')),
+                          );
+                        },
                       ),
                     ),
 

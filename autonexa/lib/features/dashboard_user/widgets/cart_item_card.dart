@@ -19,10 +19,14 @@ class CartItemCard extends StatelessWidget {
   });
 
   String _getImageForPart(String name) {
-    if (name.toLowerCase().contains('brake')) return 'https://images.unsplash.com/photo-1600705685834-31b672803bba?q=80&w=200&auto=format&fit=crop';
-    if (name.toLowerCase().contains('spark')) return 'https://plus.unsplash.com/premium_photo-1664303323067-1ea5d3ee4531?q=80&w=200&auto=format&fit=crop';
-    if (name.toLowerCase().contains('battery')) return 'https://images.unsplash.com/photo-1620353459146-248358e820ef?q=80&w=200&auto=format&fit=crop';
-    if (name.toLowerCase().contains('oil')) return 'https://images.unsplash.com/photo-1620353459146-248358e820ef?q=80&w=200&auto=format&fit=crop'; // dummy oil image
+    if (name.toLowerCase().contains('brake'))
+      return 'https://images.unsplash.com/photo-1600705685834-31b672803bba?q=80&w=200&auto=format&fit=crop';
+    if (name.toLowerCase().contains('spark'))
+      return 'https://plus.unsplash.com/premium_photo-1664303323067-1ea5d3ee4531?q=80&w=200&auto=format&fit=crop';
+    if (name.toLowerCase().contains('battery'))
+      return 'https://images.unsplash.com/photo-1620353459146-248358e820ef?q=80&w=200&auto=format&fit=crop';
+    if (name.toLowerCase().contains('oil'))
+      return 'https://images.unsplash.com/photo-1620353459146-248358e820ef?q=80&w=200&auto=format&fit=crop'; // dummy oil image
     return 'https://images.unsplash.com/photo-1599369325997-6a2c31fd32b5?q=80&w=200&auto=format&fit=crop';
   }
 
@@ -38,20 +42,22 @@ class CartItemCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: cardBgColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: Row(
@@ -67,7 +73,8 @@ class CartItemCard extends StatelessWidget {
               child: Image.network(
                 _getImageForPart(part.name),
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, color: Colors.grey),
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.broken_image, color: Colors.grey),
               ),
             ),
           ),
@@ -132,7 +139,9 @@ class CartItemCard extends StatelessWidget {
                     Container(
                       height: 32,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF2C2C2C) : Colors.grey.shade200,
+                        color: isDark
+                            ? const Color(0xFF2C2C2C)
+                            : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Row(
@@ -140,7 +149,9 @@ class CartItemCard extends StatelessWidget {
                         children: [
                           _buildQtyButton(
                             icon: Icons.remove,
-                            color: isDark ? const Color(0xFF3C3C3C) : Colors.grey.shade300,
+                            color: isDark
+                                ? const Color(0xFF3C3C3C)
+                                : Colors.grey.shade300,
                             iconColor: Pallete.textSecondaryColor,
                             onTap: onDecrement,
                           ),
@@ -186,15 +197,8 @@ class CartItemCard extends StatelessWidget {
       child: Container(
         width: 32,
         height: 32,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          icon,
-          size: 16,
-          color: iconColor,
-        ),
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        child: Icon(icon, size: 16, color: iconColor),
       ),
     );
   }

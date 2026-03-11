@@ -36,46 +36,40 @@ class SellerRepository {
       if (analyticsRes != null) {
         return SellerOverviewModel(
           totalSales: (analyticsRes['total_sales'] as num?)?.toDouble() ?? 0.0,
-          salesGrowth: 15.0, // Could be computed separately
+          salesGrowth: 0.0,
           ordersPending: (analyticsRes['orders_pending'] as int?) ?? 0,
-          weeklySales: [], // Populated with dedicated query below
+          weeklySales: [],
           recentOrders: (ordersRes as List).map((e) {
             final cust = e['customer'] as Map<String, dynamic>? ?? {};
-            return RecentOrderModel(
+            return DetailedOrderModel(
               id: e['id'] ?? '',
               orderNumber: e['order_number'] ?? '',
-              title: '${cust['name'] ?? 'Customer'}: ${e['info'] ?? ''}',
+              info: e['info'] ?? '',
               price: (e['total_amount'] as num?)?.toDouble() ?? 0.0,
               status: e['status'] ?? 'NEW',
-              iconCode: 'parts',
+              date: e['created_at'] != null
+                  ? DateTime.tryParse(
+                          e['created_at'],
+                        )?.toLocal().toString().substring(0, 10) ??
+                        ''
+                  : '',
+              customerName: cust['name'] ?? 'Customer',
+              imageUrl: e['image_url'] ?? '',
             );
           }).toList(),
         );
       }
     } catch (e) {
-      print('Seller overview fetch error (using mock): $e');
+      print('Seller overview fetch error: $e');
     }
 
-    // Fallback mock
-    await Future.delayed(const Duration(milliseconds: 400));
+    // Default real empty state if no view or data
     return SellerOverviewModel(
-      totalSales: 4250.0,
-      salesGrowth: 15.0,
-      ordersPending: 12,
-      weeklySales: [
-        SalesDailyModel(day: 'MON', amount: 300),
-        SalesDailyModel(day: 'TUE', amount: 500),
-        SalesDailyModel(day: 'WED', amount: 800),
-        SalesDailyModel(day: 'THU', amount: 480),
-        SalesDailyModel(day: 'FRI', amount: 650),
-        SalesDailyModel(day: 'SAT', amount: 200),
-        SalesDailyModel(day: 'SUN', amount: 450),
-      ],
-      recentOrders: [
-        RecentOrderModel(id: '1', orderNumber: '#AN-9021', title: 'V8 Engine Gasket Set', price: 189.00, status: 'NEW', iconCode: 'engine'),
-        RecentOrderModel(id: '2', orderNumber: '#AN-8955', title: 'Performance Brake Pads', price: 75.50, status: 'PROCESSING', iconCode: 'brakes'),
-        RecentOrderModel(id: '3', orderNumber: '#AN-8840', title: 'Synthetic Oil Filter x5', price: 42.00, status: 'SHIPPED', iconCode: 'oil'),
-      ],
+      totalSales: 0.0,
+      salesGrowth: 0.0,
+      ordersPending: 0,
+      weeklySales: [],
+      recentOrders: [],
     );
   }
 
@@ -89,19 +83,15 @@ class SellerRepository {
           .order('created_at', ascending: false);
 
       if (res.isNotEmpty) {
-        return (res as List).map((e) => InventoryProductModel.fromMap(e)).toList();
+        return (res as List)
+            .map((e) => InventoryProductModel.fromMap(e))
+            .toList();
       }
     } catch (e) {
-      print('Seller inventory fetch error (using mock): $e');
+      print('Seller inventory fetch error: $e');
     }
 
-    await Future.delayed(const Duration(milliseconds: 400));
-    return [
-      InventoryProductModel(id: '1', name: 'Performance Brake Pads', sku: 'AN-8955', price: 120.00, stock: 15, iconCode: 'brakes'),
-      InventoryProductModel(id: '2', name: 'V8 Engine Gasket Set', sku: 'AN-9021', price: 189.00, stock: 8, iconCode: 'engine'),
-      InventoryProductModel(id: '3', name: 'Synthetic Oil Filter x5', sku: 'AN-8840', price: 42.00, stock: 2, iconCode: 'oil'),
-      InventoryProductModel(id: '4', name: 'Aluminium Radiator', sku: 'AN-7722', price: 215.00, stock: 24, iconCode: 'parts'),
-    ];
+    return [];
   }
 
   // ── Orders: orders WHERE seller_id + customer name ────────────────────────
@@ -126,7 +116,10 @@ class SellerRepository {
             customerName: customer['name'] ?? 'Customer',
             info: e['info'] ?? '',
             date: e['created_at'] != null
-                ? DateTime.tryParse(e['created_at'])?.toLocal().toString().substring(0, 10) ?? ''
+                ? DateTime.tryParse(
+                        e['created_at'],
+                      )?.toLocal().toString().substring(0, 10) ??
+                      ''
                 : '',
             price: (e['total_amount'] as num?)?.toDouble() ?? 0.0,
             imageUrl: e['image_url'] ?? '',
@@ -134,15 +127,10 @@ class SellerRepository {
         }).toList();
       }
     } catch (e) {
-      print('Seller orders fetch error (using mock): $e');
+      print('Seller orders fetch error: $e');
     }
 
-    await Future.delayed(const Duration(milliseconds: 400));
-    return [
-      DetailedOrderModel(id: '1', status: 'PENDING', orderNumber: '#AN-9924', customerName: 'Marcus Sterling', info: '1x Apex GT Suspension Kit', date: 'Oct 26, 2023', price: 89450.00, imageUrl: ''),
-      DetailedOrderModel(id: '2', status: 'SHIPPED', orderNumber: '#AN-9812', customerName: 'Elena Rodriguez', info: 'Tracking: NEXA-77382-US', date: 'Oct 24, 2023', price: 1240.00, imageUrl: ''),
-      DetailedOrderModel(id: '3', status: 'DELIVERED', orderNumber: '#AN-8744', customerName: 'David Chen', info: 'Delivered Oct 23, 2023', date: 'Oct 21, 2023', price: 4500.00, imageUrl: ''),
-    ];
+    return [];
   }
 
   // ── Add Product: INSERT into spare_parts ──────────────────────────────────
@@ -173,13 +161,45 @@ class SellerRepository {
     }
   }
 
+  // ── Update Product: UPDATE spare_parts ────────────────────────────────────
+  Future<bool> updateProduct({
+    required String productId,
+    required String name,
+    required String description,
+    required double price,
+    required int stock,
+    String? sku,
+    String? category,
+  }) async {
+    try {
+      await _supabase
+          .from('spare_parts')
+          .update({
+            'name': name,
+            'description': description,
+            'price': price,
+            'stock_quantity': stock,
+            'sku': sku,
+            'category': category,
+          })
+          .eq('id', productId);
+      return true;
+    } catch (e) {
+      print('Update product error: $e');
+      return false;
+    }
+  }
+
   // ── Update Order Status ────────────────────────────────────────────────────
   Future<bool> updateOrderStatus(String orderId, String newStatus) async {
     try {
-      await _supabase.from('orders').update({
-        'status': newStatus,
-        'updated_at': DateTime.now().toIso8601String(),
-      }).eq('id', orderId);
+      await _supabase
+          .from('orders')
+          .update({
+            'status': newStatus,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', orderId);
       return true;
     } catch (e) {
       print('Update order status error: $e');
@@ -201,9 +221,10 @@ class SellerRepository {
   // ── Update stock quantity ──────────────────────────────────────────────────
   Future<bool> updateStock(String productId, int newStock) async {
     try {
-      await _supabase.from('spare_parts').update({
-        'stock_quantity': newStock,
-      }).eq('id', productId);
+      await _supabase
+          .from('spare_parts')
+          .update({'stock_quantity': newStock})
+          .eq('id', productId);
       return true;
     } catch (e) {
       print('Update stock error: $e');

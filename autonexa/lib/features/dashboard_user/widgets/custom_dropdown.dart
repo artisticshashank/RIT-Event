@@ -4,10 +4,7 @@ import 'package:autonexa/theme/pallete.dart';
 class CustomDropdown extends StatelessWidget {
   final String hint;
 
-  const CustomDropdown({
-    super.key,
-    required this.hint,
-  });
+  const CustomDropdown({super.key, required this.hint});
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +16,25 @@ class CustomDropdown extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+        ),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
-          hint: Text(hint,
-              style: TextStyle(
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.color
-                      ?.withValues(alpha: 0.8))),
-          icon: const Icon(Icons.keyboard_arrow_down,
-              color: Pallete.textSecondaryColor),
+          hint: Text(
+            hint,
+            style: TextStyle(
+              color: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.color?.withValues(alpha: 0.8),
+            ),
+          ),
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            color: Pallete.textSecondaryColor,
+          ),
           items: const [],
           onChanged: (val) {},
         ),

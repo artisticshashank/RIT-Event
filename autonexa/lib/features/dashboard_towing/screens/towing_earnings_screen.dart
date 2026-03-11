@@ -49,8 +49,7 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                 color: isSelected
                     ? Colors.white
                     : (isDark ? Colors.white60 : Colors.black54),
-                fontWeight:
-                    isSelected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ),
@@ -76,8 +75,10 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
     return Scaffold(
       backgroundColor: pageBgColor,
       appBar: AppBar(
-        title: const Text('Towing Analytics',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Towing Analytics',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -91,8 +92,7 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
       body: earningsAsync.when(
         loading: () => const Center(child: Loader()),
         error: (e, _) => Center(
-          child:
-              Text('Error: $e', style: TextStyle(color: textColor)),
+          child: Text('Error: $e', style: TextStyle(color: textColor)),
         ),
         data: (transactions) {
           final total = _totalFor(transactions, _selectedTabIndex);
@@ -104,8 +104,7 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
               .fold<double>(0, (s, t) => s + t.agreedAmount);
 
           return SingleChildScrollView(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -140,8 +139,8 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                         : Colors.blue.shade50,
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                        color:
-                            Pallete.secondaryColor.withValues(alpha: 0.2)),
+                      color: Pallete.secondaryColor.withValues(alpha: 0.2),
+                    ),
                     gradient: isDark
                         ? const LinearGradient(
                             colors: [Color(0xFF282B46), Color(0xFF1E2032)],
@@ -175,10 +174,16 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                       Row(
                         children: [
                           _earningsBadge(
-                              'Received', received, Colors.greenAccent),
+                            'Received',
+                            received,
+                            Colors.greenAccent,
+                          ),
                           const SizedBox(width: 20),
                           _earningsBadge(
-                              'Pending', pending, Colors.orangeAccent),
+                            'Pending',
+                            pending,
+                            Colors.orangeAccent,
+                          ),
                         ],
                       ),
                     ],
@@ -191,14 +196,18 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Earnings Over Time',
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
-                    Text('Last 7 Days',
-                        style:
-                            TextStyle(color: subTextColor, fontSize: 12)),
+                    Text(
+                      'Earnings Over Time',
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Last 7 Days',
+                      style: TextStyle(color: subTextColor, fontSize: 12),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -216,32 +225,29 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          children:
-                              _buildDailyBars(transactions, isDark),
+                          children: _buildDailyBars(transactions, isDark),
                         ),
                       ),
                       const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          'Mon',
-                          'Tue',
-                          'Wed',
-                          'Thu',
-                          'Fri',
-                          'Sat',
-                          'Sun'
-                        ]
-                            .map((d) => SizedBox(
-                                  width: 30,
-                                  child: Center(
-                                    child: Text(d,
+                        children:
+                            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                                .map(
+                                  (d) => SizedBox(
+                                    width: 30,
+                                    child: Center(
+                                      child: Text(
+                                        d,
                                         style: TextStyle(
-                                            color: subTextColor,
-                                            fontSize: 11)),
+                                          color: subTextColor,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ))
-                            .toList(),
+                                )
+                                .toList(),
                       ),
                     ],
                   ),
@@ -253,25 +259,33 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Transaction History',
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
-                    Text('${transactions.length} total',
-                        style:
-                            TextStyle(color: subTextColor, fontSize: 12)),
+                    Text(
+                      'Transaction History',
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${transactions.length} total',
+                      style: TextStyle(color: subTextColor, fontSize: 12),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
 
                 if (transactions.isEmpty)
                   Center(
-                    child: Text('No transactions yet.',
-                        style: TextStyle(color: Colors.white60)),
+                    child: Text(
+                      'No transactions yet.',
+                      style: TextStyle(color: Colors.white60),
+                    ),
                   )
                 else
-                  ...transactions.take(20).map(
+                  ...transactions
+                      .take(20)
+                      .map(
                         (t) => _TxnCard(
                           txn: t,
                           cardColor: cardColor,
@@ -293,26 +307,37 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(color: Colors.white54, fontSize: 11)),
-        Text('\$${amount.toStringAsFixed(2)}',
-            style: TextStyle(
-                color: color, fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white54, fontSize: 11),
+        ),
+        Text(
+          '\$${amount.toStringAsFixed(2)}',
+          style: TextStyle(
+            color: color,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
       ],
     );
   }
 
   List<Widget> _buildDailyBars(
-      List<ServiceTransactionModel> txns, bool isDark) {
+    List<ServiceTransactionModel> txns,
+    bool isDark,
+  ) {
     final now = DateTime.now();
     final days = List.generate(7, (i) => now.subtract(Duration(days: 6 - i)));
     final dailyAmounts = days.map((day) {
       return txns
-          .where((t) =>
-              t.completedAt != null &&
-              t.completedAt!.year == day.year &&
-              t.completedAt!.month == day.month &&
-              t.completedAt!.day == day.day)
+          .where(
+            (t) =>
+                t.completedAt != null &&
+                t.completedAt!.year == day.year &&
+                t.completedAt!.month == day.month &&
+                t.completedAt!.day == day.day,
+          )
           .fold<double>(0, (s, t) => s + t.agreedAmount);
     }).toList();
 
@@ -331,8 +356,8 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
             color: isToday
                 ? Pallete.secondaryColor
                 : (isDark
-                    ? Colors.white.withValues(alpha: 0.15)
-                    : Colors.black.withValues(alpha: 0.12)),
+                      ? Colors.white.withValues(alpha: 0.15)
+                      : Colors.black.withValues(alpha: 0.12)),
             borderRadius: BorderRadius.circular(8),
           ),
         ),
@@ -381,8 +406,7 @@ class _TxnCard extends StatelessWidget {
             ),
             child: Icon(
               isReceived ? Icons.check_circle : Icons.pending_actions,
-              color:
-                  isReceived ? Colors.greenAccent : Colors.orangeAccent,
+              color: isReceived ? Colors.greenAccent : Colors.orangeAccent,
               size: 20,
             ),
           ),
@@ -399,10 +423,13 @@ class _TxnCard extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
-                Text(dateStr,
-                    style: TextStyle(
-                        color: isDark ? Colors.white54 : Colors.black54,
-                        fontSize: 12)),
+                Text(
+                  dateStr,
+                  style: TextStyle(
+                    color: isDark ? Colors.white54 : Colors.black54,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),
@@ -420,9 +447,7 @@ class _TxnCard extends StatelessWidget {
               Text(
                 txn.paymentStatus.name.toUpperCase(),
                 style: TextStyle(
-                  color: isReceived
-                      ? Colors.greenAccent
-                      : Colors.orangeAccent,
+                  color: isReceived ? Colors.greenAccent : Colors.orangeAccent,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),

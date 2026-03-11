@@ -60,9 +60,15 @@ class MechanicsSearchScreen extends StatelessWidget {
               rating: 4.8,
               reviews: 124,
               distance: 2.1,
-              imageUrl: 'https://images.unsplash.com/photo-1632823465306-eddc87597148?q=80&w=200&auto=format&fit=crop', // Garage
+              imageUrl:
+                  'https://images.unsplash.com/photo-1632823465306-eddc87597148?q=80&w=200&auto=format&fit=crop', // Garage
               onBook: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const MechanicProfileScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MechanicProfileScreen(),
+                  ),
+                );
               },
             ),
             MechanicCard(
@@ -71,7 +77,8 @@ class MechanicsSearchScreen extends StatelessWidget {
               rating: 4.9,
               reviews: 312,
               distance: 4.5,
-              imageUrl: 'https://images.unsplash.com/photo-1530046339160-ce3e530cfcd1?q=80&w=200&auto=format&fit=crop', // Mechanic
+              imageUrl:
+                  'https://images.unsplash.com/photo-1530046339160-ce3e530cfcd1?q=80&w=200&auto=format&fit=crop', // Mechanic
               onBook: () {},
             ),
             MechanicCard(
@@ -80,7 +87,8 @@ class MechanicsSearchScreen extends StatelessWidget {
               rating: 4.5,
               reviews: 89,
               distance: 1.2,
-              imageUrl: 'https://images.unsplash.com/photo-1549646537-8e68449ce710?q=80&w=200&auto=format&fit=crop', // Tires
+              imageUrl:
+                  'https://images.unsplash.com/photo-1549646537-8e68449ce710?q=80&w=200&auto=format&fit=crop', // Tires
               onBook: () {},
             ),
           ],

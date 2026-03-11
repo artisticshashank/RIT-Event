@@ -50,7 +50,7 @@ class OrderSuccessScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            
+
             Text(
               'Order Successful!',
               style: TextStyle(
@@ -77,25 +77,56 @@ class OrderSuccessScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Order Number', style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 14)),
-                      Text('#AN-9284105', style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16)),
+                      const Text(
+                        'Order Number',
+                        style: TextStyle(
+                          color: Pallete.textSecondaryColor,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        '#AN-9284105',
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 24),
                   Row(
                     children: [
-                      const Icon(Icons.local_shipping, color: Pallete.secondaryColor),
+                      const Icon(
+                        Icons.local_shipping,
+                        color: Pallete.secondaryColor,
+                      ),
                       const SizedBox(width: 8),
-                      const Text('Estimated Delivery', style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 14)),
+                      const Text(
+                        'Estimated Delivery',
+                        style: TextStyle(
+                          color: Pallete.textSecondaryColor,
+                          fontSize: 14,
+                        ),
+                      ),
                       const Spacer(),
-                      Text('Oct 24 - Oct 26', style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 14)),
+                      Text(
+                        'Oct 24 - Oct 26',
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -109,7 +140,9 @@ class OrderSuccessScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Row(
                 children: [
@@ -129,17 +162,28 @@ class OrderSuccessScreen extends StatelessWidget {
                       children: [
                         Text(
                           'V8 Intake Manifold...',
-                          style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 14),
+                          style: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         const Text(
                           'Carbon Fiber Series',
-                          style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 12),
+                          style: TextStyle(
+                            color: Pallete.textSecondaryColor,
+                            fontSize: 12,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         const Text(
                           '\$1,249.00',
-                          style: TextStyle(color: Pallete.secondaryColor, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(
+                            color: Pallete.secondaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -157,14 +201,24 @@ class OrderSuccessScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Pallete.secondaryColor,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   elevation: 5,
                   shadowColor: Pallete.secondaryColor.withValues(alpha: 0.5),
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TrackOrderScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TrackOrderScreen(),
+                    ),
+                  );
                 },
-                child: const Text('View Order Details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text(
+                  'View Order Details',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -174,14 +228,21 @@ class OrderSuccessScreen extends StatelessWidget {
               child: OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Pallete.secondaryColor,
-                  side: BorderSide(color: Pallete.textSecondaryColor.withValues(alpha: 0.3)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  side: BorderSide(
+                    color: Pallete.textSecondaryColor.withValues(alpha: 0.3),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
                 onPressed: () {
                   // Navigate back to home or shop
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                child: const Text('Continue Shopping', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text(
+                  'Continue Shopping',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],

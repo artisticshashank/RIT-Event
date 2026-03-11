@@ -26,7 +26,9 @@ class CustomerReviewCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +39,9 @@ class CustomerReviewCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E1E36) : Colors.grey.shade200,
+                  color: isDark
+                      ? const Color(0xFF1E1E36)
+                      : Colors.grey.shade200,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.person, color: Colors.blueAccent),

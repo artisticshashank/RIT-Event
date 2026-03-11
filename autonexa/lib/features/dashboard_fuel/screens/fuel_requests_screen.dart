@@ -19,8 +19,12 @@ class FuelRequestsScreen extends ConsumerWidget {
 
     final accentColor = Pallete.secondaryColor;
     final textColor = isDark ? Colors.white : Pallete.textColor;
-    final pageBgColor = isDark ? const Color(0xFF1E140D) : Theme.of(context).scaffoldBackgroundColor; // Deep tinted background styling from mockup
-    
+    final pageBgColor = isDark
+        ? const Color(0xFF1E140D)
+        : Theme.of(
+            context,
+          ).scaffoldBackgroundColor; // Deep tinted background styling from mockup
+
     return Scaffold(
       backgroundColor: pageBgColor,
       body: SafeArea(
@@ -34,7 +38,10 @@ class FuelRequestsScreen extends ConsumerWidget {
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -102,7 +109,7 @@ class FuelRequestsScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 32),
 
                 // Stats Row
@@ -125,15 +132,20 @@ class FuelRequestsScreen extends ConsumerWidget {
                       ),
                       FuelStatCard(
                         title: 'REVENUE',
-                        value: '\$${(overview.revenue/1000).toStringAsFixed(1)}k',
+                        value:
+                            '\$${(overview.revenue / 1000).toStringAsFixed(1)}k',
                         growth: overview.revenueGrowth,
                         leftBorderColor: Colors.orangeAccent,
                         growthColor: Colors.greenAccent,
                       ),
                     ],
                   ),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Text('Error loading stats: $error', style: TextStyle(color: textColor)),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Text(
+                    'Error loading stats: $error',
+                    style: TextStyle(color: textColor),
+                  ),
                 ),
 
                 const SizedBox(height: 24),
@@ -146,24 +158,37 @@ class FuelRequestsScreen extends ConsumerWidget {
                     color: const Color(0xFF14162B), // Dark navy map background
                     borderRadius: BorderRadius.circular(20),
                     image: const DecorationImage(
-                      image: AssetImage('assets/images/map_overlay.png'), // Placeholder
+                      image: AssetImage(
+                        'assets/images/map_overlay.png',
+                      ), // Placeholder
                       fit: BoxFit.cover,
                       opacity: 0.3,
                     ),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.05),
+                    ),
                   ),
                   child: Center(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(100),
-                        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.2),
+                        ),
                       ),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.map, color: Pallete.secondaryColor, size: 20),
+                          Icon(
+                            Icons.map,
+                            color: Pallete.secondaryColor,
+                            size: 20,
+                          ),
                           SizedBox(width: 12),
                           Text(
                             'View All Requests on Map',
@@ -194,7 +219,10 @@ class FuelRequestsScreen extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: accentColor.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(100),
@@ -223,9 +251,11 @@ class FuelRequestsScreen extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(vertical: 40),
                           child: Column(
                             children: [
-                              Icon(Icons.ev_station_outlined,
-                                  size: 56,
-                                  color: accentColor.withValues(alpha: 0.4)),
+                              Icon(
+                                Icons.ev_station_outlined,
+                                size: 56,
+                                color: accentColor.withValues(alpha: 0.4),
+                              ),
                               const SizedBox(height: 16),
                               Text(
                                 'No incoming requests right now.',
@@ -238,15 +268,15 @@ class FuelRequestsScreen extends ConsumerWidget {
                     }
                     return Column(
                       children: requests.map((request) {
-                        return _FuelRequestCardWrapper(
-                          request: request,
-                        );
+                        return _FuelRequestCardWrapper(request: request);
                       }).toList(),
                     );
                   },
                   loading: () => const Loader(),
-                  error: (error, stack) =>
-                      Text(error.toString(), style: TextStyle(color: textColor)),
+                  error: (error, stack) => Text(
+                    error.toString(),
+                    style: TextStyle(color: textColor),
+                  ),
                 ),
 
                 const SizedBox(height: 120), // Pad for floating nav bar
@@ -283,8 +313,7 @@ class _FuelRequestCardWrapper extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) =>
-                        FuelRequestAcceptedScreen(request: request),
+                    builder: (_) => FuelRequestAcceptedScreen(request: request),
                   ),
                 );
               } else if (!ok && context.mounted) {
@@ -310,7 +339,8 @@ class _FuelRequestCardWrapper extends ConsumerWidget {
                     backgroundColor: Colors.orange.shade700,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     margin: const EdgeInsets.all(16),
                   ),
                 );

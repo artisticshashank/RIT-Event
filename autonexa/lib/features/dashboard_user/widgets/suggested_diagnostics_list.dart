@@ -6,7 +6,6 @@ class SuggestedDiagnosticsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -17,7 +16,9 @@ class SuggestedDiagnosticsList extends StatelessWidget {
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.color?.withValues(alpha: 0.6),
               letterSpacing: 1.2,
             ),
           ),
@@ -39,15 +40,21 @@ class SuggestedDiagnosticsList extends StatelessWidget {
     );
   }
 
-  Widget _buildDiagnosticChip(BuildContext context, String label, IconData icon) {
+  Widget _buildDiagnosticChip(
+    BuildContext context,
+    String label,
+    IconData icon,
+  ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: isDark ? Colors.transparent : Colors.white,
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

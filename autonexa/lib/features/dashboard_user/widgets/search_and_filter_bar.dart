@@ -4,16 +4,15 @@ import 'package:autonexa/theme/pallete.dart';
 class SearchAndFilterBar extends StatelessWidget {
   final String hint;
 
-  const SearchAndFilterBar({
-    super.key,
-    required this.hint,
-  });
+  const SearchAndFilterBar({super.key, required this.hint});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1B1B2F) : Colors.white;
-    final inputBgColor = isDark ? const Color(0xFF2A2A4A) : Colors.grey.shade100;
+    final inputBgColor = isDark
+        ? const Color(0xFF2A2A4A)
+        : Colors.grey.shade100;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
 
     return Column(
@@ -22,11 +21,16 @@ class SearchAndFilterBar extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: inputBgColor,
                   borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+                  border: Border.all(
+                    color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -37,7 +41,11 @@ class SearchAndFilterBar extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: hint,
                           border: InputBorder.none,
-                          hintStyle: TextStyle(color: Pallete.textSecondaryColor.withValues(alpha: 0.8)),
+                          hintStyle: TextStyle(
+                            color: Pallete.textSecondaryColor.withValues(
+                              alpha: 0.8,
+                            ),
+                          ),
                         ),
                         style: TextStyle(color: textColor),
                       ),
@@ -52,9 +60,15 @@ class SearchAndFilterBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: bgColor,
                 shape: BoxShape.circle,
-                border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+                border: Border.all(
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+                ),
               ),
-              child: const Icon(Icons.tune, color: Pallete.secondaryColor, size: 20),
+              child: const Icon(
+                Icons.tune,
+                color: Pallete.secondaryColor,
+                size: 20,
+              ),
             ),
           ],
         ),
@@ -82,16 +96,22 @@ class SearchAndFilterBar extends StatelessWidget {
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: isSelected ? Pallete.secondaryColor : (isDark ? const Color(0xFF1B1B2F) : Colors.white),
+        color: isSelected
+            ? Pallete.secondaryColor
+            : (isDark ? const Color(0xFF1B1B2F) : Colors.white),
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
-          color: isSelected ? Pallete.secondaryColor : Pallete.textSecondaryColor.withValues(alpha: 0.2),
+          color: isSelected
+              ? Pallete.secondaryColor
+              : Pallete.textSecondaryColor.withValues(alpha: 0.2),
         ),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: isSelected ? Colors.white : Theme.of(context).textTheme.bodyLarge?.color,
+          color: isSelected
+              ? Colors.white
+              : Theme.of(context).textTheme.bodyLarge?.color,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           fontSize: 14,
         ),

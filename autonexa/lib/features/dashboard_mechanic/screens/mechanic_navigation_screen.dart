@@ -9,15 +9,15 @@ import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_control
 
 class MechanicNavigationScreen extends ConsumerStatefulWidget {
   final ServiceRequestModel serviceRequest;
-  const MechanicNavigationScreen(
-      {super.key, required this.serviceRequest});
+  const MechanicNavigationScreen({super.key, required this.serviceRequest});
 
   @override
   ConsumerState<MechanicNavigationScreen> createState() =>
       _MechanicNavigationScreenState();
 }
 
-class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScreen> {
+class _MechanicNavigationScreenState
+    extends ConsumerState<MechanicNavigationScreen> {
   int _currentIndex = 0;
 
   @override
@@ -39,7 +39,11 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
             child: Stack(
               children: [
                 Center(
-                  child: Icon(Icons.map, size: 250, color: isDark ? Colors.white10 : Colors.black12),
+                  child: Icon(
+                    Icons.map,
+                    size: 250,
+                    color: isDark ? Colors.white10 : Colors.black12,
+                  ),
                 ),
                 // Location ripple
                 Center(
@@ -59,7 +63,11 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                           color: Pallete.secondaryColor,
                           border: Border.all(color: Colors.white, width: 2),
                         ),
-                        child: const Icon(Icons.navigation, color: Colors.white, size: 20),
+                        child: const Icon(
+                          Icons.navigation,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
@@ -77,7 +85,10 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                       CircleAvatar(
                         backgroundColor: Pallete.secondaryColor,
                         radius: 24,
-                        child: const Icon(Icons.my_location, color: Colors.white),
+                        child: const Icon(
+                          Icons.my_location,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -85,7 +96,7 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
               ],
             ),
           ),
-          
+
           // Navigation Header Box
           Positioned(
             top: 50,
@@ -112,7 +123,11 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                       color: Pallete.secondaryColor,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Icon(Icons.turn_left, color: Colors.white, size: 30),
+                    child: const Icon(
+                      Icons.turn_left,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   const Expanded(
@@ -129,10 +144,7 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                         ),
                         Text(
                           'onto Grand Avenue',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 14),
                         ),
                       ],
                     ),
@@ -182,7 +194,7 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -195,9 +207,14 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: Pallete.secondaryColor, width: 2),
+                                border: Border.all(
+                                  color: Pallete.secondaryColor,
+                                  width: 2,
+                                ),
                                 image: DecorationImage(
-                                  image: NetworkImage('https://ui-avatars.com/api/?name=${Uri.encodeComponent(user?.name ?? "Mechanic")}&background=random'),
+                                  image: NetworkImage(
+                                    'https://ui-avatars.com/api/?name=${Uri.encodeComponent(user?.name ?? "Mechanic")}&background=random',
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -217,9 +234,14 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                                   ),
                                   const SizedBox(height: 4),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: Pallete.secondaryColor.withAlpha(30),
+                                      color: Pallete.secondaryColor.withAlpha(
+                                        30,
+                                      ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: const Text(
@@ -235,46 +257,63 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                                 ],
                               ),
                             ),
-                            
+
                             // Action Buttons
                             Row(
                               children: [
                                 _buildActionButton(Icons.chat_bubble, isDark),
                                 const SizedBox(width: 12),
-                                _buildActionButton(Icons.phone, true, color: const Color(0xFF3B4A93)),
+                                _buildActionButton(
+                                  Icons.phone,
+                                  true,
+                                  color: const Color(0xFF3B4A93),
+                                ),
                               ],
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Stats Row
                         Row(
                           children: [
-                            Expanded(child: _buildStatCard('ETA', '14:45', isDark)),
+                            Expanded(
+                              child: _buildStatCard('ETA', '14:45', isDark),
+                            ),
                             const SizedBox(width: 12),
-                            Expanded(child: _buildStatCard('TIME', '8 min', isDark, valueColor: Pallete.secondaryColor)),
+                            Expanded(
+                              child: _buildStatCard(
+                                'TIME',
+                                '8 min',
+                                isDark,
+                                valueColor: Pallete.secondaryColor,
+                              ),
+                            ),
                             const SizedBox(width: 12),
-                            Expanded(child: _buildStatCard('DIST', '3.2 km', isDark)),
+                            Expanded(
+                              child: _buildStatCard('DIST', '3.2 km', isDark),
+                            ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Arrived / Complete button — REAL
                         Builder(
                           builder: (ctx) {
                             final job = widget.serviceRequest;
-                            final arrivingState =
-                                ref.watch(markArrivingProvider);
-                            final completeState =
-                                ref.watch(markCompleteProvider);
-                            final isArriving = job.status ==
-                                ServiceStatus.arriving;
+                            final arrivingState = ref.watch(
+                              markArrivingProvider,
+                            );
+                            final completeState = ref.watch(
+                              markCompleteProvider,
+                            );
+                            final isArriving =
+                                job.status == ServiceStatus.arriving;
                             final isLoading =
                                 arrivingState is AsyncLoading ||
-                                    completeState is AsyncLoading;
+                                completeState is AsyncLoading;
 
                             return SizedBox(
                               width: double.infinity,
@@ -285,33 +324,38 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                                     : () async {
                                         if (!isArriving) {
                                           final ok = await ref
-                                              .read(markArrivingProvider
-                                                  .notifier)
+                                              .read(
+                                                markArrivingProvider.notifier,
+                                              )
                                               .markArriving(job.id);
                                           if (ok && ctx.mounted) {
                                             setState(() {});
-                                            ScaffoldMessenger.of(ctx)
-                                                .showSnackBar(
+                                            ScaffoldMessenger.of(
+                                              ctx,
+                                            ).showSnackBar(
                                               SnackBar(
                                                 content: const Text(
-                                                    'Marked as Arriving!'),
+                                                  'Marked as Arriving!',
+                                                ),
                                                 backgroundColor:
                                                     Pallete.secondaryColor,
                                                 behavior:
                                                     SnackBarBehavior.floating,
                                                 shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12)),
-                                                margin:
-                                                    const EdgeInsets.all(16),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                margin: const EdgeInsets.all(
+                                                  16,
+                                                ),
                                               ),
                                             );
                                           }
                                         } else {
                                           final ok = await ref
-                                              .read(markCompleteProvider
-                                                  .notifier)
+                                              .read(
+                                                markCompleteProvider.notifier,
+                                              )
                                               .markComplete(job.id);
                                           if (ok && ctx.mounted) {
                                             Navigator.pop(ctx);
@@ -331,8 +375,9 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                                         width: 24,
                                         height: 24,
                                         child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2),
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
                                       )
                                     : Row(
                                         mainAxisAlignment:
@@ -362,7 +407,7 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                             );
                           },
                         ),
-                        
+
                         const SizedBox(height: 100), // Space for bottom nav
                       ],
                     ),
@@ -371,7 +416,7 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
               ),
             ),
           ),
-          
+
           // Floating Nav Bar
           Align(
             alignment: Alignment.bottomCenter,
@@ -382,7 +427,9 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                   _currentIndex = index;
                 });
                 if (index != 0) {
-                  Navigator.pop(context); // Simple pop out if they tap away from navigation tab for demo
+                  Navigator.pop(
+                    context,
+                  ); // Simple pop out if they tap away from navigation tab for demo
                 }
               },
               items: [
@@ -418,7 +465,12 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
     );
   }
 
-  Widget _buildStatCard(String title, String value, bool isDark, {Color? valueColor}) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    bool isDark, {
+    Color? valueColor,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(

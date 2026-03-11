@@ -13,10 +13,13 @@ final userDashboardRepositoryProvider = Provider((ref) {
 class UserDashboardRepository {
   final SupabaseClient _supabase;
 
-  UserDashboardRepository({required SupabaseClient supabase}) : _supabase = supabase;
+  UserDashboardRepository({required SupabaseClient supabase})
+    : _supabase = supabase;
 
   // ── Vehicles for current user ─────────────────────────────────────────────
-  Future<Either<String, List<VehicleModel>>> getUserVehicles(String userId) async {
+  Future<Either<String, List<VehicleModel>>> getUserVehicles(
+    String userId,
+  ) async {
     try {
       final res = await _supabase
           .from('vehicles')
@@ -55,7 +58,9 @@ class UserDashboardRepository {
   }
 
   // ── My service requests ───────────────────────────────────────────────────
-  Future<Either<String, List<ServiceRequestModel>>> getUserServiceRequests(String userId) async {
+  Future<Either<String, List<ServiceRequestModel>>> getUserServiceRequests(
+    String userId,
+  ) async {
     try {
       final res = await _supabase
           .from('service_requests')
@@ -65,7 +70,9 @@ class UserDashboardRepository {
           ''')
           .eq('requester_id', userId)
           .order('created_at', ascending: false);
-      return right((res as List).map((e) => ServiceRequestModel.fromMap(e)).toList());
+      return right(
+        (res as List).map((e) => ServiceRequestModel.fromMap(e)).toList(),
+      );
     } catch (e) {
       print('Get service requests error: $e');
       return right([]);
@@ -87,20 +94,24 @@ class UserDashboardRepository {
     double? price,
   }) async {
     try {
-      final res = await _supabase.from('service_requests').insert({
-        'requester_id': requesterId,
-        'request_type': requestType.value,
-        'location_lat': locationLat,
-        'location_lng': locationLng,
-        'location_address': locationAddress,
-        'vehicle_info': vehicleInfo,
-        'description': description,
-        'fuel_quantity': fuelQuantity,
-        'fuel_type': fuelType,
-        'issue_type': issueType,
-        'price': price,
-        'status': ServiceStatus.searching.value,
-      }).select().single();
+      final res = await _supabase
+          .from('service_requests')
+          .insert({
+            'requester_id': requesterId,
+            'request_type': requestType.value,
+            'location_lat': locationLat,
+            'location_lng': locationLng,
+            'location_address': locationAddress,
+            'vehicle_info': vehicleInfo,
+            'description': description,
+            'fuel_quantity': fuelQuantity,
+            'fuel_type': fuelType,
+            'issue_type': issueType,
+            'price': price,
+            'status': ServiceStatus.searching.value,
+          })
+          .select()
+          .single();
 
       return right(ServiceRequestModel.fromMap(res));
     } catch (e) {
@@ -111,10 +122,13 @@ class UserDashboardRepository {
   // ── Cancel a service request ──────────────────────────────────────────────
   Future<Either<String, bool>> cancelServiceRequest(String requestId) async {
     try {
-      await _supabase.from('service_requests').update({
-        'status': ServiceStatus.cancelled.value,
-        'updated_at': DateTime.now().toIso8601String(),
-      }).eq('id', requestId);
+      await _supabase
+          .from('service_requests')
+          .update({
+            'status': ServiceStatus.cancelled.value,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', requestId);
       return right(true);
     } catch (e) {
       return left('Failed to cancel: $e');
@@ -122,7 +136,9 @@ class UserDashboardRepository {
   }
 
   // ── Spare parts marketplace ───────────────────────────────────────────────
-  Future<Either<String, List<SparePartModel>>> getSpareParts({String? searchQuery}) async {
+  Future<Either<String, List<SparePartModel>>> getSpareParts({
+    String? searchQuery,
+  }) async {
     try {
       var query = _supabase
           .from('spare_parts')
@@ -134,9 +150,11 @@ class UserDashboardRepository {
 
       // Client-side filter (for simplicity; use .ilike() for server-side)
       if (searchQuery != null && searchQuery.isNotEmpty) {
-        parts = parts.where((p) =>
-          p.name.toLowerCase().contains(searchQuery.toLowerCase())
-        ).toList();
+        parts = parts
+            .where(
+              (p) => p.name.toLowerCase().contains(searchQuery.toLowerCase()),
+            )
+            .toList();
       }
 
       return right(parts);
@@ -147,14 +165,22 @@ class UserDashboardRepository {
   }
 
   // ── Update user availability for P2P ─────────────────────────────────────
-  Future<void> updateP2pAvailability(String userId, bool isAvailable, {double? lat, double? lng}) async {
+  Future<void> updateP2pAvailability(
+    String userId,
+    bool isAvailable, {
+    double? lat,
+    double? lng,
+  }) async {
     try {
-      await _supabase.from('users').update({
-        'is_available_for_p2p': isAvailable,
-        if (lat != null) 'last_known_lat': lat,
-        if (lng != null) 'last_known_lng': lng,
-        'is_online': isAvailable,
-      }).eq('id', userId);
+      await _supabase
+          .from('users')
+          .update({
+            'is_available_for_p2p': isAvailable,
+            if (lat != null) 'last_known_lat': lat,
+            if (lng != null) 'last_known_lng': lng,
+            'is_online': isAvailable,
+          })
+          .eq('id', userId);
     } catch (e) {
       print('P2P availability update error: $e');
     }
@@ -163,10 +189,10 @@ class UserDashboardRepository {
   // ── Update user location ──────────────────────────────────────────────────
   Future<void> updateUserLocation(String userId, double lat, double lng) async {
     try {
-      await _supabase.from('users').update({
-        'last_known_lat': lat,
-        'last_known_lng': lng,
-      }).eq('id', userId);
+      await _supabase
+          .from('users')
+          .update({'last_known_lat': lat, 'last_known_lng': lng})
+          .eq('id', userId);
     } catch (e) {
       print('Location update error: $e');
     }
@@ -177,7 +203,9 @@ class UserDashboardRepository {
     try {
       final res = await _supabase
           .from('users')
-          .select('id, name, rating, last_known_lat, last_known_lng, avatar_url')
+          .select(
+            'id, name, rating, last_known_lat, last_known_lng, avatar_url',
+          )
           .eq('is_available_for_p2p', true)
           .eq('is_online', true);
       return right(List<Map<String, dynamic>>.from(res));

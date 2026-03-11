@@ -24,7 +24,7 @@ class FuelStatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Exact colors from mockup
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     // In the mockup, cards have a very dark brown/black tint #221711
     final cardBgColor = isDark ? const Color(0xFF281E18) : Colors.white;
 
@@ -35,15 +35,17 @@ class FuelStatCard extends StatelessWidget {
           color: cardBgColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.05)
+                : Colors.black.withValues(alpha: 0.05),
           ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 4),
-            )
-          ]
+            ),
+          ],
         ),
         // To implement the thick left border smoothly:
         child: ClipRRect(

@@ -26,8 +26,9 @@ class _MechanicDiscoverScreenState
       r.requestType == ServiceType.towing ||
       r.requestType == ServiceType.flat_tire;
 
-  String _distanceLabel(ServiceRequestModel r) =>
-      r.distanceKm != null ? '${r.distanceKm!.toStringAsFixed(1)} km away' : 'Nearby';
+  String _distanceLabel(ServiceRequestModel r) => r.distanceKm != null
+      ? '${r.distanceKm!.toStringAsFixed(1)} km away'
+      : 'Nearby';
 
   String _timeLabel(ServiceRequestModel r) {
     if (r.createdAt == null) return 'Just now';
@@ -49,7 +50,9 @@ class _MechanicDiscoverScreenState
 
   Widget _buildTab(String title, IconData icon, int index) {
     final isSelected = _selectedTabIndex == index;
-    final color = isSelected ? Pallete.secondaryColor : Pallete.textSecondaryColor;
+    final color = isSelected
+        ? Pallete.secondaryColor
+        : Pallete.textSecondaryColor;
 
     return GestureDetector(
       onTap: () => setState(() => _selectedTabIndex = index),
@@ -64,8 +67,7 @@ class _MechanicDiscoverScreenState
                 title,
                 style: TextStyle(
                   color: color,
-                  fontWeight:
-                      isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
             ],
@@ -109,9 +111,11 @@ class _MechanicDiscoverScreenState
                 child: Stack(
                   children: [
                     Center(
-                      child: Icon(Icons.map,
-                          size: 100,
-                          color: isDark ? Colors.white10 : Colors.black12),
+                      child: Icon(
+                        Icons.map,
+                        size: 100,
+                        color: isDark ? Colors.white10 : Colors.black12,
+                      ),
                     ),
                     // Online toggle — tapping calls Supabase
                     Positioned(
@@ -121,7 +125,9 @@ class _MechanicDiscoverScreenState
                         onTap: () => updateMechanicAvailability(ref, !isOnline),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           decoration: BoxDecoration(
                             color: isDark
                                 ? const Color(0xFF2C3146)
@@ -129,9 +135,10 @@ class _MechanicDiscoverScreenState
                             borderRadius: BorderRadius.circular(100),
                             boxShadow: const [
                               BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4)),
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
+                              ),
                             ],
                           ),
                           child: Row(
@@ -140,17 +147,13 @@ class _MechanicDiscoverScreenState
                                 width: 10,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: isOnline
-                                      ? Colors.green
-                                      : Colors.grey,
+                                  color: isOnline ? Colors.green : Colors.grey,
                                   shape: BoxShape.circle,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                isOnline
-                                    ? 'Online & Available'
-                                    : 'Go Online',
+                                isOnline ? 'Online & Available' : 'Go Online',
                                 style: TextStyle(
                                   color: isDark ? Colors.white : Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -167,7 +170,9 @@ class _MechanicDiscoverScreenState
                       right: 16,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: Pallete.secondaryColor,
                           borderRadius: BorderRadius.circular(100),
@@ -176,14 +181,19 @@ class _MechanicDiscoverScreenState
                           data: (jobs) => Text(
                             '${jobs.length} Requests',
                             style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
-                          loading: () => const Text('...',
-                              style: TextStyle(color: Colors.white)),
-                          error: (_, __) => const Text('—',
-                              style: TextStyle(color: Colors.white)),
+                          loading: () => const Text(
+                            '...',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          error: (_, __) => const Text(
+                            '—',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
@@ -191,15 +201,20 @@ class _MechanicDiscoverScreenState
                     Positioned(
                       top: 100,
                       left: 100,
-                      child: Icon(Icons.location_on,
-                          size: 40, color: Pallete.secondaryColor),
+                      child: Icon(
+                        Icons.location_on,
+                        size: 40,
+                        color: Pallete.secondaryColor,
+                      ),
                     ),
                     Positioned(
                       top: 150,
                       right: 120,
-                      child: Icon(Icons.location_pin,
-                          size: 30,
-                          color: Theme.of(context).primaryColor),
+                      child: Icon(
+                        Icons.location_pin,
+                        size: 30,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ],
                 ),
@@ -231,12 +246,16 @@ class _MechanicDiscoverScreenState
                     const Text(
                       'Nearby Requests',
                       style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       'Sorted by distance',
                       style: TextStyle(
-                          color: Pallete.textSecondaryColor, fontSize: 12),
+                        color: Pallete.textSecondaryColor,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
@@ -253,8 +272,7 @@ class _MechanicDiscoverScreenState
             if (_selectedTabIndex == 1) {
               filtered = all.where(_isEmergency).toList();
             } else if (_selectedTabIndex == 2) {
-              filtered =
-                  all.where((r) => !_isEmergency(r)).toList();
+              filtered = all.where((r) => !_isEmergency(r)).toList();
             } else {
               filtered = all;
             }
@@ -265,8 +283,11 @@ class _MechanicDiscoverScreenState
                   padding: const EdgeInsets.all(40),
                   child: Column(
                     children: [
-                      Icon(Icons.search_off,
-                          size: 64, color: Pallete.textSecondaryColor),
+                      Icon(
+                        Icons.search_off,
+                        size: 64,
+                        color: Pallete.textSecondaryColor,
+                      ),
                       const SizedBox(height: 16),
                       Text(
                         isOnline
@@ -274,8 +295,9 @@ class _MechanicDiscoverScreenState
                             : 'Go online to see nearby requests.',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                            color: Pallete.textSecondaryColor,
-                            fontSize: 16),
+                          color: Pallete.textSecondaryColor,
+                          fontSize: 16,
+                        ),
                       ),
                     ],
                   ),
@@ -286,34 +308,29 @@ class _MechanicDiscoverScreenState
             return SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, i) {
-                    final r = filtered[i];
-                    return NearbyRequestCard(
-                      statusLabel: _statusLabel(r),
-                      statusColor: _statusColor(r),
-                      distance: _distanceLabel(r),
-                      carTitle: r.vehicleInfo ?? r.requestType.displayName,
-                      description: r.description ??
-                          r.issueType ??
-                          'Requires assistance',
-                      timeText: _timeLabel(r),
-                      isEmergency: _isEmergency(r),
-                      isPrimaryAction: _isEmergency(r),
-                      onAccept: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MechanicIncomingRequestScreen(
-                              serviceRequest: r,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  childCount: filtered.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, i) {
+                  final r = filtered[i];
+                  return NearbyRequestCard(
+                    statusLabel: _statusLabel(r),
+                    statusColor: _statusColor(r),
+                    distance: _distanceLabel(r),
+                    carTitle: r.vehicleInfo ?? r.requestType.displayName,
+                    description:
+                        r.description ?? r.issueType ?? 'Requires assistance',
+                    timeText: _timeLabel(r),
+                    isEmergency: _isEmergency(r),
+                    isPrimaryAction: _isEmergency(r),
+                    onAccept: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              MechanicIncomingRequestScreen(serviceRequest: r),
+                        ),
+                      );
+                    },
+                  );
+                }, childCount: filtered.length),
               ),
             );
           },
@@ -322,9 +339,10 @@ class _MechanicDiscoverScreenState
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
-                child: Text('Error loading requests: $e',
-                    style:
-                        const TextStyle(color: Pallete.textSecondaryColor)),
+                child: Text(
+                  'Error loading requests: $e',
+                  style: const TextStyle(color: Pallete.textSecondaryColor),
+                ),
               ),
             ),
           ),

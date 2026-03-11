@@ -16,15 +16,30 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   // Dummy data similar to the image
   final List<Map<String, dynamic>> _cartItems = [
     {
-      'part': SparePartModel(id: '1', sellerId: '', name: 'Performance Brake Pads', price: 120.00),
+      'part': SparePartModel(
+        id: '1',
+        sellerId: '',
+        name: 'Performance Brake Pads',
+        price: 120.00,
+      ),
       'quantity': 1,
     },
     {
-      'part': SparePartModel(id: '2', sellerId: '', name: 'Iridium Spark Plugs', price: 45.00),
+      'part': SparePartModel(
+        id: '2',
+        sellerId: '',
+        name: 'Iridium Spark Plugs',
+        price: 45.00,
+      ),
       'quantity': 4,
     },
     {
-      'part': SparePartModel(id: '3', sellerId: '', name: 'Synthetic Motor Oil', price: 60.00),
+      'part': SparePartModel(
+        id: '3',
+        sellerId: '',
+        name: 'Synthetic Motor Oil',
+        price: 60.00,
+      ),
       'quantity': 1,
     },
   ];
@@ -56,7 +71,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   double get _subtotal {
-    return _cartItems.fold(0, (sum, item) => sum + (item['part'].price * item['quantity']));
+    return _cartItems.fold(
+      0,
+      (sum, item) => sum + (item['part'].price * item['quantity']),
+    );
   }
 
   double get _shipping => _cartItems.isEmpty ? 0 : 12.50;
@@ -68,7 +86,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
     final surfaceColor = Theme.of(context).cardColor;
-    final iconBgColor = isDark ? const Color(0xFF23253B) : Colors.grey.shade200; // Blueish dark grey for circular buttons
+    final iconBgColor = isDark
+        ? const Color(0xFF23253B)
+        : Colors.grey.shade200; // Blueish dark grey for circular buttons
 
     return Scaffold(
       body: SafeArea(
@@ -76,7 +96,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           children: [
             // Top Bar
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 16.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,7 +127,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 ],
               ),
             ),
-            
+
             // Scrollable Content
             Expanded(
               child: SingleChildScrollView(
@@ -118,7 +141,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       const Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 40),
-                          child: Text('Your cart is empty', style: TextStyle(color: Pallete.textSecondaryColor)),
+                          child: Text(
+                            'Your cart is empty',
+                            style: TextStyle(color: Pallete.textSecondaryColor),
+                          ),
                         ),
                       )
                     else
@@ -132,7 +158,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           onRemove: () => _removeItem(index),
                         ),
                       ),
-                    
+
                     const SizedBox(height: 16),
                     Text(
                       'Promo Code',
@@ -148,19 +174,26 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           child: Container(
                             height: 52,
                             decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF2C2C35) : Colors.grey.shade100,
+                              color: isDark
+                                  ? const Color(0xFF2C2C35)
+                                  : Colors.grey.shade100,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: TextField(
                               decoration: InputDecoration(
                                 hintText: 'Enter code',
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 14,
+                                ),
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
                                 fillColor: Colors.transparent,
                                 hintStyle: TextStyle(
-                                  color: Pallete.textSecondaryColor.withValues(alpha: 0.7),
+                                  color: Pallete.textSecondaryColor.withValues(
+                                    alpha: 0.7,
+                                  ),
                                   fontSize: 14,
                                 ),
                               ),
@@ -172,16 +205,24 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           height: 52,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Pallete.secondaryColor.withValues(alpha: 0.2), // Translucent orange look
+                              backgroundColor: Pallete.secondaryColor
+                                  .withValues(
+                                    alpha: 0.2,
+                                  ), // Translucent orange look
                               foregroundColor: Pallete.secondaryColor,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
                             ),
                             onPressed: () {},
-                            child: const Text('Apply', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: const Text(
+                              'Apply',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ],
@@ -194,14 +235,18 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       decoration: BoxDecoration(
                         color: surfaceColor,
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                        border: Border.all(
+                          color: Pallete.textSecondaryColor.withValues(
+                            alpha: 0.1,
+                          ),
+                        ),
                         boxShadow: [
-                           BoxShadow(
+                          BoxShadow(
                             color: Colors.black.withValues(alpha: 0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
-                          )
-                        ]
+                          ),
+                        ],
                       ),
                       child: Column(
                         children: [
@@ -212,7 +257,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           _buildSummaryRow('Tax (8%)', _tax, false),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Divider(color: Pallete.textSecondaryColor.withValues(alpha: 0.2), height: 1),
+                            child: Divider(
+                              color: Pallete.textSecondaryColor.withValues(
+                                alpha: 0.2,
+                              ),
+                              height: 1,
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -249,7 +299,11 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF141414) : Colors.white,
-                border: Border(top: BorderSide(color: Pallete.textSecondaryColor.withValues(alpha: 0.1))),
+                border: Border(
+                  top: BorderSide(
+                    color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                  ),
+                ),
               ),
               child: SizedBox(
                 width: double.infinity,
@@ -264,9 +318,17 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     elevation: 5,
                     shadowColor: Pallete.secondaryColor.withValues(alpha: 0.5),
                   ),
-                  onPressed: _cartItems.isEmpty ? null : () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutScreen(totalAmount: _total)));
-                  },
+                  onPressed: _cartItems.isEmpty
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CheckoutScreen(totalAmount: _total),
+                            ),
+                          );
+                        },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -327,10 +389,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           Container(
             width: 44,
             height: 44,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             child: Icon(icon, color: iconColor, size: 20),
           ),
           if (badge)

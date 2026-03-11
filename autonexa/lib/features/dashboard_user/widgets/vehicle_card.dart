@@ -29,11 +29,15 @@ class VehicleCard extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = isDark ? Colors.white : Pallete.textColor;
-    
+
     // Fallback data
-    final carName = vehicle != null ? '${vehicle.make} ${vehicle.model}' : 'Tesla Model 3';
+    final carName = vehicle != null
+        ? '${vehicle.make} ${vehicle.model}'
+        : 'Tesla Model 3';
     // We mock performance/battery/etc since they are not in VehicleModel
-    final carSubtitle = vehicle != null ? '${vehicle.year}' : 'Dual Motor Performance';
+    final carSubtitle = vehicle != null
+        ? '${vehicle.year}'
+        : 'Dual Motor Performance';
     const battery = '85%';
     const odometer = '12,450';
     const range = '264';
@@ -48,7 +52,7 @@ class VehicleCard extends ConsumerWidget {
             color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
             blurRadius: 20,
             offset: const Offset(0, 10),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -79,7 +83,10 @@ class VehicleCard extends ConsumerWidget {
                 top: 16,
                 left: 16,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: Pallete.secondaryColor,
                     borderRadius: BorderRadius.circular(100),
@@ -97,7 +104,7 @@ class VehicleCard extends ConsumerWidget {
               ),
             ],
           ),
-          
+
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -151,12 +158,17 @@ class VehicleCard extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Stats Box
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 20,
+                  ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Pallete.textSecondaryColor.withOpacity(0.2)),
+                    border: Border.all(
+                      color: Pallete.textSecondaryColor.withOpacity(0.2),
+                    ),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -253,7 +265,7 @@ class VehicleCard extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Button
                 SizedBox(
                   width: double.infinity,
@@ -270,7 +282,9 @@ class VehicleCard extends ConsumerWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DiagnosticReportScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DiagnosticReportScreen(),
+                        ),
                       );
                     },
                     child: const Row(
@@ -278,7 +292,10 @@ class VehicleCard extends ConsumerWidget {
                       children: [
                         Text(
                           'Vehicle Details',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(width: 8),
                         Icon(Icons.arrow_forward, size: 20),

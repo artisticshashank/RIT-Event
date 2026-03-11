@@ -36,7 +36,9 @@ class TrackOrderScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                  border: Border.all(
+                    color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                  ),
                 ),
                 child: Column(
                   children: [
@@ -47,39 +49,93 @@ class TrackOrderScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('ORDER ID', style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 12, fontWeight: FontWeight.bold)),
+                            const Text(
+                              'ORDER ID',
+                              style: TextStyle(
+                                color: Pallete.textSecondaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             const SizedBox(height: 4),
-                            Text('#AN-98234-X', style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.bold)),
+                            Text(
+                              '#AN-98234-X',
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
-                            color: Pallete.secondaryColor.withValues(alpha: 0.2),
+                            color: Pallete.secondaryColor.withValues(
+                              alpha: 0.2,
+                            ),
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          child: const Text('SHIPPED', style: TextStyle(color: Pallete.secondaryColor, fontWeight: FontWeight.bold, fontSize: 10)),
+                          child: const Text(
+                            'SHIPPED',
+                            style: TextStyle(
+                              color: Pallete.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Divider(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                    Divider(
+                      color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                    ),
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, color: Pallete.secondaryColor, size: 16),
+                        const Icon(
+                          Icons.calendar_today,
+                          color: Pallete.secondaryColor,
+                          size: 16,
+                        ),
                         const SizedBox(width: 8),
-                        Text('Est. Delivery: ', style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 14)),
-                        Text('Oct 24 - Oct 26', style: TextStyle(color: textColor, fontSize: 14)),
+                        Text(
+                          'Est. Delivery: ',
+                          style: TextStyle(
+                            color: Pallete.textSecondaryColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          'Oct 24 - Oct 26',
+                          style: TextStyle(color: textColor, fontSize: 14),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        const Icon(Icons.local_shipping, color: Pallete.secondaryColor, size: 16),
+                        const Icon(
+                          Icons.local_shipping,
+                          color: Pallete.secondaryColor,
+                          size: 16,
+                        ),
                         const SizedBox(width: 8),
-                        Text('Carrier: ', style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 14)),
-                        Text('AutoNexa Express', style: TextStyle(color: textColor, fontSize: 14)),
+                        Text(
+                          'Carrier: ',
+                          style: TextStyle(
+                            color: Pallete.textSecondaryColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          'AutoNexa Express',
+                          style: TextStyle(color: textColor, fontSize: 14),
+                        ),
                       ],
                     ),
                   ],
@@ -118,7 +174,11 @@ class TrackOrderScreen extends StatelessWidget {
                     Positioned(
                       top: 40,
                       right: 100,
-                      child: const Icon(Icons.location_on, color: Pallete.secondaryColor, size: 32),
+                      child: const Icon(
+                        Icons.location_on,
+                        color: Pallete.secondaryColor,
+                        size: 32,
+                      ),
                     ),
                     Center(
                       child: Container(
@@ -128,22 +188,41 @@ class TrackOrderScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                           boxShadow: [
-                             BoxShadow(color: Pallete.secondaryColor.withValues(alpha: 0.5), blurRadius: 10)
-                          ]
+                            BoxShadow(
+                              color: Pallete.secondaryColor.withValues(
+                                alpha: 0.5,
+                              ),
+                              blurRadius: 10,
+                            ),
+                          ],
                         ),
-                        child: const Icon(Icons.local_shipping, color: Colors.white, size: 24),
+                        child: const Icon(
+                          Icons.local_shipping,
+                          color: Colors.white,
+                          size: 24,
+                        ),
                       ),
                     ),
                     Positioned(
                       top: 16,
                       left: 16,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.black87,
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        child: const Text('Live Tracking Active', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                        child: const Text(
+                          'Live Tracking Active',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -162,25 +241,68 @@ class TrackOrderScreen extends StatelessWidget {
               const SizedBox(height: 24),
 
               // Timeline List
-              _buildTimelineStep(context, Icons.check, 'Order Placed', 'October 20, 2023 • 09:45 AM', isCompleted: true, isLast: false),
-              _buildTimelineStep(context, Icons.check, 'Processing', 'October 21, 2023 • 02:30 PM', isCompleted: true, isLast: false),
-              _buildTimelineStep(context, Icons.local_shipping, 'Shipped', 'October 22, 2023 • 08:15 AM\nPackage left the fulfillment center in Aurora, IL.', isCompleted: true, isActive: true, isLast: false),
-              _buildTimelineStep(context, Icons.access_time_filled, 'Out for Delivery', 'Pending', isCompleted: false, isLast: false),
-              _buildTimelineStep(context, Icons.home, 'Delivered', 'Expected by Oct 26', isCompleted: false, isLast: true),
+              _buildTimelineStep(
+                context,
+                Icons.check,
+                'Order Placed',
+                'October 20, 2023 • 09:45 AM',
+                isCompleted: true,
+                isLast: false,
+              ),
+              _buildTimelineStep(
+                context,
+                Icons.check,
+                'Processing',
+                'October 21, 2023 • 02:30 PM',
+                isCompleted: true,
+                isLast: false,
+              ),
+              _buildTimelineStep(
+                context,
+                Icons.local_shipping,
+                'Shipped',
+                'October 22, 2023 • 08:15 AM\nPackage left the fulfillment center in Aurora, IL.',
+                isCompleted: true,
+                isActive: true,
+                isLast: false,
+              ),
+              _buildTimelineStep(
+                context,
+                Icons.access_time_filled,
+                'Out for Delivery',
+                'Pending',
+                isCompleted: false,
+                isLast: false,
+              ),
+              _buildTimelineStep(
+                context,
+                Icons.home,
+                'Delivered',
+                'Expected by Oct 26',
+                isCompleted: false,
+                isLast: true,
+              ),
 
               const SizedBox(height: 32),
-              
+
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Pallete.secondaryColor,
-                    side: BorderSide(color: Pallete.secondaryColor.withValues(alpha: 0.5)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    side: BorderSide(
+                      color: Pallete.secondaryColor.withValues(alpha: 0.5),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                   icon: const Icon(Icons.help_outline),
-                  label: const Text('Need Help?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  label: const Text(
+                    'Need Help?',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                   onPressed: () {},
                 ),
               ),
@@ -192,20 +314,26 @@ class TrackOrderScreen extends StatelessWidget {
   }
 
   Widget _buildTimelineStep(
-    BuildContext context, 
-    IconData icon, 
-    String title, 
-    String subtitle, 
-    {required bool isCompleted, bool isActive = false, required bool isLast}
-  ) {
+    BuildContext context,
+    IconData icon,
+    String title,
+    String subtitle, {
+    required bool isCompleted,
+    bool isActive = false,
+    required bool isLast,
+  }) {
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final circleColor = isActive 
-      ? Pallete.secondaryColor 
-      : (isCompleted ? Pallete.secondaryColor : (isDark ? const Color(0xFF2A2A3E) : Colors.grey.shade300));
+    final circleColor = isActive
+        ? Pallete.secondaryColor
+        : (isCompleted
+              ? Pallete.secondaryColor
+              : (isDark ? const Color(0xFF2A2A3E) : Colors.grey.shade300));
 
-    final iconColor = (isActive || isCompleted) ? Colors.white : Pallete.textSecondaryColor;
+    final iconColor = (isActive || isCompleted)
+        ? Colors.white
+        : Pallete.textSecondaryColor;
 
     return IntrinsicHeight(
       child: Row(
@@ -219,9 +347,16 @@ class TrackOrderScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: circleColor,
                   shape: BoxShape.circle,
-                  boxShadow: isActive ? [
-                    BoxShadow(color: Pallete.secondaryColor.withValues(alpha: 0.4), blurRadius: 10)
-                  ] : null,
+                  boxShadow: isActive
+                      ? [
+                          BoxShadow(
+                            color: Pallete.secondaryColor.withValues(
+                              alpha: 0.4,
+                            ),
+                            blurRadius: 10,
+                          ),
+                        ]
+                      : null,
                 ),
                 child: Icon(icon, color: iconColor, size: 16),
               ),
@@ -229,7 +364,11 @@ class TrackOrderScreen extends StatelessWidget {
                 Expanded(
                   child: Container(
                     width: 2,
-                    color: isCompleted ? Pallete.secondaryColor : (isDark ? const Color(0xFF2A2A3E) : Colors.grey.shade300),
+                    color: isCompleted
+                        ? Pallete.secondaryColor
+                        : (isDark
+                              ? const Color(0xFF2A2A3E)
+                              : Colors.grey.shade300),
                   ),
                 ),
             ],
@@ -246,7 +385,11 @@ class TrackOrderScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: isActive ? Pallete.secondaryColor : (isCompleted ? textColor : Pallete.textSecondaryColor),
+                      color: isActive
+                          ? Pallete.secondaryColor
+                          : (isCompleted
+                                ? textColor
+                                : Pallete.textSecondaryColor),
                     ),
                   ),
                   const SizedBox(height: 4),

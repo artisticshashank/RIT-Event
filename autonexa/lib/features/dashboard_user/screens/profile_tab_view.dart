@@ -30,14 +30,19 @@ class ProfileTabView extends ConsumerWidget {
 
     final vehicleCount = vehicles.value?.length.toString() ?? '0';
     final completedCount =
-        requests.value?.where((r) => r.status.name == 'completed').length.toString() ?? '0';
+        requests.value
+            ?.where((r) => r.status.name == 'completed')
+            .length
+            .toString() ??
+        '0';
 
     return Container(
       color: bgColor,
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0)
-              .copyWith(bottom: 120),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24.0,
+          ).copyWith(bottom: 120),
           child: Column(
             children: [
               // Settings icon
@@ -66,8 +71,10 @@ class ProfileTabView extends ConsumerWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border:
-                          Border.all(color: Pallete.secondaryColor, width: 3),
+                      border: Border.all(
+                        color: Pallete.secondaryColor,
+                        width: 3,
+                      ),
                     ),
                     child: ClipOval(
                       child: avatarUrl != null && avatarUrl.isNotEmpty
@@ -90,8 +97,11 @@ class ProfileTabView extends ConsumerWidget {
                         shape: BoxShape.circle,
                         border: Border.all(color: bgColor, width: 2),
                       ),
-                      child: const Icon(Icons.edit,
-                          color: Colors.white, size: 14),
+                      child: const Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -142,30 +152,36 @@ class ProfileTabView extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => const RequestListScreen()),
+                      builder: (_) => const RequestListScreen(),
+                    ),
                   );
                 },
               ),
               ProfileListTile(
-                  icon: Icons.account_balance_wallet,
-                  title: 'Payment Methods',
-                  onTap: () {}),
+                icon: Icons.account_balance_wallet,
+                title: 'Payment Methods',
+                onTap: () {},
+              ),
               ProfileListTile(
-                  icon: Icons.location_on,
-                  title: 'Addresses',
-                  onTap: () {}),
+                icon: Icons.location_on,
+                title: 'Addresses',
+                onTap: () {},
+              ),
               ProfileListTile(
-                  icon: Icons.notifications_active,
-                  title: 'Notifications',
-                  onTap: () {}),
+                icon: Icons.notifications_active,
+                title: 'Notifications',
+                onTap: () {},
+              ),
               ProfileListTile(
-                  icon: Icons.card_giftcard,
-                  title: 'Refer a Friend',
-                  onTap: () {}),
+                icon: Icons.card_giftcard,
+                title: 'Refer a Friend',
+                onTap: () {},
+              ),
               ProfileListTile(
-                  icon: Icons.help_outline,
-                  title: 'Help & Support',
-                  onTap: () {}),
+                icon: Icons.help_outline,
+                title: 'Help & Support',
+                onTap: () {},
+              ),
 
               const SizedBox(height: 16),
 

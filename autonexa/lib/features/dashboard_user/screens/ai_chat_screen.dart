@@ -57,19 +57,25 @@ class AiChatScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
         actions: [
           IconButton(
             padding: const EdgeInsets.only(right: 24.0),
-            icon: Icon(Icons.settings, color: Theme.of(context).textTheme.bodyLarge?.color),
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
             onPressed: () {},
           ),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Divider(color: Pallete.textSecondaryColor.withValues(alpha: 0.1), height: 1),
+          child: Divider(
+            color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+            height: 1,
+          ),
         ),
       ),
       body: Stack(
@@ -78,30 +84,34 @@ class AiChatScreen extends StatelessWidget {
             padding: const EdgeInsets.all(24.0).copyWith(bottom: 120),
             children: [
               const ChatMessageBubble(
-                text: "Hello! I'm your AutoNexa assistant. I can help diagnose car issues, suggest maintenance, or find parts. How can I assist your drive today?",
+                text:
+                    "Hello! I'm your AutoNexa assistant. I can help diagnose car issues, suggest maintenance, or find parts. How can I assist your drive today?",
                 isUser: false,
                 date: '10:24 AM',
               ),
               const SuggestedDiagnosticsList(),
               const SizedBox(height: 12),
               const ChatMessageBubble(
-                text: "I'm hearing a clicking sound when I turn the steering wheel. What could it be?",
+                text:
+                    "I'm hearing a clicking sound when I turn the steering wheel. What could it be?",
                 isUser: true,
                 date: '10:26 AM',
               ),
               const ChatMessageBubble(
-                text: "A clicking noise during turns often points to worn **CV Axle Joints**.",
+                text:
+                    "A clicking noise during turns often points to worn **CV Axle Joints**.",
                 isUser: false,
                 date: '10:26 AM',
                 embeddedCard: RecommendedPartCard(),
               ),
             ],
           ),
-          
+
           Positioned(
             left: 24,
             right: 24,
-            bottom: 120, // Sit just above the bottom padding so Nav Bar clears it
+            bottom:
+                120, // Sit just above the bottom padding so Nav Bar clears it
             child: const ChatBottomInput(),
           ),
         ],

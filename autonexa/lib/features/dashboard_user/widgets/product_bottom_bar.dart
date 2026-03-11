@@ -14,7 +14,11 @@ class ProductBottomBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
         color: bgColor,
-        border: Border(top: BorderSide(color: Pallete.textSecondaryColor.withValues(alpha: 0.1))),
+        border: Border(
+          top: BorderSide(
+            color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+          ),
+        ),
       ),
       child: SafeArea(
         top: false,
@@ -24,10 +28,13 @@ class ProductBottomBar extends StatelessWidget {
               width: 54,
               height: 54,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF2C2C2C) : Colors.grey.withValues(alpha: 0.1),
+                color: isDark
+                    ? const Color(0xFF2C2C2C)
+                    : Colors.grey.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                    color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Icon(
                 Icons.chat_bubble_outline,

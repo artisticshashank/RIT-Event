@@ -76,14 +76,20 @@ class MaintenanceList extends ConsumerWidget {
                   final service = services[index];
                   return _buildMaintenanceItem(
                     context: context,
-                    title: service.requestType.name.split('_').map((e) => e[0].toUpperCase() + e.substring(1)).join(' '),
+                    title: service.requestType.name
+                        .split('_')
+                        .map((e) => e[0].toUpperCase() + e.substring(1))
+                        .join(' '),
                     subtitle: service.description ?? 'Scheduled',
                     icon: _getIconForService(service.requestType),
-                    iconColor: index == 0 ? Pallete.secondaryColor : Colors.blueAccent,
+                    iconColor: index == 0
+                        ? Pallete.secondaryColor
+                        : Colors.blueAccent,
                     isActive: index == 0,
                   );
                 },
-                separatorBuilder: (context, index) => const SizedBox(height: 16),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
                 itemCount: services.length > 3 ? 3 : services.length,
               );
             },
@@ -96,13 +102,19 @@ class MaintenanceList extends ConsumerWidget {
   }
 
   IconData _getIconForService(ServiceType type) {
-    switch(type) {
-      case ServiceType.towing: return Icons.car_crash;
-      case ServiceType.mechanical_repair: return Icons.build;
-      case ServiceType.fuel_share: return Icons.local_gas_station;
-      case ServiceType.jump_start: return Icons.battery_charging_full;
-      case ServiceType.flat_tire: return Icons.tire_repair; // Add mapping if needed
-      case ServiceType.parts_delivery: return Icons.construction;
+    switch (type) {
+      case ServiceType.towing:
+        return Icons.car_crash;
+      case ServiceType.mechanical_repair:
+        return Icons.build;
+      case ServiceType.fuel_share:
+        return Icons.local_gas_station;
+      case ServiceType.jump_start:
+        return Icons.battery_charging_full;
+      case ServiceType.flat_tire:
+        return Icons.tire_repair; // Add mapping if needed
+      case ServiceType.parts_delivery:
+        return Icons.construction;
     }
   }
 
@@ -122,14 +134,16 @@ class MaintenanceList extends ConsumerWidget {
         color: cardBgColor,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isActive ? Colors.transparent : Pallete.textSecondaryColor.withOpacity(0.1),
+          color: isActive
+              ? Colors.transparent
+              : Pallete.textSecondaryColor.withOpacity(0.1),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: Stack(
@@ -143,7 +157,9 @@ class MaintenanceList extends ConsumerWidget {
                 width: 6,
                 decoration: const BoxDecoration(
                   color: Pallete.secondaryColor,
-                  borderRadius: BorderRadius.horizontal(left: Radius.circular(24)),
+                  borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(24),
+                  ),
                 ),
               ),
             ),

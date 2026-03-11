@@ -96,7 +96,7 @@ class UserAppBar extends ConsumerWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               color: Theme.of(context).iconTheme.color,

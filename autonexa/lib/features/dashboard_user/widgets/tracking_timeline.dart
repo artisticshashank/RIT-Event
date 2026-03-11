@@ -17,7 +17,13 @@ class TrackingTimeline extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
           ),
         ),
-        _buildTimelineStep(context, 'EN ROUTE', true, false, icon: Icons.navigation),
+        _buildTimelineStep(
+          context,
+          'EN ROUTE',
+          true,
+          false,
+          icon: Icons.navigation,
+        ),
         Expanded(
           child: Container(
             height: 2,
@@ -30,15 +36,25 @@ class TrackingTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildTimelineStep(BuildContext context, String label, bool isCompleted, bool isCheck, {IconData? icon}) {
-    final color = isCompleted ? Pallete.secondaryColor : Pallete.textSecondaryColor;
+  Widget _buildTimelineStep(
+    BuildContext context,
+    String label,
+    bool isCompleted,
+    bool isCheck, {
+    IconData? icon,
+  }) {
+    final color = isCompleted
+        ? Pallete.secondaryColor
+        : Pallete.textSecondaryColor;
     return Column(
       children: [
         Container(
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: isCompleted ? Pallete.secondaryColor : Pallete.textSecondaryColor.withValues(alpha: 0.2),
+            color: isCompleted
+                ? Pallete.secondaryColor
+                : Pallete.textSecondaryColor.withValues(alpha: 0.2),
             shape: BoxShape.circle,
           ),
           child: Icon(

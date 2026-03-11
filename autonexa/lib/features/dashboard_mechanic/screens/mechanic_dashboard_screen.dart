@@ -66,7 +66,8 @@ class _MechanicDashboardScreenState
               child: CircleAvatar(
                 radius: 16,
                 backgroundImage: NetworkImage(
-                    'https://ui-avatars.com/api/?name=${Uri.encodeComponent(user?.name ?? "Mechanic")}&background=random'),
+                  'https://ui-avatars.com/api/?name=${Uri.encodeComponent(user?.name ?? "Mechanic")}&background=random',
+                ),
               ),
             ),
           ),
@@ -74,11 +75,8 @@ class _MechanicDashboardScreenState
       ),
       body: Stack(
         children: [
-          IndexedStack(
-            index: _currentIndex,
-            children: pages,
-          ),
-          
+          IndexedStack(index: _currentIndex, children: pages),
+
           // Floating Nav Bar
           Align(
             alignment: Alignment.bottomCenter,
@@ -92,7 +90,10 @@ class _MechanicDashboardScreenState
               items: [
                 NavBarItem(icon: Icons.explore_outlined, label: 'Discover'),
                 NavBarItem(icon: Icons.assignment_outlined, label: 'My Jobs'),
-                NavBarItem(icon: Icons.account_balance_wallet_outlined, label: 'Earnings'),
+                NavBarItem(
+                  icon: Icons.account_balance_wallet_outlined,
+                  label: 'Earnings',
+                ),
                 NavBarItem(icon: Icons.person_outline, label: 'Profile'),
               ],
             ),

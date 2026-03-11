@@ -7,7 +7,7 @@ class RecommendedPartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -16,13 +16,19 @@ class RecommendedPartCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF131322) : Colors.white,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+            border: Border.all(
+              color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+            ),
           ),
           child: Column(
             children: [
               Row(
                 children: [
-                  const Icon(Icons.shopping_cart, color: Pallete.secondaryColor, size: 14),
+                  const Icon(
+                    Icons.shopping_cart,
+                    color: Pallete.secondaryColor,
+                    size: 14,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'RECOMMENDED SPARE PARTS',
@@ -45,7 +51,9 @@ class RecommendedPartCard extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       image: const DecorationImage(
-                        image: NetworkImage('https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200&auto=format&fit=crop'), // Axle mockup img
+                        image: NetworkImage(
+                          'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200&auto=format&fit=crop',
+                        ), // Axle mockup img
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -119,18 +127,26 @@ class RecommendedPartCard extends StatelessWidget {
     );
   }
 
-  Widget _buildOutlinedButton(BuildContext context, String title, bool isPrimaryText) {
+  Widget _buildOutlinedButton(
+    BuildContext context,
+    String title,
+    bool isPrimaryText,
+  ) {
     return Container(
       height: 36,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.3),
+        ),
       ),
       child: Center(
         child: Text(
           title,
           style: TextStyle(
-            color: isPrimaryText ? Pallete.secondaryColor : Theme.of(context).textTheme.bodyLarge?.color,
+            color: isPrimaryText
+                ? Pallete.secondaryColor
+                : Theme.of(context).textTheme.bodyLarge?.color,
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),

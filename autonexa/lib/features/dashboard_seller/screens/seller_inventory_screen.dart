@@ -17,14 +17,18 @@ class SellerInventoryScreen extends ConsumerStatefulWidget {
 
 class _SellerInventoryScreenState extends ConsumerState<SellerInventoryScreen> {
   Future<void> _confirmDelete(
-      BuildContext context, InventoryProductModel product) async {
+    BuildContext context,
+    InventoryProductModel product,
+  ) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Delete Product',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Delete Product',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: Text(
           'Are you sure you want to delete "${product.name}"? This cannot be undone.',
         ),
@@ -35,8 +39,10 @@ class _SellerInventoryScreenState extends ConsumerState<SellerInventoryScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete',
-                style: TextStyle(color: Colors.redAccent)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.redAccent),
+            ),
           ),
         ],
       ),
@@ -44,8 +50,9 @@ class _SellerInventoryScreenState extends ConsumerState<SellerInventoryScreen> {
 
     if (confirm != true || !mounted) return;
 
-    final success =
-        await ref.read(deleteProductProvider.notifier).delete(product.id);
+    final success = await ref
+        .read(deleteProductProvider.notifier)
+        .delete(product.id);
 
     if (!mounted) return;
     if (success) {
@@ -56,8 +63,9 @@ class _SellerInventoryScreenState extends ConsumerState<SellerInventoryScreen> {
           content: Text('"${product.name}" deleted.'),
           backgroundColor: Pallete.secondaryColor,
           behavior: SnackBarBehavior.floating,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           margin: const EdgeInsets.all(16),
         ),
       );
@@ -187,10 +195,11 @@ class _SellerInventoryScreenState extends ConsumerState<SellerInventoryScreen> {
                   (product) => InventoryProductTile(
                     product: product,
                     onEdit: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Edit product coming soon'),
-                          behavior: SnackBarBehavior.floating,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SellerAddProductScreen(productToEdit: product),
                         ),
                       );
                     },

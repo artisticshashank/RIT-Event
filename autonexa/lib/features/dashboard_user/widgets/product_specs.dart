@@ -25,7 +25,10 @@ class ProductSpecs extends StatelessWidget {
           _buildSpecRow(context, 'Material', 'Carbon-Ceramic Composite'),
           const SizedBox(height: 12),
           _buildSpecRow(
-              context, 'Compatibility', 'Universal 5-Bolt (Sports/Sedan)'),
+            context,
+            'Compatibility',
+            'Universal 5-Bolt (Sports/Sedan)',
+          ),
           const SizedBox(height: 12),
           _buildSpecRow(context, 'Warranty', '24 Months Limited'),
         ],
@@ -42,8 +45,9 @@ class ProductSpecs extends StatelessWidget {
       decoration: BoxDecoration(
         color: cardBgColor,
         borderRadius: BorderRadius.circular(16),
-        border:
-            Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),

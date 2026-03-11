@@ -19,17 +19,20 @@ class SosTabView extends StatelessWidget {
         children: [
           // AppBar
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 12.0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        color: Pallete.secondaryColor,
-                        onPressed: () {},
-                      ),
+                      icon: const Icon(Icons.arrow_back),
+                      color: Pallete.secondaryColor,
+                      onPressed: () {},
+                    ),
                   ],
                 ),
                 Text(
@@ -56,7 +59,7 @@ class SosTabView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // SOS Button Card
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -64,9 +67,13 @@ class SosTabView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF2C1E16) : Colors.orange.shade50, // Dark brownish orange tone
+                color: isDark
+                    ? const Color(0xFF2C1E16)
+                    : Colors.orange.shade50, // Dark brownish orange tone
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Pallete.secondaryColor.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: Pallete.secondaryColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Column(
                 children: [
@@ -106,7 +113,10 @@ class SosTabView extends StatelessWidget {
                         Positioned(
                           bottom: 24,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(100),
@@ -129,7 +139,9 @@ class SosTabView extends StatelessWidget {
                     'Press and hold for 3 seconds to alert\nemergency services',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: isDark ? Colors.white70 : Pallete.textSecondaryColor,
+                      color: isDark
+                          ? Colors.white70
+                          : Pallete.textSecondaryColor,
                       fontSize: 14,
                       height: 1.5,
                     ),
@@ -149,7 +161,9 @@ class SosTabView extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
                 image: const DecorationImage(
-                  image: NetworkImage('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop'), // Dummy map image
+                  image: NetworkImage(
+                    'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
+                  ), // Dummy map image
                   fit: BoxFit.cover,
                 ),
               ),
@@ -162,7 +176,9 @@ class SosTabView extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF2C2C2C).withValues(alpha: 0.9) : Colors.white.withValues(alpha: 0.9),
+                        color: isDark
+                            ? const Color(0xFF2C2C2C).withValues(alpha: 0.9)
+                            : Colors.white.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
@@ -170,7 +186,9 @@ class SosTabView extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Pallete.secondaryColor.withValues(alpha: 0.2),
+                              color: Pallete.secondaryColor.withValues(
+                                alpha: 0.2,
+                              ),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -219,7 +237,11 @@ class SosTabView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Row(
               children: [
-                const Icon(Icons.build, color: Pallete.secondaryColor, size: 20),
+                const Icon(
+                  Icons.build,
+                  color: Pallete.secondaryColor,
+                  size: 20,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   'Quick Requests',
@@ -243,14 +265,30 @@ class SosTabView extends StatelessWidget {
               crossAxisSpacing: 16,
               childAspectRatio: 1.5,
               children: [
-                _buildQuickRequestCard(context, 'Towing', Icons.rv_hookup,
-                    ServiceType.towing),
-                _buildQuickRequestCard(context, 'Jump Start',
-                    Icons.battery_charging_full, ServiceType.jump_start),
-                _buildQuickRequestCard(context, 'Fuel Delivery',
-                    Icons.local_gas_station, ServiceType.fuel_share),
-                _buildQuickRequestCard(context, 'Flat Tire',
-                    Icons.tire_repair, ServiceType.flat_tire),
+                _buildQuickRequestCard(
+                  context,
+                  'Towing',
+                  Icons.rv_hookup,
+                  ServiceType.towing,
+                ),
+                _buildQuickRequestCard(
+                  context,
+                  'Jump Start',
+                  Icons.battery_charging_full,
+                  ServiceType.jump_start,
+                ),
+                _buildQuickRequestCard(
+                  context,
+                  'Fuel Delivery',
+                  Icons.local_gas_station,
+                  ServiceType.fuel_share,
+                ),
+                _buildQuickRequestCard(
+                  context,
+                  'Flat Tire',
+                  Icons.tire_repair,
+                  ServiceType.flat_tire,
+                ),
               ],
             ),
           ),
@@ -262,12 +300,18 @@ class SosTabView extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFFF4F4F6) : const Color(0xFFF4F4F6), // Whitish grey as in image
+                color: isDark
+                    ? const Color(0xFFF4F4F6)
+                    : const Color(0xFFF4F4F6), // Whitish grey as in image
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.support_agent, color: Colors.black, size: 30),
+                  const Icon(
+                    Icons.support_agent,
+                    color: Colors.black,
+                    size: 30,
+                  ),
                   const SizedBox(width: 16),
                   const Expanded(
                     child: Column(
@@ -306,8 +350,12 @@ class SosTabView extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickRequestCard(BuildContext context, String title,
-      IconData icon, ServiceType serviceType) {
+  Widget _buildQuickRequestCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    ServiceType serviceType,
+  ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
 
@@ -325,13 +373,15 @@ class SosTabView extends StatelessWidget {
         decoration: BoxDecoration(
           color: cardBgColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+          border: Border.all(
+            color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+          ),
           boxShadow: [
-             BoxShadow(
+            BoxShadow(
               color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
         ),
         child: Column(

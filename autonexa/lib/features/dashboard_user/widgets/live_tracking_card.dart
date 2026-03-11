@@ -15,7 +15,8 @@ class LiveTrackingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         image: const DecorationImage(
           image: NetworkImage(
-              'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop'),
+            'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -26,8 +27,7 @@ class LiveTrackingCard extends StatelessWidget {
             left: 12,
             right: 12,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: isDark
                     ? const Color(0xFF1E1E2E).withValues(alpha: 0.9)
@@ -42,7 +42,11 @@ class LiveTrackingCard extends StatelessWidget {
                       color: Pallete.secondaryColor,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.moped, color: Colors.white, size: 20),
+                    child: const Icon(
+                      Icons.moped,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(

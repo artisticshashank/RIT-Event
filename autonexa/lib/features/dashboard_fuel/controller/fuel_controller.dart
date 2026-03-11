@@ -5,14 +5,18 @@ import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/features/dashboard_fuel/repository/fuel_repository.dart';
 
 // ── Overview stats ────────────────────────────────────────────────────────────
-final fuelOverviewProvider = FutureProvider<FuelStationOverviewModel>((ref) async {
+final fuelOverviewProvider = FutureProvider<FuelStationOverviewModel>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(fuelRepositoryProvider).fetchOverview(user.id);
 });
 
 // ── Incoming (searching) requests ────────────────────────────────────────────
-final fuelRequestsProvider = FutureProvider<List<FuelRequestModel>>((ref) async {
+final fuelRequestsProvider = FutureProvider<List<FuelRequestModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(fuelRepositoryProvider).fetchIncomingRequests(user.id);
@@ -26,8 +30,9 @@ final fuelHistoryProvider = FutureProvider<List<FuelRequestModel>>((ref) async {
 });
 
 // ── Earnings / transactions ──────────────────────────────────────────────────
-final fuelEarningsProvider =
-    FutureProvider<List<ServiceTransactionModel>>((ref) async {
+final fuelEarningsProvider = FutureProvider<List<ServiceTransactionModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(fuelRepositoryProvider).fetchEarnings(user.id);
@@ -60,7 +65,8 @@ class AcceptFuelRequestNotifier extends AsyncNotifier<bool> {
 
 final acceptFuelRequestProvider =
     AsyncNotifierProvider<AcceptFuelRequestNotifier, bool>(
-        AcceptFuelRequestNotifier.new);
+      AcceptFuelRequestNotifier.new,
+    );
 
 // ── Decline request ──────────────────────────────────────────────────────────
 class DeclineFuelRequestNotifier extends AsyncNotifier<bool> {
@@ -84,7 +90,8 @@ class DeclineFuelRequestNotifier extends AsyncNotifier<bool> {
 
 final declineFuelRequestProvider =
     AsyncNotifierProvider<DeclineFuelRequestNotifier, bool>(
-        DeclineFuelRequestNotifier.new);
+      DeclineFuelRequestNotifier.new,
+    );
 
 // ── Mark payment received ────────────────────────────────────────────────────
 class FuelMarkPaymentNotifier extends AsyncNotifier<bool> {
@@ -94,9 +101,7 @@ class FuelMarkPaymentNotifier extends AsyncNotifier<bool> {
   Future<bool> markReceived(String transactionId) async {
     state = const AsyncLoading();
     try {
-      await ref
-          .read(fuelRepositoryProvider)
-          .markPaymentReceived(transactionId);
+      await ref.read(fuelRepositoryProvider).markPaymentReceived(transactionId);
       ref.invalidate(fuelEarningsProvider);
       state = const AsyncData(true);
       return true;
@@ -109,7 +114,8 @@ class FuelMarkPaymentNotifier extends AsyncNotifier<bool> {
 
 final fuelMarkPaymentProvider =
     AsyncNotifierProvider<FuelMarkPaymentNotifier, bool>(
-        FuelMarkPaymentNotifier.new);
+      FuelMarkPaymentNotifier.new,
+    );
 
 // ── Mark Arriving ────────────────────────────────────────────────────────────
 class FuelMarkArrivingNotifier extends AsyncNotifier<bool> {
@@ -131,7 +137,8 @@ class FuelMarkArrivingNotifier extends AsyncNotifier<bool> {
 
 final fuelMarkArrivingProvider =
     AsyncNotifierProvider<FuelMarkArrivingNotifier, bool>(
-        FuelMarkArrivingNotifier.new);
+      FuelMarkArrivingNotifier.new,
+    );
 
 // ── Mark Complete ────────────────────────────────────────────────────────────
 class FuelMarkCompleteNotifier extends AsyncNotifier<bool> {
@@ -155,4 +162,5 @@ class FuelMarkCompleteNotifier extends AsyncNotifier<bool> {
 
 final fuelMarkCompleteProvider =
     AsyncNotifierProvider<FuelMarkCompleteNotifier, bool>(
-        FuelMarkCompleteNotifier.new);
+      FuelMarkCompleteNotifier.new,
+    );

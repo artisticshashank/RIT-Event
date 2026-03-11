@@ -20,7 +20,9 @@ class SystemStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF1B1B2F) : Colors.white; // standard card color
+    final bgColor = isDark
+        ? const Color(0xFF1B1B2F)
+        : Colors.white; // standard card color
 
     Color statusColor;
     String statusText;
@@ -45,7 +47,9 @@ class SystemStatusCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -40,7 +40,9 @@ class ActiveRequestCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: cardBgColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -61,7 +63,10 @@ class ActiveRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: badgeColor.withValues(alpha: statusOpacity),
                         borderRadius: BorderRadius.circular(100),
@@ -98,7 +103,9 @@ class ActiveRequestCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF252542) : Colors.grey.shade100,
+                  color: isDark
+                      ? const Color(0xFF252542)
+                      : Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: Pallete.secondaryColor, size: 24),
@@ -132,7 +139,10 @@ class ActiveRequestCard extends StatelessWidget {
                 children: [
                   Text(
                     buttonText,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
                   if (buttonIcon != null) ...[
                     const SizedBox(width: 8),

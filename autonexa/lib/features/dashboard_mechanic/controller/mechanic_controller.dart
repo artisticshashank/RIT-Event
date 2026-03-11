@@ -18,14 +18,18 @@ final activeJobsProvider = StreamProvider<List<ServiceRequestModel>>((ref) {
 });
 
 // ── Completed job history ─────────────────────────────────────────────────────
-final mechanicJobHistoryProvider = FutureProvider<List<ServiceRequestModel>>((ref) async {
+final mechanicJobHistoryProvider = FutureProvider<List<ServiceRequestModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) return [];
   return ref.read(mechanicRepositoryProvider).getJobHistory(user.id);
 });
 
 // ── Earnings / transactions ───────────────────────────────────────────────────
-final mechanicEarningsProvider = FutureProvider<List<ServiceTransactionModel>>((ref) async {
+final mechanicEarningsProvider = FutureProvider<List<ServiceTransactionModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) return [];
   return ref.read(mechanicRepositoryProvider).getEarnings(user.id);
@@ -59,8 +63,9 @@ class AcceptJobNotifier extends AsyncNotifier<void> {
   }
 }
 
-final acceptJobProvider =
-    AsyncNotifierProvider<AcceptJobNotifier, void>(AcceptJobNotifier.new);
+final acceptJobProvider = AsyncNotifierProvider<AcceptJobNotifier, void>(
+  AcceptJobNotifier.new,
+);
 
 // ── Mark Arriving ─────────────────────────────────────────────────────────────
 class MarkArrivingNotifier extends AsyncNotifier<void> {
@@ -70,8 +75,9 @@ class MarkArrivingNotifier extends AsyncNotifier<void> {
   Future<bool> markArriving(String requestId) async {
     state = const AsyncLoading();
     try {
-      final success =
-          await ref.read(mechanicRepositoryProvider).markArriving(requestId);
+      final success = await ref
+          .read(mechanicRepositoryProvider)
+          .markArriving(requestId);
       state = const AsyncData(null);
       ref.invalidate(activeJobsProvider);
       return success;
@@ -82,8 +88,9 @@ class MarkArrivingNotifier extends AsyncNotifier<void> {
   }
 }
 
-final markArrivingProvider =
-    AsyncNotifierProvider<MarkArrivingNotifier, void>(MarkArrivingNotifier.new);
+final markArrivingProvider = AsyncNotifierProvider<MarkArrivingNotifier, void>(
+  MarkArrivingNotifier.new,
+);
 
 // ── Mark Job Complete ─────────────────────────────────────────────────────────
 class MarkCompleteNotifier extends AsyncNotifier<void> {
@@ -93,8 +100,9 @@ class MarkCompleteNotifier extends AsyncNotifier<void> {
   Future<bool> markComplete(String requestId) async {
     state = const AsyncLoading();
     try {
-      final success =
-          await ref.read(mechanicRepositoryProvider).markJobComplete(requestId);
+      final success = await ref
+          .read(mechanicRepositoryProvider)
+          .markJobComplete(requestId);
       state = const AsyncData(null);
       ref.invalidate(activeJobsProvider);
       ref.invalidate(mechanicJobHistoryProvider);
@@ -107,12 +115,12 @@ class MarkCompleteNotifier extends AsyncNotifier<void> {
   }
 }
 
-final markCompleteProvider =
-    AsyncNotifierProvider<MarkCompleteNotifier, void>(MarkCompleteNotifier.new);
+final markCompleteProvider = AsyncNotifierProvider<MarkCompleteNotifier, void>(
+  MarkCompleteNotifier.new,
+);
 
 // ── Update availability in Supabase ──────────────────────────────────────────
-Future<void> updateMechanicAvailability(
-    WidgetRef ref, bool isOnline) async {
+Future<void> updateMechanicAvailability(WidgetRef ref, bool isOnline) async {
   final user = ref.read(userProvider);
   if (user == null) return;
   await ref

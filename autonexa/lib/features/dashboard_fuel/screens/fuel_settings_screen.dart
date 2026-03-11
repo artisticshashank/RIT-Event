@@ -38,7 +38,9 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF281E18) : Colors.white;
-    final borderColor = isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05);
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.05)
+        : Colors.black.withValues(alpha: 0.05);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -53,7 +55,9 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: isDestructive ? Colors.red.withValues(alpha: 0.1) : Colors.orange.shade800.withValues(alpha: 0.1),
+            color: isDestructive
+                ? Colors.red.withValues(alpha: 0.1)
+                : Colors.orange.shade800.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -65,7 +69,9 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
         title: Text(
           title,
           style: TextStyle(
-            color: isDestructive ? Colors.red : (isDark ? Colors.white : Colors.black),
+            color: isDestructive
+                ? Colors.red
+                : (isDark ? Colors.white : Colors.black),
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -84,7 +90,11 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
             : null,
         trailing: isDestructive
             ? null
-            : Icon(Icons.arrow_forward_ios, color: Colors.orange.shade800, size: 16),
+            : Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.orange.shade800,
+                size: 16,
+              ),
       ),
     );
   }
@@ -92,15 +102,22 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final pageBgColor = isDark ? const Color(0xFF1E140D) : Theme.of(context).scaffoldBackgroundColor;
+    final pageBgColor = isDark
+        ? const Color(0xFF1E140D)
+        : Theme.of(context).scaffoldBackgroundColor;
     final textColor = isDark ? Colors.white : Colors.black;
     final cardColor = isDark ? const Color(0xFF281E18) : Colors.white;
-    final borderColor = isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05);
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.05)
+        : Colors.black.withValues(alpha: 0.05);
 
     return Scaffold(
       backgroundColor: pageBgColor,
       appBar: AppBar(
-        title: const Text('Station Settings', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Station Settings',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -118,9 +135,14 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
                     height: 80,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: Pallete.secondaryColor, width: 2),
+                      border: Border.all(
+                        color: Pallete.secondaryColor,
+                        width: 2,
+                      ),
                       image: const DecorationImage(
-                        image: AssetImage('assets/images/placeholder_part.png'), // Will replace string when dynamic
+                        image: AssetImage(
+                          'assets/images/placeholder_part.png',
+                        ), // Will replace string when dynamic
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -148,7 +170,11 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          Icon(Icons.verified, color: Pallete.secondaryColor, size: 16),
+                          Icon(
+                            Icons.verified,
+                            color: Pallete.secondaryColor,
+                            size: 16,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             'PREMIUM PARTNER',
@@ -175,14 +201,19 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark ? const Color(0xFF381F0A) : Colors.orange.shade100,
+                    backgroundColor: isDark
+                        ? const Color(0xFF381F0A)
+                        : Colors.orange.shade100,
                     foregroundColor: Pallete.secondaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
                     elevation: 0,
                   ),
-                  child: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: const Text(
+                    'Edit Profile',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
               ),
 
@@ -190,7 +221,10 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
 
               // Operational Status
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
                 decoration: BoxDecoration(
                   color: cardColor,
                   borderRadius: BorderRadius.circular(24),
@@ -277,9 +311,9 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
                 subtitle: 'Contact us, FAQ, and tutorials',
                 onTap: () {},
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               Container(
                 decoration: BoxDecoration(
                   color: isDark ? const Color(0xFF281E18) : Colors.white,
@@ -287,8 +321,12 @@ class _FuelSettingsScreenState extends ConsumerState<FuelSettingsScreen> {
                   border: Border.all(color: borderColor),
                 ),
                 child: ListTile(
-                  onTap: () => ref.read(authControllerProvider.notifier).logOut(),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  onTap: () =>
+                      ref.read(authControllerProvider.notifier).logOut(),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                   leading: const Icon(Icons.logout, color: Colors.red),
                   title: const Text(
                     'Logout',

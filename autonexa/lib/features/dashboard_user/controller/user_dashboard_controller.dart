@@ -11,35 +11,51 @@ import 'package:autonexa/models/enums.dart';
 final userVehiclesProvider = FutureProvider<List<VehicleModel>>((ref) async {
   final user = ref.watch(userProvider);
   if (user == null) return [];
-  final res = await ref.read(userDashboardRepositoryProvider).getUserVehicles(user.id);
+  final res = await ref
+      .read(userDashboardRepositoryProvider)
+      .getUserVehicles(user.id);
   return res.fold((_) => [], (r) => r);
 });
 
 // ── User service requests (all statuses) ──────────────────────────────────────
-final userServiceRequestsProvider = FutureProvider<List<ServiceRequestModel>>((ref) async {
+final userServiceRequestsProvider = FutureProvider<List<ServiceRequestModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) return [];
-  final res = await ref.read(userDashboardRepositoryProvider).getUserServiceRequests(user.id);
+  final res = await ref
+      .read(userDashboardRepositoryProvider)
+      .getUserServiceRequests(user.id);
   return res.fold((_) => [], (r) => r);
 });
 
 // ── Active-only requests ───────────────────────────────────────────────────────
-final activeRequestsProvider = Provider<AsyncValue<List<ServiceRequestModel>>>((ref) {
-  return ref.watch(userServiceRequestsProvider).whenData(
-    (all) => all
-        .where((r) =>
-            r.status == ServiceStatus.searching ||
-            r.status == ServiceStatus.accepted ||
-            r.status == ServiceStatus.arriving)
-        .toList(),
-  );
+final activeRequestsProvider = Provider<AsyncValue<List<ServiceRequestModel>>>((
+  ref,
+) {
+  return ref
+      .watch(userServiceRequestsProvider)
+      .whenData(
+        (all) => all
+            .where(
+              (r) =>
+                  r.status == ServiceStatus.searching ||
+                  r.status == ServiceStatus.accepted ||
+                  r.status == ServiceStatus.arriving,
+            )
+            .toList(),
+      );
 });
 
 // ── Completed requests (history) ──────────────────────────────────────────────
-final requestHistoryProvider = Provider<AsyncValue<List<ServiceRequestModel>>>((ref) {
-  return ref.watch(userServiceRequestsProvider).whenData(
-    (all) => all.where((r) => r.status == ServiceStatus.completed).toList(),
-  );
+final requestHistoryProvider = Provider<AsyncValue<List<ServiceRequestModel>>>((
+  ref,
+) {
+  return ref
+      .watch(userServiceRequestsProvider)
+      .whenData(
+        (all) => all.where((r) => r.status == ServiceStatus.completed).toList(),
+      );
 });
 
 // ── Spare parts marketplace ────────────────────────────────────────────────────
@@ -82,8 +98,9 @@ class AddVehicleNotifier extends AsyncNotifier<void> {
   }
 }
 
-final addVehicleProvider =
-    AsyncNotifierProvider<AddVehicleNotifier, void>(AddVehicleNotifier.new);
+final addVehicleProvider = AsyncNotifierProvider<AddVehicleNotifier, void>(
+  AddVehicleNotifier.new,
+);
 
 // ── Create service request ────────────────────────────────────────────────────
 class CreateServiceRequestNotifier extends AsyncNotifier<void> {
@@ -133,7 +150,8 @@ class CreateServiceRequestNotifier extends AsyncNotifier<void> {
 
 final createServiceRequestProvider =
     AsyncNotifierProvider<CreateServiceRequestNotifier, void>(
-        CreateServiceRequestNotifier.new);
+      CreateServiceRequestNotifier.new,
+    );
 
 // ── Cancel service request ────────────────────────────────────────────────────
 class CancelRequestNotifier extends AsyncNotifier<void> {
@@ -156,18 +174,24 @@ class CancelRequestNotifier extends AsyncNotifier<void> {
 }
 
 final cancelRequestProvider =
-    AsyncNotifierProvider<CancelRequestNotifier, void>(CancelRequestNotifier.new);
+    AsyncNotifierProvider<CancelRequestNotifier, void>(
+      CancelRequestNotifier.new,
+    );
 
 // ── P2P availability toggle ───────────────────────────────────────────────────
 final p2pAvailabilityProvider = StateProvider<bool>((ref) => false);
 
 // ── Update P2P availability + location ───────────────────────────────────────
 Future<void> updateP2pAvailability(
-    WidgetRef ref, bool isAvailable, {double? lat, double? lng}) async {
+  WidgetRef ref,
+  bool isAvailable, {
+  double? lat,
+  double? lng,
+}) async {
   final user = ref.read(userProvider);
   if (user == null) return;
-  await ref.read(userDashboardRepositoryProvider).updateP2pAvailability(
-    user.id, isAvailable, lat: lat, lng: lng,
-  );
+  await ref
+      .read(userDashboardRepositoryProvider)
+      .updateP2pAvailability(user.id, isAvailable, lat: lat, lng: lng);
   ref.read(p2pAvailabilityProvider.notifier).state = isAvailable;
 }

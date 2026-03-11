@@ -4,17 +4,22 @@ import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/features/dashboard_seller/controller/seller_controller.dart';
 
+import 'package:autonexa/models/seller_dashboard_model.dart';
+
 class SellerAddProductScreen extends ConsumerStatefulWidget {
-  const SellerAddProductScreen({super.key});
+  final InventoryProductModel? productToEdit;
+
+  const SellerAddProductScreen({super.key, this.productToEdit});
 
   @override
   ConsumerState<SellerAddProductScreen> createState() =>
       _SellerAddProductScreenState();
 }
 
-class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen> {
-  int _inventoryQuantity = 1;
-  bool _isFeatured = true;
+class _SellerAddProductScreenState
+    extends ConsumerState<SellerAddProductScreen> {
+  late int _inventoryQuantity;
+  late bool _isFeatured;
 
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
@@ -31,6 +36,19 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
     'Body Parts',
     'Other',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    final p = widget.productToEdit;
+    _inventoryQuantity = p?.stock ?? 1;
+    _isFeatured = true;
+    _nameController.text = p?.name ?? '';
+    _descController.text = 'Premium quality automotive part.';
+    _priceController.text = p != null ? p.price.toStringAsFixed(2) : '';
+    _skuController.text = p?.sku ?? '';
+    _selectedCategory = 'Other';
+  }
 
   @override
   void dispose() {
@@ -65,26 +83,57 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
       return;
     }
 
-    final success = await ref.read(addProductProvider.notifier).addProduct(
-          sellerId: sellerId,
-          name: name,
-          description: description,
-          price: price,
-          stock: _inventoryQuantity,
-          sku: _skuController.text.trim().isEmpty ? null : _skuController.text.trim(),
-          category: _selectedCategory,
-        );
+    final isEdit = widget.productToEdit != null;
+    bool success;
+
+    if (isEdit) {
+      success = await ref
+          .read(updateProductProvider.notifier)
+          .updateProduct(
+            productId: widget.productToEdit!.id,
+            name: name,
+            description: description,
+            price: price,
+            stock: _inventoryQuantity,
+            sku: _skuController.text.trim().isEmpty
+                ? null
+                : _skuController.text.trim(),
+            category: _selectedCategory,
+          );
+    } else {
+      success = await ref
+          .read(addProductProvider.notifier)
+          .addProduct(
+            sellerId: sellerId,
+            name: name,
+            description: description,
+            price: price,
+            stock: _inventoryQuantity,
+            sku: _skuController.text.trim().isEmpty
+                ? null
+                : _skuController.text.trim(),
+            category: _selectedCategory,
+          );
+    }
 
     if (!mounted) return;
     if (success) {
-      // Invalidate provider so inventory screen refreshes
       ref.invalidate(sellerInventoryProvider);
       ref.invalidate(sellerOverviewProvider);
-      _showSnack('Product listed successfully!');
+      _showSnack(
+        isEdit
+            ? 'Product updated successfully!'
+            : 'Product listed successfully!',
+      );
       await Future.delayed(const Duration(milliseconds: 800));
       if (mounted) Navigator.pop(context);
     } else {
-      _showSnack('Failed to list product. Try again.', isError: true);
+      _showSnack(
+        isEdit
+            ? 'Failed to update product. Try again.'
+            : 'Failed to list product. Try again.',
+        isError: true,
+      );
     }
   }
 
@@ -162,22 +211,19 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accentColor = Pallete.secondaryColor;
     final textColor = isDark ? Colors.white : Pallete.textColor;
-    final secondaryTextColor =
-        isDark ? Colors.white60 : Pallete.textSecondaryColor;
+    final secondaryTextColor = isDark
+        ? Colors.white60
+        : Pallete.textSecondaryColor;
     final cardColor = Theme.of(context).cardColor;
     final borderColor = isDark
         ? Colors.white.withValues(alpha: 0.1)
         : Colors.black.withValues(alpha: 0.1);
 
-    final addState = ref.watch(addProductProvider);
-    final isLoading = addState is AsyncLoading;
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -192,7 +238,9 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
                   ),
                   const SizedBox(width: 16),
                   Text(
-                    'Add New Spare Part',
+                    widget.productToEdit != null
+                        ? 'Edit Spare Part'
+                        : 'Add New Spare Part',
                     style: TextStyle(
                       color: textColor,
                       fontSize: 20,
@@ -235,8 +283,11 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
                       ),
                     ),
                     child: Center(
-                      child: Icon(Icons.add_a_photo_outlined,
-                          color: accentColor, size: 28),
+                      child: Icon(
+                        Icons.add_a_photo_outlined,
+                        color: accentColor,
+                        size: 28,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -252,9 +303,11 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
                         border: Border.all(color: borderColor),
                       ),
                       child: Center(
-                        child: Icon(Icons.image_outlined,
-                            color: secondaryTextColor.withValues(alpha: 0.5),
-                            size: 28),
+                        child: Icon(
+                          Icons.image_outlined,
+                          color: secondaryTextColor.withValues(alpha: 0.5),
+                          size: 28,
+                        ),
                       ),
                     ),
                   ),
@@ -284,21 +337,24 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
                     value: _selectedCategory,
                     dropdownColor: cardColor,
                     style: TextStyle(
-                        color: isDark ? Colors.white : Colors.black,
-                        fontSize: 16),
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 16,
+                    ),
                     hint: Text(
                       'Select Category',
                       style: TextStyle(
-                          color: isDark ? Colors.white38 : Colors.black38),
+                        color: isDark ? Colors.white38 : Colors.black38,
+                      ),
                     ),
-                    icon: Icon(Icons.keyboard_arrow_down,
-                        color: secondaryTextColor),
+                    icon: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: secondaryTextColor,
+                    ),
                     isExpanded: true,
                     items: _categories
                         .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                         .toList(),
-                    onChanged: (val) =>
-                        setState(() => _selectedCategory = val),
+                    onChanged: (val) => setState(() => _selectedCategory = val),
                   ),
                 ),
               ),
@@ -411,7 +467,9 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
               // Featured toggle
               Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 20),
+                  horizontal: 16,
+                  vertical: 20,
+                ),
                 decoration: BoxDecoration(
                   color: cardColor,
                   borderRadius: BorderRadius.circular(16),
@@ -444,7 +502,9 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
                           Text(
                             'Highlight this item in your store',
                             style: TextStyle(
-                                color: secondaryTextColor, fontSize: 12),
+                              color: secondaryTextColor,
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
@@ -455,8 +515,9 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
                       activeColor: Colors.white,
                       activeTrackColor: accentColor,
                       inactiveThumbColor: secondaryTextColor,
-                      inactiveTrackColor:
-                          isDark ? Colors.black26 : Colors.white24,
+                      inactiveTrackColor: isDark
+                          ? Colors.black26
+                          : Colors.white24,
                     ),
                   ],
                 ),
@@ -465,32 +526,51 @@ class _SellerAddProductScreenState extends ConsumerState<SellerAddProductScreen>
               const SizedBox(height: 32),
 
               // Submit button
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton.icon(
-                  onPressed: isLoading ? null : _submitProduct,
-                  icon: isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                              color: Colors.white, strokeWidth: 2),
-                        )
-                      : const Icon(Icons.upload_rounded, color: Colors.white),
-                  label: Text(
-                    isLoading ? 'Listing...' : 'List Product Now',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: accentColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+              Consumer(
+                builder: (context, ref, _) {
+                  final addState = ref.watch(addProductProvider);
+                  final updateState = ref.watch(updateProductProvider);
+                  final isSubmitting =
+                      addState is AsyncLoading || updateState is AsyncLoading;
+                  final isEdit = widget.productToEdit != null;
+
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton.icon(
+                      onPressed: isSubmitting ? null : _submitProduct,
+                      icon: isSubmitting
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Icon(
+                              isEdit ? Icons.save : Icons.upload_rounded,
+                              color: Colors.white,
+                            ),
+                      label: Text(
+                        isSubmitting
+                            ? (isEdit ? 'Saving...' : 'Listing...')
+                            : (isEdit ? 'Save Changes' : 'List Product Now'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: accentColor,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
 
               const SizedBox(height: 120),

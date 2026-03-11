@@ -12,7 +12,8 @@ final mechanicRepositoryProvider = Provider((ref) {
 class MechanicRepository {
   final sb.SupabaseClient _supabase;
 
-  MechanicRepository({required sb.SupabaseClient supabase}) : _supabase = supabase;
+  MechanicRepository({required sb.SupabaseClient supabase})
+    : _supabase = supabase;
 
   // ── Stream of pending jobs of all types a mechanic can handle ─────────────
   Stream<List<ServiceRequestModel>> getPendingJobs() {
@@ -21,7 +22,10 @@ class MechanicRepository {
         .stream(primaryKey: ['id'])
         .eq('status', ServiceStatus.searching.value)
         .order('created_at', ascending: false)
-        .map((events) => events.map((e) => ServiceRequestModel.fromMap(e)).toList());
+        .map(
+          (events) =>
+              events.map((e) => ServiceRequestModel.fromMap(e)).toList(),
+        );
   }
 
   // ── Stream of active jobs for this mechanic ───────────────────────────────
@@ -31,12 +35,16 @@ class MechanicRepository {
         .stream(primaryKey: ['id'])
         .eq('responder_id', mechanicId)
         .order('created_at', ascending: false)
-        .map((events) => events
-            .map((e) => ServiceRequestModel.fromMap(e))
-            .where((j) =>
-                j.status == ServiceStatus.accepted ||
-                j.status == ServiceStatus.arriving)
-            .toList());
+        .map(
+          (events) => events
+              .map((e) => ServiceRequestModel.fromMap(e))
+              .where(
+                (j) =>
+                    j.status == ServiceStatus.accepted ||
+                    j.status == ServiceStatus.arriving,
+              )
+              .toList(),
+        );
   }
 
   // ── Completed jobs history for mechanic ───────────────────────────────────
@@ -71,11 +79,14 @@ class MechanicRepository {
           .single();
 
       // 2. Update the request
-      await _supabase.from('service_requests').update({
-        'responder_id': mechanicId,
-        'status': ServiceStatus.accepted.value,
-        'updated_at': DateTime.now().toIso8601String(),
-      }).eq('id', requestId);
+      await _supabase
+          .from('service_requests')
+          .update({
+            'responder_id': mechanicId,
+            'status': ServiceStatus.accepted.value,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', requestId);
 
       // 3. Create transaction row
       await _supabase.from('service_transactions').insert({
@@ -96,10 +107,13 @@ class MechanicRepository {
   // ── Mark mechanic arrived at location ─────────────────────────────────────
   Future<bool> markArriving(String requestId) async {
     try {
-      await _supabase.from('service_requests').update({
-        'status': ServiceStatus.arriving.value,
-        'updated_at': DateTime.now().toIso8601String(),
-      }).eq('id', requestId);
+      await _supabase
+          .from('service_requests')
+          .update({
+            'status': ServiceStatus.arriving.value,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', requestId);
       return true;
     } catch (e) {
       print('Mark arriving error: $e');
@@ -110,10 +124,13 @@ class MechanicRepository {
   // ── Mark job complete ─────────────────────────────────────────────────────
   Future<bool> markJobComplete(String requestId) async {
     try {
-      await _supabase.from('service_requests').update({
-        'status': ServiceStatus.completed.value,
-        'updated_at': DateTime.now().toIso8601String(),
-      }).eq('id', requestId);
+      await _supabase
+          .from('service_requests')
+          .update({
+            'status': ServiceStatus.completed.value,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', requestId);
       return true;
     } catch (e) {
       print('Mark complete error: $e');
@@ -124,9 +141,10 @@ class MechanicRepository {
   // ── Mark payment received → DB trigger sets invoice_generated ─────────────
   Future<bool> markPaymentReceived(String transactionId) async {
     try {
-      await _supabase.from('service_transactions').update({
-        'payment_status': PaymentStatus.received.value,
-      }).eq('id', transactionId);
+      await _supabase
+          .from('service_transactions')
+          .update({'payment_status': PaymentStatus.received.value})
+          .eq('id', transactionId);
       return true;
     } catch (e) {
       print('Mark payment received error: $e');
@@ -142,7 +160,9 @@ class MechanicRepository {
           .select()
           .eq('provider_id', mechanicId)
           .order('created_at', ascending: false);
-      return (res as List).map((e) => ServiceTransactionModel.fromMap(e)).toList();
+      return (res as List)
+          .map((e) => ServiceTransactionModel.fromMap(e))
+          .toList();
     } catch (e) {
       print('Mechanic earnings error: $e');
       return [];
@@ -152,10 +172,10 @@ class MechanicRepository {
   // ── Update mechanic availability ──────────────────────────────────────────
   Future<void> updateAvailability(String mechanicId, bool isOnline) async {
     try {
-      await _supabase.from('users').update({
-        'is_online': isOnline,
-        'is_available_for_p2p': isOnline,
-      }).eq('id', mechanicId);
+      await _supabase
+          .from('users')
+          .update({'is_online': isOnline, 'is_available_for_p2p': isOnline})
+          .eq('id', mechanicId);
     } catch (e) {
       print('Mechanic availability update error: $e');
     }

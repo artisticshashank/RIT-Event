@@ -6,7 +6,11 @@ class NavBarItem {
   final String label;
   final bool isHighlighted;
 
-  NavBarItem({required this.icon, required this.label, this.isHighlighted = false});
+  NavBarItem({
+    required this.icon,
+    required this.label,
+    this.isHighlighted = false,
+  });
 }
 
 class FloatingBottomNavBar extends StatelessWidget {
@@ -65,11 +69,7 @@ class FloatingBottomNavBar extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Icon(
-                      item.icon,
-                      color: Colors.white,
-                      size: 28,
-                    ),
+                    child: Icon(item.icon, color: Colors.white, size: 28),
                   ),
                 ),
               );

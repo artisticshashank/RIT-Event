@@ -39,7 +39,7 @@ class SellerOverviewModel {
   final double salesGrowth;
   final int ordersPending;
   final List<SalesDailyModel> weeklySales;
-  final List<RecentOrderModel> recentOrders;
+  final List<DetailedOrderModel> recentOrders;
 
   SellerOverviewModel({
     required this.totalSales,

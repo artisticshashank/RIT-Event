@@ -20,17 +20,15 @@ class ProfileListTile extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1B1B3A) : Colors.white;
 
-    final primaryColor = isDestructive 
-        ? Colors.redAccent 
+    final primaryColor = isDestructive
+        ? Colors.redAccent
         : Theme.of(context).textTheme.bodyLarge?.color;
 
     final iconBgColor = isDestructive
         ? Colors.redAccent.withValues(alpha: 0.1)
         : Pallete.secondaryColor.withValues(alpha: 0.1);
 
-    final iconColor = isDestructive
-        ? Colors.redAccent
-        : Pallete.secondaryColor;
+    final iconColor = isDestructive ? Colors.redAccent : Pallete.secondaryColor;
 
     return GestureDetector(
       onTap: onTap,
@@ -41,13 +39,15 @@ class ProfileListTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+          border: Border.all(
+            color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+          ),
           boxShadow: [
-             BoxShadow(
+            BoxShadow(
               color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
         ),
         child: Row(
@@ -73,7 +73,9 @@ class ProfileListTile extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right,
-              color: isDestructive ? Colors.transparent : Pallete.textSecondaryColor,
+              color: isDestructive
+                  ? Colors.transparent
+                  : Pallete.textSecondaryColor,
               size: 20,
             ),
           ],

@@ -33,7 +33,9 @@ class MechanicCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -81,7 +83,11 @@ class MechanicCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 16),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 16,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               rating.toString(),
@@ -106,7 +112,11 @@ class MechanicCard extends StatelessWidget {
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        const Icon(Icons.location_on, color: Pallete.secondaryColor, size: 14),
+                        const Icon(
+                          Icons.location_on,
+                          color: Pallete.secondaryColor,
+                          size: 14,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           '$distance mi away',
@@ -137,7 +147,9 @@ class MechanicCard extends StatelessWidget {
             height: 48,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? const Color(0xFF252542) : Colors.grey.shade100,
+                backgroundColor: isDark
+                    ? const Color(0xFF252542)
+                    : Colors.grey.shade100,
                 foregroundColor: textColor,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -145,7 +157,10 @@ class MechanicCard extends StatelessWidget {
                 ),
               ),
               onPressed: onBook,
-              child: const Text('View Profile & Book', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              child: const Text(
+                'View Profile & Book',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
             ),
           ),
         ],

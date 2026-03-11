@@ -35,7 +35,10 @@ class ProductInfo extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Pallete.secondaryColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(100),
@@ -50,7 +53,7 @@ class ProductInfo extends StatelessWidget {
                     height: 1.1,
                   ),
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 16),

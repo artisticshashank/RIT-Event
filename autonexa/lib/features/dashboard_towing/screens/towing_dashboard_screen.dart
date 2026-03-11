@@ -10,7 +10,8 @@ class TowingDashboardScreen extends ConsumerStatefulWidget {
   const TowingDashboardScreen({super.key});
 
   @override
-  ConsumerState<TowingDashboardScreen> createState() => _TowingDashboardScreenState();
+  ConsumerState<TowingDashboardScreen> createState() =>
+      _TowingDashboardScreenState();
 }
 
 class _TowingDashboardScreenState extends ConsumerState<TowingDashboardScreen> {
@@ -27,15 +28,14 @@ class _TowingDashboardScreenState extends ConsumerState<TowingDashboardScreen> {
   Widget build(BuildContext context) {
     // Exact deep background from mockup
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF141A28) : Theme.of(context).scaffoldBackgroundColor;
+    final bgColor = isDark
+        ? const Color(0xFF141A28)
+        : Theme.of(context).scaffoldBackgroundColor;
 
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: IndexedStack(
-          index: _currentIndex,
-          children: _pages,
-        ),
+        child: IndexedStack(index: _currentIndex, children: _pages),
       ),
       extendBody: true,
       bottomNavigationBar: FloatingBottomNavBar(

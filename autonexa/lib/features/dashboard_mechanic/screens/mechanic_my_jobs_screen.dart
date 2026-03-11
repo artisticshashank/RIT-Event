@@ -17,8 +17,7 @@ class MechanicMyJobsScreen extends ConsumerStatefulWidget {
       _MechanicMyJobsScreenState();
 }
 
-class _MechanicMyJobsScreenState
-    extends ConsumerState<MechanicMyJobsScreen> {
+class _MechanicMyJobsScreenState extends ConsumerState<MechanicMyJobsScreen> {
   // 0 = Today (active), 1 = History
   int _tabIndex = 0;
 
@@ -45,19 +44,18 @@ class _MechanicMyJobsScreenState
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(label,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Text('Are you sure you want to $label?'),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('No')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('No'),
+          ),
           TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text('Yes',
-                  style: TextStyle(color: Pallete.secondaryColor))),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text('Yes', style: TextStyle(color: Pallete.secondaryColor)),
+          ),
         ],
       ),
     );
@@ -68,11 +66,9 @@ class _MechanicMyJobsScreenState
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(success ? 'Status updated!' : 'Failed. Try again.'),
-        backgroundColor:
-            success ? Pallete.secondaryColor : Colors.redAccent,
+        backgroundColor: success ? Pallete.secondaryColor : Colors.redAccent,
         behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
       ),
     );
@@ -102,11 +98,15 @@ class _MechanicMyJobsScreenState
                     const Text(
                       "Today's Jobs",
                       style: TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Pallete.secondaryColor,
                         borderRadius: BorderRadius.circular(20),
@@ -131,10 +131,11 @@ class _MechanicMyJobsScreenState
                     children: [
                       JobSummaryCard(
                         title: 'Active',
-                        count: activeAsync
-                                .value
-                                ?.where((j) =>
-                                    j.status == ServiceStatus.arriving)
+                        count:
+                            activeAsync.value
+                                ?.where(
+                                  (j) => j.status == ServiceStatus.arriving,
+                                )
                                 .length
                                 .toString() ??
                             '0',
@@ -143,10 +144,11 @@ class _MechanicMyJobsScreenState
                       const SizedBox(width: 12),
                       JobSummaryCard(
                         title: 'Accepted',
-                        count: activeAsync
-                                .value
-                                ?.where((j) =>
-                                    j.status == ServiceStatus.accepted)
+                        count:
+                            activeAsync.value
+                                ?.where(
+                                  (j) => j.status == ServiceStatus.accepted,
+                                )
                                 .length
                                 .toString() ??
                             '0',
@@ -197,16 +199,19 @@ class _MechanicMyJobsScreenState
                     padding: const EdgeInsets.all(40),
                     child: Column(
                       children: [
-                        Icon(Icons.assignment_turned_in,
-                            size: 64,
-                            color: Pallete.textSecondaryColor),
+                        Icon(
+                          Icons.assignment_turned_in,
+                          size: 64,
+                          color: Pallete.textSecondaryColor,
+                        ),
                         const SizedBox(height: 16),
                         const Text(
                           'No active jobs right now.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Pallete.textSecondaryColor,
-                              fontSize: 16),
+                            color: Pallete.textSecondaryColor,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -216,79 +221,76 @@ class _MechanicMyJobsScreenState
               return SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final job = jobs[index];
-                      return IntrinsicHeight(
-                        child: Row(
-                          children: [
-                            // Timeline
-                            SizedBox(
-                              width: 40,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
-                                    decoration: BoxDecoration(
-                                      color: index == 0
-                                          ? Pallete.secondaryColor
-                                          : Colors.grey,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: isDark
-                                            ? Colors.black
-                                            : Colors.white,
-                                        width: 2,
-                                      ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final job = jobs[index];
+                    return IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          // Timeline
+                          SizedBox(
+                            width: 40,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 16,
+                                  width: 16,
+                                  decoration: BoxDecoration(
+                                    color: index == 0
+                                        ? Pallete.secondaryColor
+                                        : Colors.grey,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: isDark
+                                          ? Colors.black
+                                          : Colors.white,
+                                      width: 2,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    _statusShort(job),
-                                    style: const TextStyle(
-                                        fontSize: 10,
-                                        color:
-                                            Pallete.textSecondaryColor),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  _statusShort(job),
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: Pallete.textSecondaryColor,
                                   ),
-                                  Expanded(
-                                    child: Container(
-                                        width: 2,
-                                        color: Colors.grey.withAlpha(50)),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    width: 2,
+                                    color: Colors.grey.withAlpha(50),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            // Card
-                            Expanded(
-                              child: MechanicJobCard(
-                                job: job,
-                                onNavigate: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          MechanicNavigationScreen(
-                                              serviceRequest: job),
+                          ),
+                          // Card
+                          Expanded(
+                            child: MechanicJobCard(
+                              job: job,
+                              onNavigate: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => MechanicNavigationScreen(
+                                      serviceRequest: job,
                                     ),
-                                  );
-                                },
-                                onStatusUpdate: () =>
-                                    _handleStatusUpdate(job),
-                              ),
+                                  ),
+                                );
+                              },
+                              onStatusUpdate: () => _handleStatusUpdate(job),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: jobs.length,
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }, childCount: jobs.length),
                 ),
               );
             },
             loading: () => const SliverToBoxAdapter(child: Loader()),
-            error: (e, _) => SliverToBoxAdapter(
-                child: Center(child: Text(e.toString()))),
+            error: (e, _) =>
+                SliverToBoxAdapter(child: Center(child: Text(e.toString()))),
           )
         else
           // History tab
@@ -300,14 +302,19 @@ class _MechanicMyJobsScreenState
                     padding: const EdgeInsets.all(40),
                     child: Column(
                       children: const [
-                        Icon(Icons.history,
-                            size: 64,
-                            color: Pallete.textSecondaryColor),
+                        Icon(
+                          Icons.history,
+                          size: 64,
+                          color: Pallete.textSecondaryColor,
+                        ),
                         SizedBox(height: 16),
-                        Text('No completed jobs yet.',
-                            style: TextStyle(
-                                color: Pallete.textSecondaryColor,
-                                fontSize: 16)),
+                        Text(
+                          'No completed jobs yet.',
+                          style: TextStyle(
+                            color: Pallete.textSecondaryColor,
+                            fontSize: 16,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -316,83 +323,86 @@ class _MechanicMyJobsScreenState
               return SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, i) {
-                      final job = jobs[i];
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                              color: isDark
-                                  ? Colors.white12
-                                  : Colors.black12),
+                  delegate: SliverChildBuilderDelegate((context, i) {
+                    final job = jobs[i];
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: isDark ? Colors.white12 : Colors.black12,
                         ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withValues(alpha: 0.1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(Icons.check_circle,
-                                  color: Colors.green, size: 20),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    job.requestType.displayName,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                  Text(
-                                    job.vehicleInfo ?? job.description ?? '—',
-                                    style: const TextStyle(
-                                        color: Pallete.textSecondaryColor,
-                                        fontSize: 12),
-                                  ),
-                                ],
-                              ),
+                            child: const Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 20,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  job.price != null
-                                      ? '\$${job.price!.toStringAsFixed(0)}'
-                                      : '—',
+                                  job.requestType.displayName,
                                   style: const TextStyle(
-                                    color: Pallete.secondaryColor,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 14,
                                   ),
                                 ),
-                                const Text('COMPLETED',
-                                    style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                  job.vehicleInfo ?? job.description ?? '—',
+                                  style: const TextStyle(
+                                    color: Pallete.textSecondaryColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: jobs.length,
-                  ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                job.price != null
+                                    ? '\$${job.price!.toStringAsFixed(0)}'
+                                    : '—',
+                                style: const TextStyle(
+                                  color: Pallete.secondaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(
+                                'COMPLETED',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }, childCount: jobs.length),
                 ),
               );
             },
             loading: () => const SliverToBoxAdapter(child: Loader()),
-            error: (e, _) => SliverToBoxAdapter(
-                child: Center(child: Text(e.toString()))),
+            error: (e, _) =>
+                SliverToBoxAdapter(child: Center(child: Text(e.toString()))),
           ),
 
         const SliverToBoxAdapter(child: SizedBox(height: 100)),
@@ -408,8 +418,7 @@ class _MechanicMyJobsScreenState
         label,
         style: TextStyle(
           fontSize: 16,
-          fontWeight:
-              isSelected ? FontWeight.bold : FontWeight.normal,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           color: isSelected
               ? Pallete.secondaryColor
               : Pallete.textSecondaryColor,

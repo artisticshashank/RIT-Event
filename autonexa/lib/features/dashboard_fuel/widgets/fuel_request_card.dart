@@ -17,14 +17,14 @@ class FuelRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Tinted dark brown card similar to mockup
     final cardBgColor = isDark ? const Color(0xFF281E18) : Colors.white;
     final accentColor = Pallete.secondaryColor;
     final textColor = isDark ? Colors.white : Pallete.textColor;
     final subTextColor = isDark ? Colors.white60 : Pallete.textSecondaryColor;
     final defaultBg = isDark ? const Color(0xFF1E2436) : Colors.grey[200]!;
-    
+
     // Define exact color styling based on fuel type
     Color badgeColor = accentColor;
     if (request.fuelType.toUpperCase() == 'DIESEL') {
@@ -40,7 +40,9 @@ class FuelRequestCard extends StatelessWidget {
         color: cardBgColor,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Column(
@@ -59,12 +61,17 @@ class FuelRequestCard extends StatelessWidget {
                       color: defaultBg,
                       shape: BoxShape.circle,
                       image: const DecorationImage(
-                        image: AssetImage('assets/images/placeholder_car_avatar.png'),
+                        image: AssetImage(
+                          'assets/images/placeholder_car_avatar.png',
+                        ),
                         fit: BoxFit.cover,
-                      )
+                      ),
                     ),
                     child: Center(
-                      child: Icon(Icons.directions_car, color: Colors.white.withValues(alpha: 0.2)),
+                      child: Icon(
+                        Icons.directions_car,
+                        color: Colors.white.withValues(alpha: 0.2),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -73,7 +80,10 @@ class FuelRequestCard extends StatelessWidget {
                     right: 0,
                     child: Center(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: badgeColor,
                           borderRadius: BorderRadius.circular(100),
@@ -108,10 +118,7 @@ class FuelRequestCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       request.carInfo,
-                      style: TextStyle(
-                        color: subTextColor,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: subTextColor, fontSize: 12),
                     ),
                     const SizedBox(height: 12),
                     Row(
@@ -163,7 +170,10 @@ class FuelRequestCard extends StatelessWidget {
                     ),
                     child: const Text(
                       'Accept Request',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -176,7 +186,9 @@ class FuelRequestCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onDecline,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isDark ? const Color(0xFF1E2436) : Colors.grey[200]!,
+                      backgroundColor: isDark
+                          ? const Color(0xFF1E2436)
+                          : Colors.grey[200]!,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
@@ -186,7 +198,7 @@ class FuelRequestCard extends StatelessWidget {
                       'Decline',
                       style: TextStyle(
                         color: isDark ? Colors.white70 : Colors.black87,
-                        fontWeight: FontWeight.bold, 
+                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),

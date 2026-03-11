@@ -54,9 +54,9 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Profile Info
                 Center(
                   child: Column(
@@ -73,7 +73,9 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                                 width: 2,
                               ),
                               image: const DecorationImage(
-                                image: NetworkImage('https://i.pravatar.cc/150?img=11'),
+                                image: NetworkImage(
+                                  'https://i.pravatar.cc/150?img=11',
+                                ),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -87,7 +89,11 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                                 color: Pallete.secondaryColor,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.verified, color: Colors.white, size: 16),
+                              child: const Icon(
+                                Icons.verified,
+                                color: Colors.white,
+                                size: 16,
+                              ),
                             ),
                           ),
                         ],
@@ -102,7 +108,10 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                       ),
                       const SizedBox(height: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Pallete.secondaryColor.withAlpha(20),
                           borderRadius: BorderRadius.circular(100),
@@ -128,17 +137,24 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Personal Information
                 Row(
                   children: [
-                    const Icon(Icons.person, color: Pallete.secondaryColor, size: 20),
+                    const Icon(
+                      Icons.person,
+                      color: Pallete.secondaryColor,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     const Text(
                       'Personal Information',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -159,27 +175,36 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                   icon: Icons.location_on,
                   isDark: isDark,
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Specialized Services
                 Row(
                   children: [
-                    const Icon(Icons.build, color: Pallete.secondaryColor, size: 20),
+                    const Icon(
+                      Icons.build,
+                      color: Pallete.secondaryColor,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     const Text(
                       'Specialized Services',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                
+
                 Container(
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
+                    border: Border.all(
+                      color: isDark ? Colors.white12 : Colors.black12,
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -194,39 +219,49 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                         title: 'Transmission',
                         icon: Icons.settings_applications,
                         value: _transmissionEnabled,
-                        onChanged: (val) => setState(() => _transmissionEnabled = val),
+                        onChanged: (val) =>
+                            setState(() => _transmissionEnabled = val),
                       ),
                       const Divider(height: 1, color: Colors.white12),
                       _buildServiceToggle(
                         title: 'Brake Systems',
                         icon: Icons.warning_amber_rounded,
                         value: _brakeSystemsEnabled,
-                        onChanged: (val) => setState(() => _brakeSystemsEnabled = val),
+                        onChanged: (val) =>
+                            setState(() => _brakeSystemsEnabled = val),
                       ),
                       const Divider(height: 1, color: Colors.white12),
                       _buildServiceToggle(
                         title: 'Advanced Diagnostics',
                         icon: Icons.analytics,
                         value: _advancedDiagnosticsEnabled,
-                        onChanged: (val) => setState(() => _advancedDiagnosticsEnabled = val),
+                        onChanged: (val) =>
+                            setState(() => _advancedDiagnosticsEnabled = val),
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Availability
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.calendar_month, color: Pallete.secondaryColor, size: 20),
+                        const Icon(
+                          Icons.calendar_month,
+                          color: Pallete.secondaryColor,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         const Text(
                           'Availability',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -246,7 +281,9 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
+                    border: Border.all(
+                      color: isDark ? Colors.white12 : Colors.black12,
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -256,7 +293,10 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                           const Text('Monday - Friday'),
                           const Text(
                             '08:00 AM - 06:00 PM',
-                            style: TextStyle(color: Pallete.secondaryColor, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Pallete.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -267,24 +307,34 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                           const Text('Saturday'),
                           const Text(
                             '09:00 AM - 02:00 PM',
-                            style: TextStyle(color: Pallete.secondaryColor, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Pallete.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Certifications & Documents
                 Row(
                   children: [
-                    const Icon(Icons.description, color: Pallete.secondaryColor, size: 20),
+                    const Icon(
+                      Icons.description,
+                      color: Pallete.secondaryColor,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     const Text(
                       'Certifications & Documents',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -294,7 +344,9 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
+                    border: Border.all(
+                      color: isDark ? Colors.white12 : Colors.black12,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -304,7 +356,10 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                           color: Pallete.secondaryColor.withAlpha(30),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.badge, color: Pallete.secondaryColor),
+                        child: const Icon(
+                          Icons.badge,
+                          color: Pallete.secondaryColor,
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -313,17 +368,27 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                           children: [
                             const Text(
                               'ASE Master Certificate.pdf',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               'Verified Oct 2023',
-                              style: TextStyle(color: Pallete.textSecondaryColor, fontSize: 11),
+                              style: TextStyle(
+                                color: Pallete.textSecondaryColor,
+                                fontSize: 11,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Icon(Icons.visibility, color: Pallete.textSecondaryColor, size: 20),
+                      Icon(
+                        Icons.visibility,
+                        color: Pallete.textSecondaryColor,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -335,14 +400,21 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: Pallete.secondaryColor.withAlpha(100),
-                      style: BorderStyle.none, // We'll mock dashed later if needed
+                      style:
+                          BorderStyle.none, // We'll mock dashed later if needed
                     ),
-                    color: isDark ? Pallete.secondaryColor.withAlpha(10) : Pallete.secondaryColor.withAlpha(20),
+                    color: isDark
+                        ? Pallete.secondaryColor.withAlpha(10)
+                        : Pallete.secondaryColor.withAlpha(20),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.add_circle, color: Pallete.secondaryColor, size: 18),
+                      const Icon(
+                        Icons.add_circle,
+                        color: Pallete.secondaryColor,
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       const Text(
                         'Upload New Document',
@@ -354,34 +426,48 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Footer settings
                 Container(
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
+                    border: Border.all(
+                      color: isDark ? Colors.white12 : Colors.black12,
+                    ),
                   ),
                   child: Column(
                     children: [
-                      _buildSettingsTile('Notification Preferences', Icons.notifications, isDark),
+                      _buildSettingsTile(
+                        'Notification Preferences',
+                        Icons.notifications,
+                        isDark,
+                      ),
                       const Divider(height: 1, color: Colors.white12),
-                      _buildSettingsTile('Security & Password', Icons.lock, isDark),
+                      _buildSettingsTile(
+                        'Security & Password',
+                        Icons.lock,
+                        isDark,
+                      ),
                       const Divider(height: 1, color: Colors.white12),
                       ListTile(
-                        onTap: () => ref.read(authControllerProvider.notifier).logOut(),
+                        onTap: () =>
+                            ref.read(authControllerProvider.notifier).logOut(),
                         leading: const Icon(Icons.logout, color: Colors.red),
                         title: const Text(
                           'Sign Out',
-                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 100), // FAB spacer
               ],
             ),
@@ -454,10 +540,7 @@ class _MechanicProfileScreenState extends ConsumerState<MechanicProfileScreen> {
             children: [
               Icon(icon, color: Pallete.secondaryColor, size: 20),
               const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 15),
-              ),
+              Text(title, style: const TextStyle(fontSize: 15)),
             ],
           ),
           Switch(

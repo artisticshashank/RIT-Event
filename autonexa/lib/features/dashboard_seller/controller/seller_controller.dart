@@ -11,14 +11,18 @@ final sellerOverviewProvider = FutureProvider<SellerOverviewModel>((ref) async {
 });
 
 // ── Inventory ─────────────────────────────────────────────────────────────────
-final sellerInventoryProvider = FutureProvider<List<InventoryProductModel>>((ref) async {
+final sellerInventoryProvider = FutureProvider<List<InventoryProductModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(sellerRepositoryProvider).fetchInventory(user.id);
 });
 
 // ── Orders ────────────────────────────────────────────────────────────────────
-final sellerOrdersProvider = FutureProvider<List<DetailedOrderModel>>((ref) async {
+final sellerOrdersProvider = FutureProvider<List<DetailedOrderModel>>((
+  ref,
+) async {
   final user = ref.watch(userProvider);
   if (user == null) throw Exception('User is not authenticated');
   return ref.watch(sellerRepositoryProvider).fetchOrders(user.id);
@@ -65,6 +69,46 @@ final addProductProvider = AsyncNotifierProvider<AddProductNotifier, void>(
   AddProductNotifier.new,
 );
 
+// ── Update Product action ───────────────────────────────────────────────────
+class UpdateProductNotifier extends AsyncNotifier<void> {
+  @override
+  Future<void> build() async {}
+
+  Future<bool> updateProduct({
+    required String productId,
+    required String name,
+    required String description,
+    required double price,
+    required int stock,
+    String? sku,
+    String? category,
+  }) async {
+    state = const AsyncLoading();
+    try {
+      final repo = ref.read(sellerRepositoryProvider);
+      final success = await repo.updateProduct(
+        productId: productId,
+        name: name,
+        description: description,
+        price: price,
+        stock: stock,
+        sku: sku,
+        category: category,
+      );
+      state = const AsyncData(null);
+      return success;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return false;
+    }
+  }
+}
+
+final updateProductProvider =
+    AsyncNotifierProvider<UpdateProductNotifier, void>(
+      UpdateProductNotifier.new,
+    );
+
 // ── Update Order Status action ────────────────────────────────────────────────
 class UpdateOrderStatusNotifier extends AsyncNotifier<void> {
   @override
@@ -86,8 +130,8 @@ class UpdateOrderStatusNotifier extends AsyncNotifier<void> {
 
 final updateOrderStatusProvider =
     AsyncNotifierProvider<UpdateOrderStatusNotifier, void>(
-  UpdateOrderStatusNotifier.new,
-);
+      UpdateOrderStatusNotifier.new,
+    );
 
 // ── Delete Product action ─────────────────────────────────────────────────────
 class DeleteProductNotifier extends AsyncNotifier<void> {
@@ -110,5 +154,5 @@ class DeleteProductNotifier extends AsyncNotifier<void> {
 
 final deleteProductProvider =
     AsyncNotifierProvider<DeleteProductNotifier, void>(
-  DeleteProductNotifier.new,
-);
+      DeleteProductNotifier.new,
+    );

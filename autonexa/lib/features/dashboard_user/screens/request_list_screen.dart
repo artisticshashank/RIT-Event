@@ -37,10 +37,13 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Cancel Request',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Cancel Request',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: const Text(
-            'Are you sure you want to cancel this service request?'),
+          'Are you sure you want to cancel this service request?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -48,21 +51,25 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Yes, Cancel',
-                style: TextStyle(color: Colors.redAccent)),
+            child: const Text(
+              'Yes, Cancel',
+              style: TextStyle(color: Colors.redAccent),
+            ),
           ),
         ],
       ),
     );
     if (confirm != true || !mounted) return;
 
-    final success =
-        await ref.read(cancelRequestProvider.notifier).cancel(requestId);
+    final success = await ref
+        .read(cancelRequestProvider.notifier)
+        .cancel(requestId);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content:
-            Text(success ? 'Request cancelled.' : 'Could not cancel. Try again.'),
+        content: Text(
+          success ? 'Request cancelled.' : 'Could not cancel. Try again.',
+        ),
         backgroundColor: success ? Pallete.secondaryColor : Colors.redAccent,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -110,13 +117,18 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.playlist_remove,
-                      size: 64, color: Pallete.textSecondaryColor),
+                  Icon(
+                    Icons.playlist_remove,
+                    size: 64,
+                    color: Pallete.textSecondaryColor,
+                  ),
                   SizedBox(height: 16),
                   Text(
                     'No active requests.',
                     style: TextStyle(
-                        color: Pallete.textSecondaryColor, fontSize: 16),
+                      color: Pallete.textSecondaryColor,
+                      fontSize: 16,
+                    ),
                   ),
                 ],
               ),
@@ -138,48 +150,49 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
                 ),
               ),
               const SizedBox(height: 16),
-              ...requests.map((r) => ActiveRequestCard(
-                    status: _statusLabel(r),
-                    statusColor: _statusColor(r),
-                    title: r.vehicleInfo ?? 'Your Vehicle',
-                    subtitle: r.issueType ?? r.requestType.displayName,
-                    icon: _iconForType(r),
-                    buttonText: r.status.name == 'accepted' ||
-                            r.status.name == 'arriving'
-                        ? 'Track Arrival'
-                        : 'View Offers',
-                    buttonIcon: r.status.name == 'accepted' ||
-                            r.status.name == 'arriving'
-                        ? Icons.location_on
-                        : null,
-                    primaryButton: r.status.name != 'searching',
-                    buttonAction: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => RequestTrackingScreen(request: r),
-                        ),
-                      );
-                    },
-                    extraContent: GestureDetector(
-                      onTap: () => _cancelRequest(r.id),
-                      child: const Text(
-                        'Cancel Request',
-                        style: TextStyle(
-                          color: Colors.redAccent,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+              ...requests.map(
+                (r) => ActiveRequestCard(
+                  status: _statusLabel(r),
+                  statusColor: _statusColor(r),
+                  title: r.vehicleInfo ?? 'Your Vehicle',
+                  subtitle: r.issueType ?? r.requestType.displayName,
+                  icon: _iconForType(r),
+                  buttonText:
+                      r.status.name == 'accepted' || r.status.name == 'arriving'
+                      ? 'Track Arrival'
+                      : 'View Offers',
+                  buttonIcon:
+                      r.status.name == 'accepted' || r.status.name == 'arriving'
+                      ? Icons.location_on
+                      : null,
+                  primaryButton: r.status.name != 'searching',
+                  buttonAction: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => RequestTrackingScreen(request: r),
+                      ),
+                    );
+                  },
+                  extraContent: GestureDetector(
+                    onTap: () => _cancelRequest(r.id),
+                    child: const Text(
+                      'Cancel Request',
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         );
       },
       loading: () => const Loader(),
-      error: (e, _) =>
-          Center(child: Text(e.toString())),
+      error: (e, _) => Center(child: Text(e.toString())),
     );
   }
 
@@ -192,8 +205,10 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
           return const Center(
             child: Padding(
               padding: EdgeInsets.all(32.0),
-              child: Text('No completed requests yet.',
-                  style: TextStyle(color: Pallete.textSecondaryColor)),
+              child: Text(
+                'No completed requests yet.',
+                style: TextStyle(color: Pallete.textSecondaryColor),
+              ),
             ),
           );
         }
@@ -217,8 +232,11 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
                       color: Pallete.secondaryColor.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(_iconForType(r),
-                        color: Pallete.secondaryColor, size: 20),
+                    child: Icon(
+                      _iconForType(r),
+                      color: Pallete.secondaryColor,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -228,13 +246,16 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
                         Text(
                           r.requestType.displayName,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         ),
                         Text(
                           r.vehicleInfo ?? '',
                           style: const TextStyle(
-                              color: Pallete.textSecondaryColor,
-                              fontSize: 12),
+                            color: Pallete.textSecondaryColor,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -254,16 +275,21 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
                       Container(
                         margin: const EdgeInsets.only(top: 4),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 2),
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Text('COMPLETED',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold)),
+                        child: const Text(
+                          'COMPLETED',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -336,8 +362,10 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
           _buildActiveTab(),
           _buildHistoryTab(),
           const Center(
-            child: Text('Drafts coming soon',
-                style: TextStyle(color: Pallete.textSecondaryColor)),
+            child: Text(
+              'Drafts coming soon',
+              style: TextStyle(color: Pallete.textSecondaryColor),
+            ),
           ),
         ],
       ),
@@ -346,8 +374,7 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => const PostRequestScreen()),
+            MaterialPageRoute(builder: (context) => const PostRequestScreen()),
           );
         },
         child: const Icon(Icons.add, color: Colors.white),

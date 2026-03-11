@@ -18,8 +18,7 @@ class _MechanicEarningsScreenState
     extends ConsumerState<MechanicEarningsScreen> {
   int _selectedPeriod = 1; // 0: Daily, 1: Weekly, 2: Monthly, 3: Yearly
 
-  double _totalFor(
-      List<ServiceTransactionModel> txns, int periodIndex) {
+  double _totalFor(List<ServiceTransactionModel> txns, int periodIndex) {
     final now = DateTime.now();
     return txns
         .where((t) {
@@ -42,8 +41,7 @@ class _MechanicEarningsScreenState
 
     return earningsAsync.when(
       loading: () => const Loader(),
-      error: (e, _) =>
-          Center(child: Text('Error loading earnings: $e')),
+      error: (e, _) => Center(child: Text('Error loading earnings: $e')),
       data: (transactions) {
         final total = _totalFor(transactions, _selectedPeriod);
         final received = transactions
@@ -68,11 +66,14 @@ class _MechanicEarningsScreenState
                         const Text(
                           'Earnings Analytics',
                           style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Icon(Icons.calendar_month,
-                            color: Pallete.textSecondaryColor),
+                        Icon(
+                          Icons.calendar_month,
+                          color: Pallete.textSecondaryColor,
+                        ),
                       ],
                     ),
 
@@ -107,15 +108,14 @@ class _MechanicEarningsScreenState
                         color: cardColor,
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
-                          color: isDark
-                              ? Colors.white12
-                              : Colors.black12,
+                          color: isDark ? Colors.white12 : Colors.black12,
                         ),
                         boxShadow: const [
                           BoxShadow(
-                              color: Color(0x0A000000),
-                              blurRadius: 10,
-                              offset: Offset(0, 4))
+                            color: Color(0x0A000000),
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
                         ],
                       ),
                       child: Column(
@@ -132,42 +132,42 @@ class _MechanicEarningsScreenState
                           ),
                           const SizedBox(height: 8),
                           Row(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
                                 '\$${total.toStringAsFixed(2)}',
                                 style: const TextStyle(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold),
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(width: 12),
                               if (transactions.isNotEmpty)
                                 Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: 6),
-                                  padding:
-                                      const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
+                                  margin: const EdgeInsets.only(bottom: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color:
-                                        Colors.green.withAlpha(30),
-                                    borderRadius:
-                                        BorderRadius.circular(100),
+                                    color: Colors.green.withAlpha(30),
+                                    borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: const Row(
                                     children: [
-                                      Icon(Icons.trending_up,
-                                          color: Colors.green,
-                                          size: 14),
+                                      Icon(
+                                        Icons.trending_up,
+                                        color: Colors.green,
+                                        size: 14,
+                                      ),
                                       SizedBox(width: 4),
                                       Text(
                                         'Active',
                                         style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 12,
-                                            fontWeight:
-                                                FontWeight.bold),
+                                          color: Colors.green,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -177,15 +177,18 @@ class _MechanicEarningsScreenState
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              Icon(Icons.info_outline,
-                                  size: 14,
-                                  color: Pallete.textSecondaryColor),
+                              Icon(
+                                Icons.info_outline,
+                                size: 14,
+                                color: Pallete.textSecondaryColor,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 '${transactions.length} total job(s)',
                                 style: TextStyle(
-                                    color: Pallete.textSecondaryColor,
-                                    fontSize: 12),
+                                  color: Pallete.textSecondaryColor,
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -226,14 +229,20 @@ class _MechanicEarningsScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Earnings Over Time',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold)),
-                        Text('Last 7 Days',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Pallete.textSecondaryColor)),
+                        const Text(
+                          'Earnings Over Time',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Last 7 Days',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Pallete.textSecondaryColor,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -252,55 +261,77 @@ class _MechanicEarningsScreenState
                         children: [
                           Expanded(
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [40, 60, 80, 30, 90, 50, 70]
                                   .asMap()
-                                  .map((i, v) => MapEntry(
+                                  .map(
+                                    (i, v) => MapEntry(
                                       i,
                                       _buildMockBar(
-                                          v.toDouble(),
-                                          isDark,
-                                          i == 4)))
+                                        v.toDouble(),
+                                        isDark,
+                                        i == 4,
+                                      ),
+                                    ),
+                                  )
                                   .values
                                   .toList(),
                             ),
                           ),
                           const SizedBox(height: 12),
                           const Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text('Mon',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
-                              Text('Tue',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
-                              Text('Wed',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
-                              Text('Thu',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
-                              Text('Fri',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
-                              Text('Sat',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
-                              Text('Sun',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey)),
+                              Text(
+                                'Mon',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                'Tue',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                'Wed',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                'Thu',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                'Fri',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                'Sat',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                'Sun',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -313,15 +344,21 @@ class _MechanicEarningsScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Transaction History',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold)),
-                        Text('${transactions.length} records',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: highlightColor,
-                                fontWeight: FontWeight.bold)),
+                        const Text(
+                          'Transaction History',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '${transactions.length} records',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: highlightColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -332,8 +369,7 @@ class _MechanicEarningsScreenState
                           padding: const EdgeInsets.all(24.0),
                           child: Text(
                             'No transactions yet.',
-                            style: TextStyle(
-                                color: Pallete.textSecondaryColor),
+                            style: TextStyle(color: Pallete.textSecondaryColor),
                           ),
                         ),
                       )
@@ -344,16 +380,13 @@ class _MechanicEarningsScreenState
                           date: t.completedAt != null
                               ? '${t.completedAt!.day}/${t.completedAt!.month}/${t.completedAt!.year}'
                               : '—',
-                          amount:
-                              '+\$${t.agreedAmount.toStringAsFixed(2)}',
+                          amount: '+\$${t.agreedAmount.toStringAsFixed(2)}',
                           status: t.paymentStatus.name.toUpperCase(),
-                          statusColor:
-                              t.paymentStatus == PaymentStatus.received
-                                  ? Colors.green
-                                  : Colors.orange,
+                          statusColor: t.paymentStatus == PaymentStatus.received
+                              ? Colors.green
+                              : Colors.orange,
                           icon: Icons.receipt_long,
-                          iconBgColor: Pallete.secondaryColor
-                              .withAlpha(30),
+                          iconBgColor: Pallete.secondaryColor.withAlpha(30),
                           iconColor: Pallete.secondaryColor,
                           isDark: isDark,
                           cardColor: cardColor,
@@ -371,35 +404,46 @@ class _MechanicEarningsScreenState
     );
   }
 
-  Widget _buildMiniStat(String label, String value, Color color,
-      Color cardColor, bool isDark) {
+  Widget _buildMiniStat(
+    String label,
+    String value,
+    Color color,
+    Color cardColor,
+    bool isDark,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-            color: isDark ? Colors.white12 : Colors.black12),
+        border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: TextStyle(
-                  color: color, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text(value,
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: color)),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildPeriodButton(
-      String text, int index, Color highlightColor) {
+  Widget _buildPeriodButton(String text, int index, Color highlightColor) {
     bool isSelected = _selectedPeriod == index;
     return Expanded(
       child: GestureDetector(
@@ -409,20 +453,15 @@ class _MechanicEarningsScreenState
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color:
-                isSelected ? highlightColor : Colors.transparent,
+            color: isSelected ? highlightColor : Colors.transparent,
             borderRadius: BorderRadius.circular(100),
           ),
           child: Center(
             child: Text(
               text,
               style: TextStyle(
-                color: isSelected
-                    ? Colors.white
-                    : Pallete.textSecondaryColor,
-                fontWeight: isSelected
-                    ? FontWeight.bold
-                    : FontWeight.normal,
+                color: isSelected ? Colors.white : Pallete.textSecondaryColor,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 fontSize: 13,
               ),
             ),
@@ -432,8 +471,11 @@ class _MechanicEarningsScreenState
     );
   }
 
-  Widget _buildMockBar(double heightPct, bool isDark,
-      [bool isHighlighted = false]) {
+  Widget _buildMockBar(
+    double heightPct,
+    bool isDark, [
+    bool isHighlighted = false,
+  ]) {
     return Container(
       width: 24,
       height: heightPct,
@@ -441,8 +483,8 @@ class _MechanicEarningsScreenState
         color: isHighlighted
             ? Pallete.secondaryColor
             : (isDark
-                ? Colors.white.withAlpha(20)
-                : Colors.black.withAlpha(20)),
+                  ? Colors.white.withAlpha(20)
+                  : Colors.black.withAlpha(20)),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(4),
           topRight: Radius.circular(4),
@@ -469,16 +511,16 @@ class _MechanicEarningsScreenState
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-            color: isDark ? Colors.white12 : Colors.black12),
+        border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                color: iconBgColor,
-                borderRadius: BorderRadius.circular(16)),
+              color: iconBgColor,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Icon(icon, color: iconColor),
           ),
           const SizedBox(width: 16),
@@ -486,29 +528,43 @@ class _MechanicEarningsScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(date,
-                    style: TextStyle(
-                        color: Pallete.textSecondaryColor,
-                        fontSize: 11)),
+                Text(
+                  date,
+                  style: TextStyle(
+                    color: Pallete.textSecondaryColor,
+                    fontSize: 11,
+                  ),
+                ),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(amount,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
+              Text(
+                amount,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
               const SizedBox(height: 4),
-              Text(status,
-                  style: TextStyle(
-                      color: statusColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10)),
+              Text(
+                status,
+                style: TextStyle(
+                  color: statusColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                ),
+              ),
             ],
           ),
         ],

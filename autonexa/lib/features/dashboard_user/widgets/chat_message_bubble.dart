@@ -18,12 +18,12 @@ class ChatMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     // User is orange, AI is dark blue/grey
-    final bgColor = isUser 
-        ? Pallete.secondaryColor 
+    final bgColor = isUser
+        ? Pallete.secondaryColor
         : (isDark ? const Color(0xFF1B1B2F) : Colors.grey.shade200);
-        
+
     final textColor = isUser
         ? Colors.white
         : Theme.of(context).textTheme.bodyLarge?.color;
@@ -31,7 +31,9 @@ class ChatMessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
@@ -45,13 +47,18 @@ class ChatMessageBubble extends StatelessWidget {
             ),
             const SizedBox(width: 12),
           ],
-          
+
           Flexible(
             child: Column(
-              crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: isUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
                   decoration: BoxDecoration(
                     color: bgColor,
                     borderRadius: BorderRadius.only(
@@ -90,12 +97,14 @@ class ChatMessageBubble extends StatelessWidget {
               ],
             ),
           ),
-          
+
           if (isUser) ...[
-            const SizedBox(width: 48), // Push message bubble slightly from the edge to match AI chat spacing.
+            const SizedBox(
+              width: 48,
+            ), // Push message bubble slightly from the edge to match AI chat spacing.
           ] else ...[
-             const SizedBox(width: 48), // Padding on opposite side
-          ]
+            const SizedBox(width: 48), // Padding on opposite side
+          ],
         ],
       ),
     );

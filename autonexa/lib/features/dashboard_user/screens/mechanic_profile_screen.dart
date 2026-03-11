@@ -52,9 +52,14 @@ class MechanicProfileScreen extends StatelessWidget {
                       height: 120,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Pallete.secondaryColor, width: 3),
+                        border: Border.all(
+                          color: Pallete.secondaryColor,
+                          width: 3,
+                        ),
                         image: const DecorationImage(
-                          image: NetworkImage('https://images.unsplash.com/photo-1632823465306-eddc87597148?q=80&w=200&auto=format&fit=crop'), // Example mechanic
+                          image: NetworkImage(
+                            'https://images.unsplash.com/photo-1632823465306-eddc87597148?q=80&w=200&auto=format&fit=crop',
+                          ), // Example mechanic
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -68,14 +73,18 @@ class MechanicProfileScreen extends StatelessWidget {
                           color: Pallete.secondaryColor,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.verified, color: Colors.white, size: 20),
+                        child: const Icon(
+                          Icons.verified,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Name and Title
               Text(
                 'Alex Rivera',
@@ -97,7 +106,7 @@ class MechanicProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              
+
               // Rating / Experience
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -114,14 +123,16 @@ class MechanicProfileScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              
+
               // Action Buttons
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isDark ? const Color(0xFF25256D) : Colors.blue.shade800,
+                        backgroundColor: isDark
+                            ? const Color(0xFF25256D)
+                            : Colors.blue.shade800,
                         foregroundColor: Colors.white,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -130,7 +141,10 @@ class MechanicProfileScreen extends StatelessWidget {
                         ),
                       ),
                       icon: const Icon(Icons.chat_bubble_outline, size: 18),
-                      label: const Text('Message', style: TextStyle(fontWeight: FontWeight.bold)),
+                      label: const Text(
+                        'Message',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onPressed: () {},
                     ),
                   ),
@@ -140,20 +154,27 @@ class MechanicProfileScreen extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: textColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: BorderSide(color: Pallete.textSecondaryColor.withValues(alpha: 0.3)),
+                        side: BorderSide(
+                          color: Pallete.textSecondaryColor.withValues(
+                            alpha: 0.3,
+                          ),
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
                       icon: const Icon(Icons.call, size: 18),
-                      label: const Text('Call', style: TextStyle(fontWeight: FontWeight.bold)),
+                      label: const Text(
+                        'Call',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onPressed: () {},
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              
+
               // Stats
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -182,7 +203,7 @@ class MechanicProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              
+
               // About
               Text(
                 'About',
@@ -246,7 +267,7 @@ class MechanicProfileScreen extends StatelessWidget {
                 price: '\$120+',
               ),
               const SizedBox(height: 32),
-              
+
               // Customer Reviews
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,13 +295,15 @@ class MechanicProfileScreen extends StatelessWidget {
                 name: 'Michael Chen',
                 timeAgo: '2 days ago',
                 rating: 5,
-                reviewText: 'Alex is incredibly knowledgeable. He fixed a sensor issue that three other shops couldn\'t figure out. Highly recommend for high-end cars.',
+                reviewText:
+                    'Alex is incredibly knowledgeable. He fixed a sensor issue that three other shops couldn\'t figure out. Highly recommend for high-end cars.',
               ),
               const CustomerReviewCard(
                 name: 'Sarah Jenkins',
                 timeAgo: '1 week ago',
                 rating: 5,
-                reviewText: 'Fair pricing and very professional. He took the time to explain what was wrong with my brakes without being condescending.',
+                reviewText:
+                    'Fair pricing and very professional. He took the time to explain what was wrong with my brakes without being condescending.',
               ),
             ],
           ),
@@ -305,7 +328,11 @@ class MechanicProfileScreen extends StatelessWidget {
                 icon: const Icon(Icons.calendar_month),
                 label: const Text(
                   'BOOK SERVICE NOW',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
                 ),
                 onPressed: () {},
               ),

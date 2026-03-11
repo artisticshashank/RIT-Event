@@ -43,7 +43,8 @@ class ProductReviews extends StatelessWidget {
               color: cardBgColor,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.05),
@@ -68,16 +69,31 @@ class ProductReviews extends StatelessWidget {
                     const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star_half,
-                            color: Pallete.secondaryColor, size: 12),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star_half,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -148,16 +164,31 @@ class ProductReviews extends StatelessWidget {
                     ),
                     const Row(
                       children: [
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
-                        Icon(Icons.star,
-                            color: Pallete.secondaryColor, size: 12),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Pallete.secondaryColor,
+                          size: 12,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -180,7 +211,11 @@ class ProductReviews extends StatelessWidget {
   }
 
   Widget _buildRatingBar(
-      BuildContext context, String star, double percentage, String label) {
+    BuildContext context,
+    String star,
+    double percentage,
+    String label,
+  ) {
     return Row(
       children: [
         Text(

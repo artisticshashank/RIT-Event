@@ -25,7 +25,11 @@ class DiagnosticReportScreen extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Pallete.secondaryColor, size: 20),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Pallete.secondaryColor,
+              size: 20,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -58,14 +62,21 @@ class DiagnosticReportScreen extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: const Icon(Icons.share, color: Pallete.secondaryColor, size: 20),
+              icon: const Icon(
+                Icons.share,
+                color: Pallete.secondaryColor,
+                size: 20,
+              ),
               onPressed: () {},
             ),
           ),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Divider(color: Pallete.textSecondaryColor.withValues(alpha: 0.1), height: 1),
+          child: Divider(
+            color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+            height: 1,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -91,11 +102,11 @@ class DiagnosticReportScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            
+
             // Health Circle
             const HealthScoreIndicator(score: 85, status: 'Healthy'),
             const SizedBox(height: 24),
-            
+
             // Subtext Description
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -124,7 +135,7 @@ class DiagnosticReportScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // System Status Grid
             GridView.count(
               crossAxisCount: 2,
@@ -132,7 +143,8 @@ class DiagnosticReportScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
-              childAspectRatio: 1.1, // Adjust slightly to match design proportions
+              childAspectRatio:
+                  1.1, // Adjust slightly to match design proportions
               children: const [
                 SystemStatusCard(
                   icon: Icons.directions_car_filled_outlined,
@@ -180,7 +192,9 @@ class DiagnosticReportScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF16162C) : Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Pallete.textSecondaryColor.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +213,9 @@ class DiagnosticReportScreen extends StatelessWidget {
                       Container(
                         width: 1,
                         height: 16,
-                        color: Pallete.textSecondaryColor.withValues(alpha: 0.3),
+                        color: Pallete.textSecondaryColor.withValues(
+                          alpha: 0.3,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -241,7 +257,7 @@ class DiagnosticReportScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             SizedBox(
               width: double.infinity,
               height: 54,
@@ -255,7 +271,10 @@ class DiagnosticReportScreen extends StatelessWidget {
                   elevation: 0,
                 ),
                 icon: const Icon(Icons.calendar_month),
-                label: const Text('Book a Mechanic', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                label: const Text(
+                  'Book a Mechanic',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 onPressed: () {},
               ),
             ),
@@ -265,7 +284,9 @@ class DiagnosticReportScreen extends StatelessWidget {
               height: 54,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isDark ? const Color(0xFF1B1B2F) : Colors.grey.shade200,
+                  backgroundColor: isDark
+                      ? const Color(0xFF1B1B2F)
+                      : Colors.grey.shade200,
                   foregroundColor: textColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
@@ -273,7 +294,10 @@ class DiagnosticReportScreen extends StatelessWidget {
                   elevation: 0,
                 ),
                 icon: const Icon(Icons.shopping_cart),
-                label: const Text('Buy Spare Parts', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                label: const Text(
+                  'Buy Spare Parts',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 onPressed: () {},
               ),
             ),

@@ -8,7 +8,7 @@ class ChatBottomInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1B1B2F) : Colors.grey.shade100;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -23,10 +23,18 @@ class ChatBottomInput extends StatelessWidget {
               color: isDark ? const Color(0xFF2A2A4A) : Colors.white,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.add, color: Pallete.textSecondaryColor, size: 20),
+            child: const Icon(
+              Icons.add,
+              color: Pallete.textSecondaryColor,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
-          const Icon(Icons.camera_alt, color: Pallete.textSecondaryColor, size: 24),
+          const Icon(
+            Icons.camera_alt,
+            color: Pallete.textSecondaryColor,
+            size: 24,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: TextField(
@@ -51,7 +59,11 @@ class ChatBottomInput extends StatelessWidget {
               color: isDark ? const Color(0xFF2A2A4A) : Colors.white,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.mic, color: Pallete.textSecondaryColor, size: 20),
+            child: const Icon(
+              Icons.mic,
+              color: Pallete.textSecondaryColor,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
           Container(

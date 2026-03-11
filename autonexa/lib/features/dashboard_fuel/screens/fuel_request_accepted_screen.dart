@@ -11,14 +11,19 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final pageBgColor = isDark ? const Color(0xFF1B1B1D) : Theme.of(context).scaffoldBackgroundColor;
+    final pageBgColor = isDark
+        ? const Color(0xFF1B1B1D)
+        : Theme.of(context).scaffoldBackgroundColor;
     final textColor = isDark ? Colors.white : Colors.black;
     final subTextColor = isDark ? Colors.white70 : Colors.black54;
 
     return Scaffold(
       backgroundColor: pageBgColor,
       appBar: AppBar(
-        title: const Text('Request Accepted', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Request Accepted',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -46,7 +51,7 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                     color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 15,
                     offset: const Offset(0, 5),
-                  )
+                  ),
                 ],
               ),
               child: Column(
@@ -66,7 +71,12 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                           color: Pallete.secondaryColor,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.check, color: Colors.white, size: 30, weight: 800),
+                        child: const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 30,
+                          weight: 800,
+                        ),
                       ),
                     ),
                   ),
@@ -91,9 +101,9 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             Text(
               'Success! Request\nAccepted',
               textAlign: TextAlign.center,
@@ -108,11 +118,7 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
             Text(
               'The technician is preparing your delivery. You\ncan now start the process.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: subTextColor,
-                fontSize: 14,
-                height: 1.5,
-              ),
+              style: TextStyle(color: subTextColor, fontSize: 14, height: 1.5),
             ),
 
             const SizedBox(height: 32),
@@ -151,11 +157,18 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         Row(
                           children: [
-                            Icon(Icons.directions_car, color: subTextColor, size: 16),
+                            Icon(
+                              Icons.directions_car,
+                              color: subTextColor,
+                              size: 16,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               request.carInfo,
-                              style: TextStyle(color: subTextColor, fontSize: 14),
+                              style: TextStyle(
+                                color: subTextColor,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
@@ -168,7 +181,9 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       image: const DecorationImage(
-                        image: AssetImage('assets/images/placeholder_part.png'), // Will replace
+                        image: AssetImage(
+                          'assets/images/placeholder_part.png',
+                        ), // Will replace
                         fit: BoxFit.cover,
                       ),
                       gradient: LinearGradient(
@@ -177,8 +192,14 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                       ),
                     ),
-                    child: request.imageUrl.isEmpty 
-                        ? Center(child: Icon(Icons.directions_car, color: Colors.white, size: 40)) 
+                    child: request.imageUrl.isEmpty
+                        ? Center(
+                            child: Icon(
+                              Icons.directions_car,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                          )
                         : null,
                   ),
                 ],
@@ -199,7 +220,7 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
 
             // Fuel / Quantity Row
@@ -207,11 +228,16 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
                     decoration: BoxDecoration(
                       color: isDark ? const Color(0xFF1C1D22) : Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.05),
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +254,11 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(Icons.local_gas_station, color: Pallete.secondaryColor, size: 16),
+                            const Icon(
+                              Icons.local_gas_station,
+                              color: Pallete.secondaryColor,
+                              size: 16,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               request.fuelType,
@@ -247,11 +277,16 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
                     decoration: BoxDecoration(
                       color: isDark ? const Color(0xFF1C1D22) : Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.05),
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +303,11 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(Icons.water_drop, color: Pallete.secondaryColor, size: 16),
+                            const Icon(
+                              Icons.water_drop,
+                              color: Pallete.secondaryColor,
+                              size: 16,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               request.fuelQuantity,
@@ -305,7 +344,11 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                       color: Colors.white.withValues(alpha: 0.05),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.location_on, color: Pallete.secondaryColor, size: 24),
+                    child: const Icon(
+                      Icons.location_on,
+                      color: Pallete.secondaryColor,
+                      size: 24,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Column(
@@ -346,7 +389,8 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FuelTrackingScreen(request: request),
+                      builder: (context) =>
+                          FuelTrackingScreen(request: request),
                     ),
                   );
                 },
@@ -381,9 +425,13 @@ class FuelRequestAcceptedScreen extends StatelessWidget {
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
-                    color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.05)
+                        : Colors.black.withValues(alpha: 0.05),
                   ),
-                  backgroundColor: isDark ? const Color(0xFF1C1D22) : Colors.grey[100],
+                  backgroundColor: isDark
+                      ? const Color(0xFF1C1D22)
+                      : Colors.grey[100],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(28),
                   ),

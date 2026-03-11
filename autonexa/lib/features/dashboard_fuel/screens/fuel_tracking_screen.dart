@@ -17,9 +17,11 @@ class FuelTrackingScreen extends ConsumerWidget {
     final subTextColor = isDark ? Colors.white60 : Colors.black54;
 
     // Use extreme dark deep brown representing custom map
-    final mapBgColor = isDark ? const Color(0xFF140D09) : Colors.grey[300]; 
+    final mapBgColor = isDark ? const Color(0xFF140D09) : Colors.grey[300];
     final sheetColor = isDark ? const Color(0xFF281E18) : Colors.white;
-    final borderColor = isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05);
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.05)
+        : Colors.black.withValues(alpha: 0.05);
 
     return Scaffold(
       backgroundColor: mapBgColor,
@@ -31,10 +33,22 @@ class FuelTrackingScreen extends ConsumerWidget {
         ),
         title: Column(
           children: [
-            const Text('On the way', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+            const Text(
+              'On the way',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
             Text(
               'ETA: 8 MINS',
-              style: TextStyle(color: Pallete.secondaryColor, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1),
+              style: TextStyle(
+                color: Pallete.secondaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                letterSpacing: 1,
+              ),
             ),
           ],
         ),
@@ -46,8 +60,12 @@ class FuelTrackingScreen extends ConsumerWidget {
               color: Pallete.secondaryColor.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.help_outline, color: Pallete.secondaryColor, size: 20),
-          )
+            child: const Icon(
+              Icons.help_outline,
+              color: Pallete.secondaryColor,
+              size: 20,
+            ),
+          ),
         ],
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -58,13 +76,17 @@ class FuelTrackingScreen extends ConsumerWidget {
           // Simulated Map Background
           Positioned.fill(
             child: Container(
-               color: mapBgColor,
-               child: Center(
-                 child: Icon(Icons.map, size: 200, color: Colors.white.withValues(alpha: 0.02)),
-               ),
+              color: mapBgColor,
+              child: Center(
+                child: Icon(
+                  Icons.map,
+                  size: 200,
+                  color: Colors.white.withValues(alpha: 0.02),
+                ),
+              ),
             ),
           ),
-          
+
           // Current User / Tech Marker
           Positioned(
             top: MediaQuery.of(context).size.height * 0.35,
@@ -82,18 +104,27 @@ class FuelTrackingScreen extends ConsumerWidget {
                         color: Pallete.secondaryColor.withValues(alpha: 0.4),
                         blurRadius: 20,
                         spreadRadius: 5,
-                      )
-                    ]
+                      ),
+                    ],
                   ),
-                  child: const Icon(Icons.local_shipping, color: Colors.white, size: 28),
+                  child: const Icon(
+                    Icons.local_shipping,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(100),
-                    border: Border.all(color: Pallete.secondaryColor.withValues(alpha: 0.5)),
+                    border: Border.all(
+                      color: Pallete.secondaryColor.withValues(alpha: 0.5),
+                    ),
                   ),
                   child: Text(
                     '${request.customerName.split(" ").first.toUpperCase()} IS HERE',
@@ -107,7 +138,7 @@ class FuelTrackingScreen extends ConsumerWidget {
               ],
             ),
           ),
-          
+
           // Map floating controls
           Positioned(
             top: 120,
@@ -143,11 +174,11 @@ class FuelTrackingScreen extends ConsumerWidget {
                     border: Border.all(color: borderColor),
                   ),
                   child: const Icon(Icons.my_location, color: Colors.white70),
-                )
+                ),
               ],
             ),
           ),
-          
+
           Positioned(
             top: 190,
             right: 20,
@@ -160,9 +191,15 @@ class FuelTrackingScreen extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  IconButton(onPressed: (){}, icon: const Icon(Icons.add, color: Colors.white70)),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add, color: Colors.white70),
+                  ),
                   Divider(height: 1, color: borderColor),
-                  IconButton(onPressed: (){}, icon: const Icon(Icons.remove, color: Colors.white70)),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.remove, color: Colors.white70),
+                  ),
                 ],
               ),
             ),
@@ -175,15 +212,17 @@ class FuelTrackingScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: sheetColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(32),
+                ),
                 border: Border(top: BorderSide(color: borderColor)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.4),
                     blurRadius: 30,
                     offset: const Offset(0, -10),
-                  )
-                ]
+                  ),
+                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -197,9 +236,9 @@ class FuelTrackingScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Tech Profile Row
                   Row(
                     children: [
@@ -211,10 +250,14 @@ class FuelTrackingScreen extends ConsumerWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: const DecorationImage(
-                                image: AssetImage('assets/images/placeholder_part.png'), // Will replace
+                                image: AssetImage(
+                                  'assets/images/placeholder_part.png',
+                                ), // Will replace
                                 fit: BoxFit.cover,
                               ),
-                              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.1),
+                              ),
                             ),
                           ),
                           Positioned(
@@ -229,7 +272,7 @@ class FuelTrackingScreen extends ConsumerWidget {
                                 border: Border.all(color: sheetColor, width: 3),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(width: 16),
@@ -248,23 +291,33 @@ class FuelTrackingScreen extends ConsumerWidget {
                             const SizedBox(height: 4),
                             Text(
                               'Technician • Fuel Expert',
-                              style: TextStyle(color: subTextColor, fontSize: 12),
+                              style: TextStyle(
+                                color: subTextColor,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Row(
                         children: [
-                          Icon(Icons.star, color: Pallete.secondaryColor, size: 16),
+                          Icon(
+                            Icons.star,
+                            color: Pallete.secondaryColor,
+                            size: 16,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             '4.9',
-                            style: TextStyle(color: Pallete.secondaryColor, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Pallete.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                       const SizedBox(width: 16),
-                      
+
                       // Contact buttons
                       Container(
                         width: 48,
@@ -280,35 +333,65 @@ class FuelTrackingScreen extends ConsumerWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                           color: isDark ? const Color(0xFF382315) : Colors.orange.shade100,
-                           shape: BoxShape.circle,
+                          color: isDark
+                              ? const Color(0xFF382315)
+                              : Colors.orange.shade100,
+                          shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.chat_bubble, color: Pallete.secondaryColor),
+                        child: Icon(
+                          Icons.chat_bubble,
+                          color: Pallete.secondaryColor,
+                        ),
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Info Cards
                   Row(
                     children: [
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF2E221C) : Colors.grey[100],
+                            color: isDark
+                                ? const Color(0xFF2E221C)
+                                : Colors.grey[100],
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(color: borderColor),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('VEHICLE', style: TextStyle(color: subTextColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                              Text(
+                                'VEHICLE',
+                                style: TextStyle(
+                                  color: subTextColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
+                                ),
+                              ),
                               const SizedBox(height: 8),
-                              Text('White Ford F-150', style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+                              Text(
+                                'White Ford F-150',
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const SizedBox(height: 4),
-                              Text('NEXA-7729', style: TextStyle(color: Pallete.secondaryColor, fontSize: 12)),
+                              Text(
+                                'NEXA-7729',
+                                style: TextStyle(
+                                  color: Pallete.secondaryColor,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -316,147 +399,217 @@ class FuelTrackingScreen extends ConsumerWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF2E221C) : Colors.grey[100],
+                            color: isDark
+                                ? const Color(0xFF2E221C)
+                                : Colors.grey[100],
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(color: borderColor),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('ORDER', style: TextStyle(color: subTextColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                              Text(
+                                'ORDER',
+                                style: TextStyle(
+                                  color: subTextColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
+                                ),
+                              ),
                               const SizedBox(height: 8),
-                              Text('Premium Diesel', style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+                              Text(
+                                'Premium Diesel',
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const SizedBox(height: 4),
-                              Text('#OR-99120', style: TextStyle(color: Pallete.secondaryColor, fontSize: 12)),
+                              Text(
+                                '#OR-99120',
+                                style: TextStyle(
+                                  color: Pallete.secondaryColor,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Dynamic Status Action Buttons
                   Consumer(
                     builder: (context, ref, _) {
                       final arrivingState = ref.watch(fuelMarkArrivingProvider);
                       final completeState = ref.watch(fuelMarkCompleteProvider);
-                      
+
                       final isArrivingLoading = arrivingState is AsyncLoading;
                       final isCompleteLoading = completeState is AsyncLoading;
-                      
-                      if (request.status == 'searching' || request.status == 'accepted' || request.status == 'NEW') {
+
+                      if (request.status == 'searching' ||
+                          request.status == 'accepted' ||
+                          request.status == 'NEW') {
                         // Mark Arriving
                         return SizedBox(
-                           width: double.infinity,
-                           height: 60,
-                           child: ElevatedButton(
-                              onPressed: isArrivingLoading ? null : () async {
-                                final success = await ref.read(fuelMarkArrivingProvider.notifier).markArriving(request.id);
-                                if (success && context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Marked as Arriving!')),
-                                  );
-                                  Navigator.pop(context); // Pop back to dashboard to refresh
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                 backgroundColor: Pallete.secondaryColor,
-                                 foregroundColor: Colors.white,
-                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                 )
+                          width: double.infinity,
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: isArrivingLoading
+                                ? null
+                                : () async {
+                                    final success = await ref
+                                        .read(fuelMarkArrivingProvider.notifier)
+                                        .markArriving(request.id);
+                                    if (success && context.mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Marked as Arriving!'),
+                                        ),
+                                      );
+                                      Navigator.pop(
+                                        context,
+                                      ); // Pop back to dashboard to refresh
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Pallete.secondaryColor,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
                               ),
-                              child: isArrivingLoading 
-                                ? const Loader() 
+                            ),
+                            child: isArrivingLoading
+                                ? const Loader()
                                 : const Row(
-                                 mainAxisAlignment: MainAxisAlignment.center,
-                                 children: [
-                                    Text('Mark as Arriving', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 12),
-                                    Icon(Icons.directions_car),
-                                 ],
-                              ),
-                           ),
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Mark as Arriving',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(width: 12),
+                                      Icon(Icons.directions_car),
+                                    ],
+                                  ),
+                          ),
                         );
                       } else if (request.status == 'arriving') {
-                         // Mark Complete
-                         return SizedBox(
-                           width: double.infinity,
-                           height: 60,
-                           child: ElevatedButton(
-                              onPressed: isCompleteLoading ? null : () async {
-                                final success = await ref.read(fuelMarkCompleteProvider.notifier).markComplete(request.id);
-                                if (success && context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Job Completed Successfully!')),
-                                  );
-                                  Navigator.pop(context); // Pop back to dashboard
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                 backgroundColor: Colors.green,
-                                 foregroundColor: Colors.white,
-                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                 )
+                        // Mark Complete
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: isCompleteLoading
+                                ? null
+                                : () async {
+                                    final success = await ref
+                                        .read(fuelMarkCompleteProvider.notifier)
+                                        .markComplete(request.id);
+                                    if (success && context.mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Job Completed Successfully!',
+                                          ),
+                                        ),
+                                      );
+                                      Navigator.pop(
+                                        context,
+                                      ); // Pop back to dashboard
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
                               ),
-                              child: isCompleteLoading 
-                                ? const Loader() 
+                            ),
+                            child: isCompleteLoading
+                                ? const Loader()
                                 : const Row(
-                                 mainAxisAlignment: MainAxisAlignment.center,
-                                 children: [
-                                    Text('Complete Job', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 12),
-                                    Icon(Icons.check_circle),
-                                 ],
-                              ),
-                           ),
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Complete Job',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(width: 12),
+                                      Icon(Icons.check_circle),
+                                    ],
+                                  ),
+                          ),
                         );
                       } else {
-                         return Container(
-                           padding: const EdgeInsets.all(16),
-                           decoration: BoxDecoration(
-                             color: Colors.green.withValues(alpha: 0.1),
-                             borderRadius: BorderRadius.circular(20)
-                           ),
-                           child: const Center(
-                             child: Text('Job Completed', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                           ),
-                         );
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Job Completed',
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        );
                       }
                     },
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // View Order Summary button
                   SizedBox(
-                     width: double.infinity,
-                     height: 50,
-                     child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                           side: BorderSide(color: borderColor),
-                           foregroundColor: textColor,
-                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                           )
+                    width: double.infinity,
+                    height: 50,
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: borderColor),
+                        foregroundColor: textColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        child: const Text('View Order Summary', style: TextStyle(fontWeight: FontWeight.bold)),
-                     ),
+                      ),
+                      child: const Text(
+                        'View Order Summary',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                  
+
                   const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

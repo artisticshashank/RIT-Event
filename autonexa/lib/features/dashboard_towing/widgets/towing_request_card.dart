@@ -34,16 +34,16 @@ class TowingRequestCard extends StatelessWidget {
         color: cardBgColor,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: Container(
           decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: themeColor, width: 4),
-            ),
+            border: Border(left: BorderSide(color: themeColor, width: 4)),
           ),
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -58,10 +58,14 @@ class TowingRequestCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: const DecorationImage(
-                        image: AssetImage('assets/images/placeholder_part.png'), // generic placeholder
+                        image: AssetImage(
+                          'assets/images/placeholder_part.png',
+                        ), // generic placeholder
                         fit: BoxFit.cover,
                       ),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.1),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -116,10 +120,7 @@ class TowingRequestCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         request.distance,
-                        style: TextStyle(
-                          color: subTextColor,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: subTextColor, fontSize: 12),
                       ),
                     ],
                   ),
@@ -137,7 +138,10 @@ class TowingRequestCard extends StatelessWidget {
                         icon: const Icon(Icons.person_add_alt_1, size: 18),
                         label: const Text(
                           'Assign Driver',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Pallete.secondaryColor,
@@ -162,13 +166,15 @@ class TowingRequestCard extends StatelessWidget {
                           'Decline',
                           style: TextStyle(
                             color: subTextColor,
-                            fontWeight: FontWeight.bold, 
+                            fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
-                            color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.1)
+                                : Colors.black.withValues(alpha: 0.1),
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),

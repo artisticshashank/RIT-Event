@@ -21,16 +21,16 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
     final isLoading = acceptState is AsyncLoading;
 
     Future<void> onAccept() async {
-      final success =
-          await ref.read(acceptJobProvider.notifier).accept(serviceRequest.id);
+      final success = await ref
+          .read(acceptJobProvider.notifier)
+          .accept(serviceRequest.id);
       if (!context.mounted) return;
       if (success) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => MechanicNavigationScreen(
-              serviceRequest: serviceRequest,
-            ),
+            builder: (_) =>
+                MechanicNavigationScreen(serviceRequest: serviceRequest),
           ),
         );
       } else {
@@ -39,8 +39,9 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
             content: const Text('Could not accept request. Try again.'),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             margin: const EdgeInsets.all(16),
           ),
         );
@@ -75,10 +76,7 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
             ),
             Text(
               'Incoming Request',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ],
         ),
@@ -106,9 +104,11 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                 ? const Color(0xFF1E2333)
                 : Colors.blue.withValues(alpha: 0.12),
             child: Center(
-              child: Icon(Icons.map,
-                  size: 200,
-                  color: isDark ? Colors.white10 : Colors.black12),
+              child: Icon(
+                Icons.map,
+                size: 200,
+                color: isDark ? Colors.white10 : Colors.black12,
+              ),
             ),
           ),
 
@@ -122,8 +122,7 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
               child: const CircleAvatar(
                 backgroundColor: Pallete.secondaryColor,
                 radius: 20,
-                child: Icon(Icons.location_on,
-                    color: Colors.white, size: 20),
+                child: Icon(Icons.location_on, color: Colors.white, size: 20),
               ),
             ),
           ),
@@ -136,8 +135,11 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
               child: CircleAvatar(
                 backgroundColor: Color(0xFF2C3146),
                 radius: 18,
-                child: Icon(Icons.directions_car,
-                    color: Colors.white, size: 16),
+                child: Icon(
+                  Icons.directions_car,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
             ),
           ),
@@ -156,9 +158,10 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                 ),
                 boxShadow: const [
                   BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 20,
-                      offset: Offset(0, -5)),
+                    color: Colors.black26,
+                    blurRadius: 20,
+                    offset: Offset(0, -5),
+                  ),
                 ],
               ),
               child: Column(
@@ -172,10 +175,14 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                         children: [
                           CircleAvatar(
                             radius: 30,
-                            backgroundColor:
-                                Pallete.secondaryColor.withValues(alpha: 0.2),
-                            child: const Icon(Icons.person,
-                                color: Pallete.secondaryColor, size: 30),
+                            backgroundColor: Pallete.secondaryColor.withValues(
+                              alpha: 0.2,
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              color: Pallete.secondaryColor,
+                              size: 30,
+                            ),
                           ),
                           const SizedBox(width: 16),
                           Column(
@@ -191,9 +198,11 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  const Icon(Icons.star,
-                                      color: Pallete.secondaryColor,
-                                      size: 14),
+                                  const Icon(
+                                    Icons.star,
+                                    color: Pallete.secondaryColor,
+                                    size: 14,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'Requires Assistance',
@@ -242,11 +251,17 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                   Row(
                     children: [
                       Expanded(
-                          child: _buildInfoItem('VEHICLE',
-                              serviceRequest.vehicleInfo ?? '—')),
+                        child: _buildInfoItem(
+                          'VEHICLE',
+                          serviceRequest.vehicleInfo ?? '—',
+                        ),
+                      ),
                       Expanded(
-                          child: _buildInfoItem('SERVICE',
-                              serviceRequest.requestType.displayName)),
+                        child: _buildInfoItem(
+                          'SERVICE',
+                          serviceRequest.requestType.displayName,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -261,8 +276,10 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                         ),
                       ),
                       Expanded(
-                        child: _buildInfoItem('ISSUE TYPE',
-                            serviceRequest.issueType ?? '—'),
+                        child: _buildInfoItem(
+                          'ISSUE TYPE',
+                          serviceRequest.issueType ?? '—',
+                        ),
                       ),
                     ],
                   ),
@@ -288,9 +305,7 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                             child: Text(
                               serviceRequest.description!,
                               style: TextStyle(
-                                color: isDark
-                                    ? Colors.white
-                                    : Colors.black87,
+                                color: isDark ? Colors.white : Colors.black87,
                                 fontSize: 13,
                                 height: 1.4,
                               ),
@@ -319,7 +334,9 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                               width: 24,
                               height: 24,
                               child: CircularProgressIndicator(
-                                  color: Colors.white, strokeWidth: 2),
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
                             )
                           : const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -356,8 +373,10 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.cancel,
-                              color: Pallete.textSecondaryColor),
+                          const Icon(
+                            Icons.cancel,
+                            color: Pallete.textSecondaryColor,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'Decline',
@@ -395,10 +414,7 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ],
     );

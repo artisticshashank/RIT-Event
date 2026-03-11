@@ -23,7 +23,9 @@ class HealthScoreIndicator extends StatelessWidget {
             value: score / 100,
             strokeWidth: 12,
             backgroundColor: Pallete.textSecondaryColor.withValues(alpha: 0.15),
-            valueColor: const AlwaysStoppedAnimation<Color>(Pallete.secondaryColor),
+            valueColor: const AlwaysStoppedAnimation<Color>(
+              Pallete.secondaryColor,
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

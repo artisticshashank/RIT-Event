@@ -86,19 +86,37 @@ class FuelRepository {
     await Future.delayed(const Duration(milliseconds: 400));
     return [
       FuelRequestModel(
-        id: '1', customerName: 'Alex Rivera', carInfo: 'Tesla Model 3 • Silver',
-        distance: '2.4 km', fuelQuantity: '20 Liters', price: 45.00,
-        status: 'searching', fuelType: '95 OCT', imageUrl: '',
+        id: '1',
+        customerName: 'Alex Rivera',
+        carInfo: 'Tesla Model 3 • Silver',
+        distance: '2.4 km',
+        fuelQuantity: '20 Liters',
+        price: 45.00,
+        status: 'searching',
+        fuelType: '95 OCT',
+        imageUrl: '',
       ),
       FuelRequestModel(
-        id: '2', customerName: 'Sarah Jenkins', carInfo: 'BMW X5 • Black',
-        distance: '0.8 km', fuelQuantity: '45 Liters', price: 82.50,
-        status: 'searching', fuelType: 'DIESEL', imageUrl: '',
+        id: '2',
+        customerName: 'Sarah Jenkins',
+        carInfo: 'BMW X5 • Black',
+        distance: '0.8 km',
+        fuelQuantity: '45 Liters',
+        price: 82.50,
+        status: 'searching',
+        fuelType: 'DIESEL',
+        imageUrl: '',
       ),
       FuelRequestModel(
-        id: '3', customerName: 'Marcus Thorne', carInfo: 'Audi A4 • Blue',
-        distance: '5.1 km', fuelQuantity: '15 Liters', price: 34.20,
-        status: 'searching', fuelType: '98 OCT', imageUrl: '',
+        id: '3',
+        customerName: 'Marcus Thorne',
+        carInfo: 'Audi A4 • Blue',
+        distance: '5.1 km',
+        fuelQuantity: '15 Liters',
+        price: 34.20,
+        status: 'searching',
+        fuelType: '98 OCT',
+        imageUrl: '',
       ),
     ];
   }
@@ -142,12 +160,19 @@ class FuelRepository {
   }
 
   // ── Accept a request: mark responder + status ─────────────────────────────
-  Future<void> acceptRequest(String requestId, String stationId, double agreedPrice) async {
-    await _supabase.from('service_requests').update({
-      'responder_id': stationId,
-      'status': ServiceStatus.accepted.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+  Future<void> acceptRequest(
+    String requestId,
+    String stationId,
+    double agreedPrice,
+  ) async {
+    await _supabase
+        .from('service_requests')
+        .update({
+          'responder_id': stationId,
+          'status': ServiceStatus.accepted.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
 
     // Create the transaction row
     await _supabase.from('service_transactions').insert({
@@ -161,17 +186,21 @@ class FuelRepository {
 
   // ── Decline a request ─────────────────────────────────────────────────────
   Future<void> declineRequest(String requestId) async {
-    await _supabase.from('service_requests').update({
-      'status': ServiceStatus.cancelled.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+    await _supabase
+        .from('service_requests')
+        .update({
+          'status': ServiceStatus.cancelled.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
   }
 
   // ── Mark payment received → triggers DB function to set invoice_generated ─
   Future<void> markPaymentReceived(String transactionId) async {
-    await _supabase.from('service_transactions').update({
-      'payment_status': PaymentStatus.received.value,
-    }).eq('id', transactionId);
+    await _supabase
+        .from('service_transactions')
+        .update({'payment_status': PaymentStatus.received.value})
+        .eq('id', transactionId);
   }
 
   // ── Fetch earnings for analytics screen ──────────────────────────────────
@@ -183,7 +212,9 @@ class FuelRepository {
           .eq('provider_id', stationId)
           .order('created_at', ascending: false);
 
-      return (res as List).map((e) => ServiceTransactionModel.fromMap(e)).toList();
+      return (res as List)
+          .map((e) => ServiceTransactionModel.fromMap(e))
+          .toList();
     } catch (e) {
       print('Fuel earnings fetch error: $e');
       return [];
@@ -192,18 +223,24 @@ class FuelRepository {
 
   // ── Mark provider arriving at location ──────────────────────────────────
   Future<void> markArriving(String requestId) async {
-    await _supabase.from('service_requests').update({
-      'status': ServiceStatus.arriving.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+    await _supabase
+        .from('service_requests')
+        .update({
+          'status': ServiceStatus.arriving.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
   }
 
   // ── Mark job complete ─────────────────────────────────────────────────────
   Future<void> markComplete(String requestId) async {
-    await _supabase.from('service_requests').update({
-      'status': ServiceStatus.completed.value,
-      'updated_at': DateTime.now().toIso8601String(),
-    }).eq('id', requestId);
+    await _supabase
+        .from('service_requests')
+        .update({
+          'status': ServiceStatus.completed.value,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', requestId);
   }
 
   Future<String> _getRequesterId(String requestId) async {

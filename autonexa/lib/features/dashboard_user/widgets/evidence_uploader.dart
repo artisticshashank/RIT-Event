@@ -13,9 +13,14 @@ class EvidenceUploader extends StatelessWidget {
       children: [
         _buildAddPhotoButton(bgColor),
         const SizedBox(width: 12),
-        _buildPhotoThumbnail('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=200&auto=format&fit=crop'), // Engine
+        _buildPhotoThumbnail(
+          'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=200&auto=format&fit=crop',
+        ), // Engine
         const SizedBox(width: 12),
-        _buildPhotoThumbnail('https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=200&auto=format&fit=crop', isDarkImage: true), // UI/Dash
+        _buildPhotoThumbnail(
+          'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=200&auto=format&fit=crop',
+          isDarkImage: true,
+        ), // UI/Dash
       ],
     );
   }
@@ -33,19 +38,23 @@ class EvidenceUploader extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-              color: Pallete.textSecondaryColor.withValues(alpha: 0.5),
-              style: BorderStyle.solid),
+            color: Pallete.textSecondaryColor.withValues(alpha: 0.5),
+            style: BorderStyle.solid,
+          ),
         ),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.add, color: Pallete.secondaryColor),
             SizedBox(height: 4),
-            Text('ADD',
-                style: TextStyle(
-                    color: Pallete.textSecondaryColor,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold)),
+            Text(
+              'ADD',
+              style: TextStyle(
+                color: Pallete.textSecondaryColor,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),
@@ -60,10 +69,7 @@ class EvidenceUploader extends StatelessWidget {
           height: 72,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            image: DecorationImage(
-              image: NetworkImage(url),
-              fit: BoxFit.cover,
-            ),
+            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
           ),
         ),
         Positioned(

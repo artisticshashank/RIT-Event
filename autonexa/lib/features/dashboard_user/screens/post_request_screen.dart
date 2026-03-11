@@ -131,7 +131,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
       return;
     }
 
-    final success = await ref.read(createServiceRequestProvider.notifier).create(
+    final success = await ref
+        .read(createServiceRequestProvider.notifier)
+        .create(
           requestType: _mapToServiceType(_selectedServiceType),
           locationLat: 0.0,
           locationLng: 0.0,
@@ -178,8 +180,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
     required BuildContext context,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final inputBgColor =
-        isDark ? const Color(0xFF28286A) : Colors.grey.shade100;
+    final inputBgColor = isDark
+        ? const Color(0xFF28286A)
+        : Colors.grey.shade100;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
 
     return Container(
@@ -189,18 +192,24 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         color: inputBgColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+          color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+        ),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
           dropdownColor: inputBgColor,
           style: TextStyle(color: textColor, fontSize: 16),
-          hint: Text(hint,
-              style: TextStyle(
-                  color: Pallete.textSecondaryColor.withValues(alpha: 0.7))),
-          icon: Icon(Icons.keyboard_arrow_down,
-              color: Pallete.textSecondaryColor),
+          hint: Text(
+            hint,
+            style: TextStyle(
+              color: Pallete.textSecondaryColor.withValues(alpha: 0.7),
+            ),
+          ),
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            color: Pallete.textSecondaryColor,
+          ),
           isExpanded: true,
           items: items
               .map((i) => DropdownMenuItem(value: i, child: Text(i)))
@@ -216,14 +225,16 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
     final bgColor = isDark ? const Color(0xFF1B1B4A) : Colors.white;
-    final inputBgColor =
-        isDark ? const Color(0xFF28286A) : Colors.grey.shade100;
+    final inputBgColor = isDark
+        ? const Color(0xFF28286A)
+        : Colors.grey.shade100;
 
     final createState = ref.watch(createServiceRequestProvider);
     final isLoading = createState is AsyncLoading;
 
     final vehiclesAsync = ref.watch(userVehiclesProvider);
-    final vehicleOptions = vehiclesAsync.value
+    final vehicleOptions =
+        vehiclesAsync.value
             ?.map((v) => '${v.make} ${v.model} ${v.year}')
             .toList() ??
         [];
@@ -241,13 +252,18 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         title: Text(
           'Post a Request',
           style: TextStyle(
-              color: textColor, fontSize: 20, fontWeight: FontWeight.bold),
+            color: textColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () {},
-            child: const Text('Drafts',
-                style: TextStyle(color: Pallete.secondaryColor)),
+            child: const Text(
+              'Drafts',
+              style: TextStyle(color: Pallete.secondaryColor),
+            ),
           ),
         ],
       ),
@@ -258,7 +274,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
           children: [
             // ── Service Type ──────────────────────────────────────────────
             const FormSectionHeader(
-                title: 'Service Type', icon: Icons.build_circle),
+              title: 'Service Type',
+              icon: Icons.build_circle,
+            ),
             const SizedBox(height: 12),
             _buildDropdown(
               hint: 'Select Service Type',
@@ -279,11 +297,17 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             // ── Fuel-specific section ─────────────────────────────────────
             if (_isFuelRequest) ...[
               const FormSectionHeader(
-                  title: 'Fuel Details', icon: Icons.local_gas_station),
+                title: 'Fuel Details',
+                icon: Icons.local_gas_station,
+              ),
               const SizedBox(height: 12),
-              const Text('Fuel Type',
-                  style: TextStyle(
-                      fontSize: 12, color: Pallete.textSecondaryColor)),
+              const Text(
+                'Fuel Type',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Pallete.textSecondaryColor,
+                ),
+              ),
               const SizedBox(height: 8),
               _buildDropdown(
                 hint: 'Select Fuel Type',
@@ -293,9 +317,13 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                 context: context,
               ),
               const SizedBox(height: 16),
-              const Text('Quantity Needed',
-                  style: TextStyle(
-                      fontSize: 12, color: Pallete.textSecondaryColor)),
+              const Text(
+                'Quantity Needed',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Pallete.textSecondaryColor,
+                ),
+              ),
               const SizedBox(height: 8),
               _buildDropdown(
                 hint: 'How much fuel do you need?',
@@ -310,11 +338,17 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             // ── Towing-specific section ───────────────────────────────────
             if (_isTowingRequest) ...[
               const FormSectionHeader(
-                  title: 'Issue Details', icon: Icons.car_crash),
+                title: 'Issue Details',
+                icon: Icons.car_crash,
+              ),
               const SizedBox(height: 12),
-              const Text('What happened?',
-                  style: TextStyle(
-                      fontSize: 12, color: Pallete.textSecondaryColor)),
+              const Text(
+                'What happened?',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Pallete.textSecondaryColor,
+                ),
+              ),
               const SizedBox(height: 8),
               _buildDropdown(
                 hint: 'Select issue type',
@@ -328,11 +362,14 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
 
             // ── Vehicle Details ────────────────────────────────────────────
             const FormSectionHeader(
-                title: 'Vehicle Details', icon: Icons.directions_car),
+              title: 'Vehicle Details',
+              icon: Icons.directions_car,
+            ),
             const SizedBox(height: 12),
-            const Text('Select Vehicle',
-                style: TextStyle(
-                    fontSize: 12, color: Pallete.textSecondaryColor)),
+            const Text(
+              'Select Vehicle',
+              style: TextStyle(fontSize: 12, color: Pallete.textSecondaryColor),
+            ),
             const SizedBox(height: 8),
             vehicleOptions.isEmpty
                 ? Container(
@@ -344,33 +381,36 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                     ),
                     child: const Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('No vehicles added yet',
-                          style:
-                              TextStyle(color: Pallete.textSecondaryColor)),
+                      child: Text(
+                        'No vehicles added yet',
+                        style: TextStyle(color: Pallete.textSecondaryColor),
+                      ),
                     ),
                   )
                 : _buildDropdown(
                     hint: 'Select your vehicle',
                     value: _selectedVehicleInfo,
                     items: vehicleOptions,
-                    onChanged: (v) =>
-                        setState(() => _selectedVehicleInfo = v),
+                    onChanged: (v) => setState(() => _selectedVehicleInfo = v),
                     context: context,
                   ),
 
             // Problem Category — only for mechanical/tire/jump
             if (_isMechanicalRequest) ...[
               const SizedBox(height: 16),
-              const Text('Problem Category',
-                  style: TextStyle(
-                      fontSize: 12, color: Pallete.textSecondaryColor)),
+              const Text(
+                'Problem Category',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Pallete.textSecondaryColor,
+                ),
+              ),
               const SizedBox(height: 8),
               _buildDropdown(
                 hint: 'Engine, Brakes, AC, etc.',
                 value: _selectedProblemCategory,
                 items: _problemCategories,
-                onChanged: (v) =>
-                    setState(() => _selectedProblemCategory = v),
+                onChanged: (v) => setState(() => _selectedProblemCategory = v),
                 context: context,
               ),
             ],
@@ -378,7 +418,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
 
             // ── Describe issue ─────────────────────────────────────────────
             const FormSectionHeader(
-                title: 'Describe the Issue', icon: Icons.edit_note),
+              title: 'Describe the Issue',
+              icon: Icons.edit_note,
+            ),
             const SizedBox(height: 12),
             Container(
               height: 120,
@@ -387,20 +429,18 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                 color: inputBgColor,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                    color:
-                        Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+                ),
               ),
               child: TextField(
                 controller: _descController,
                 maxLines: null,
                 style: TextStyle(color: textColor),
                 decoration: InputDecoration(
-                  hintText:
-                      'Describe what\'s happening with your vehicle...',
+                  hintText: 'Describe what\'s happening with your vehicle...',
                   border: InputBorder.none,
                   hintStyle: TextStyle(
-                    color:
-                        Pallete.textSecondaryColor.withValues(alpha: 0.5),
+                    color: Pallete.textSecondaryColor.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -412,10 +452,16 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 FormSectionHeader(
-                    title: 'Upload Evidence', icon: Icons.camera_alt),
-                Text('Max 5 files',
-                    style: TextStyle(
-                        color: Pallete.textSecondaryColor, fontSize: 12)),
+                  title: 'Upload Evidence',
+                  icon: Icons.camera_alt,
+                ),
+                Text(
+                  'Max 5 files',
+                  style: TextStyle(
+                    color: Pallete.textSecondaryColor,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -424,22 +470,26 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
 
             // ── Location ───────────────────────────────────────────────────
             const FormSectionHeader(
-                title: 'Service Location', icon: Icons.location_on),
+              title: 'Service Location',
+              icon: Icons.location_on,
+            ),
             const SizedBox(height: 12),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 color: inputBgColor,
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
-                    color:
-                        Pallete.textSecondaryColor.withValues(alpha: 0.2)),
+                  color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+                ),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.my_location,
-                      color: Pallete.secondaryColor, size: 20),
+                  const Icon(
+                    Icons.my_location,
+                    color: Pallete.secondaryColor,
+                    size: 20,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: TextField(
@@ -449,8 +499,10 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                         hintText: 'Enter your location or address...',
                         border: InputBorder.none,
                         hintStyle: TextStyle(
-                            color: Pallete.textSecondaryColor
-                                .withValues(alpha: 0.6)),
+                          color: Pallete.textSecondaryColor.withValues(
+                            alpha: 0.6,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -465,7 +517,8 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                 borderRadius: BorderRadius.circular(20),
                 image: const DecorationImage(
                   image: NetworkImage(
-                      'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop'),
+                    'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -477,7 +530,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const FormSectionHeader(
-                    title: 'Budget Range', icon: Icons.payments),
+                  title: 'Budget Range',
+                  icon: Icons.payments,
+                ),
                 Text(
                   '\$${_currentBudgetMin.toInt()} - \$${_currentBudgetMax.toInt()}',
                   style: const TextStyle(
@@ -505,12 +560,20 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('\$50',
-                    style: TextStyle(
-                        color: Pallete.textSecondaryColor, fontSize: 12)),
-                Text('\$2,000+',
-                    style: TextStyle(
-                        color: Pallete.textSecondaryColor, fontSize: 12)),
+                Text(
+                  '\$50',
+                  style: TextStyle(
+                    color: Pallete.textSecondaryColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  '\$2,000+',
+                  style: TextStyle(
+                    color: Pallete.textSecondaryColor,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 48),
@@ -527,8 +590,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   elevation: 5,
-                  shadowColor:
-                      Pallete.secondaryColor.withValues(alpha: 0.5),
+                  shadowColor: Pallete.secondaryColor.withValues(alpha: 0.5),
                 ),
                 onPressed: isLoading ? null : _submitRequest,
                 child: isLoading
@@ -536,7 +598,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                         width: 24,
                         height: 24,
                         child: CircularProgressIndicator(
-                            color: Colors.white, strokeWidth: 2),
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -545,8 +609,8 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                             _isFuelRequest
                                 ? 'Request Fuel Delivery'
                                 : _isTowingRequest
-                                    ? 'Request Tow Truck'
-                                    : 'Post Service Request',
+                                ? 'Request Tow Truck'
+                                : 'Post Service Request',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
