@@ -1,0 +1,42 @@
+﻿Analyzing autonexa...                                           
+
+   info - Statements in an if should be enclosed in a block - lib\features\auth\screens\login_screen.dart:133:29 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\auth\screens\login_screen.dart:161:29 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\auth\screens\signup_screen.dart:237:29 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\auth\screens\signup_screen.dart:250:29 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\auth\screens\signup_screen.dart:277:29 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\auth\screens\signup_screen.dart:279:29 - curly_braces_in_flow_control_structures
+   info - Use the null-aware marker '?' rather than a null check via an 'if' - lib\features\auth\widgets\auth_field.dart:47:13 - use_null_aware_elements
+   info - Don't invoke 'print' in production code - lib\features\dashboard_seller\repository\seller_repository.dart:53:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\features\dashboard_seller\repository\seller_repository.dart:112:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\features\dashboard_seller\repository\seller_repository.dart:166:7 - avoid_print
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\features\dashboard_seller\screens\seller_add_product_screen.dart:353:23 - deprecated_member_use
+warning - Unused import: 'package:autonexa/theme/pallete.dart' - lib\features\dashboard_user\screens\user_dashboard_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:autonexa/models/service_request_model.dart' - lib\features\dashboard_user\widgets\maintenance_list.dart:5:8 - unused_import
+  error - There's no constant named 'fuel_delivery' in 'ServiceType' - lib\features\dashboard_user\widgets\maintenance_list.dart:103:24 - undefined_enum_constant
+  error - There's no constant named 'battery_jump_start' in 'ServiceType' - lib\features\dashboard_user\widgets\maintenance_list.dart:104:24 - undefined_enum_constant
+  error - There's no constant named 'tire_change' in 'ServiceType' - lib\features\dashboard_user\widgets\maintenance_list.dart:105:24 - undefined_enum_constant
+  error - There's no constant named 'lockout_service' in 'ServiceType' - lib\features\dashboard_user\widgets\maintenance_list.dart:106:24 - undefined_enum_constant
+warning - Dead code - lib\features\dashboard_user\widgets\maintenance_list.dart:108:5 - dead_code
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\maintenance_list.dart:127:77 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\maintenance_list.dart:131:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\maintenance_list.dart:160:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\quick_actions.dart:51:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\quick_actions.dart:55:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\quick_actions.dart:67:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\user_app_bar.dart:25:59 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\user_app_bar.dart:78:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\vehicle_card.dart:47:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\vehicle_card.dart:72:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\vehicle_card.dart:158:74 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard_user\widgets\vehicle_card.dart:207:59 - deprecated_member_use
+   info - The constant name 'regular_user' isn't a lowerCamelCase identifier - lib\models\enums.dart:2:3 - constant_identifier_names
+   info - The constant name 'petrol_bunk' isn't a lowerCamelCase identifier - lib\models\enums.dart:4:3 - constant_identifier_names
+   info - The constant name 'towing_agency' isn't a lowerCamelCase identifier - lib\models\enums.dart:5:3 - constant_identifier_names
+   info - The constant name 'parts_seller' isn't a lowerCamelCase identifier - lib\models\enums.dart:6:3 - constant_identifier_names
+   info - The constant name 'fuel_share' isn't a lowerCamelCase identifier - lib\models\enums.dart:11:3 - constant_identifier_names
+   info - The constant name 'mechanical_repair' isn't a lowerCamelCase identifier - lib\models\enums.dart:13:3 - constant_identifier_names
+   info - The constant name 'flat_tire' isn't a lowerCamelCase identifier - lib\models\enums.dart:14:3 - constant_identifier_names
+   info - The constant name 'jump_start' isn't a lowerCamelCase identifier - lib\models\enums.dart:15:3 - constant_identifier_names
+   info - The constant name 'parts_delivery' isn't a lowerCamelCase identifier - lib\models\enums.dart:16:3 - constant_identifier_names
+
