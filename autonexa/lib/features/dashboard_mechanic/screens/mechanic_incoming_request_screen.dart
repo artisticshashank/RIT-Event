@@ -1,14 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
+import 'package:autonexa/models/service_request_model.dart';
+import 'package:autonexa/models/enums.dart';
+import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_controller.dart';
 import 'package:autonexa/features/dashboard_mechanic/screens/mechanic_navigation_screen.dart';
 
-class MechanicIncomingRequestScreen extends StatelessWidget {
-  const MechanicIncomingRequestScreen({super.key});
+class MechanicIncomingRequestScreen extends ConsumerWidget {
+  final ServiceRequestModel serviceRequest;
+
+  const MechanicIncomingRequestScreen({
+    super.key,
+    required this.serviceRequest,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    
+    final acceptState = ref.watch(acceptJobProvider);
+    final isLoading = acceptState is AsyncLoading;
+
+    Future<void> onAccept() async {
+      final success =
+          await ref.read(acceptJobProvider.notifier).accept(serviceRequest.id);
+      if (!context.mounted) return;
+      if (success) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MechanicNavigationScreen(
+              serviceRequest: serviceRequest,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Could not accept request. Try again.'),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -24,9 +62,9 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: Column(
+        title: const Column(
           children: [
-            const Text(
+            Text(
               'NEW JOB ALERT',
               style: TextStyle(
                 color: Pallete.secondaryColor,
@@ -35,7 +73,7 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
                 letterSpacing: 1.2,
               ),
             ),
-            const Text(
+            Text(
               'Incoming Request',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -60,28 +98,33 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Dummy Map Background
+          // Map background
           Container(
             width: double.infinity,
             height: double.infinity,
-            color: isDark ? const Color(0xFF1E2333) : Colors.blue.withAlpha(30),
+            color: isDark
+                ? const Color(0xFF1E2333)
+                : Colors.blue.withValues(alpha: 0.12),
             child: Center(
-              child: Icon(Icons.map, size: 200, color: isDark ? Colors.white10 : Colors.black12),
+              child: Icon(Icons.map,
+                  size: 200,
+                  color: isDark ? Colors.white10 : Colors.black12),
             ),
           ),
-          
-          // Map Markers
+
+          // Map markers
           Positioned(
             top: MediaQuery.of(context).size.height * 0.3,
             left: MediaQuery.of(context).size.width * 0.4,
             child: CircleAvatar(
-               backgroundColor: Pallete.secondaryColor.withAlpha(50),
-               radius: 30,
-               child: const CircleAvatar(
-                 backgroundColor: Pallete.secondaryColor,
-                 radius: 20,
-                 child: Icon(Icons.location_on, color: Colors.white, size: 20),
-               ),
+              backgroundColor: Pallete.secondaryColor.withValues(alpha: 0.3),
+              radius: 30,
+              child: const CircleAvatar(
+                backgroundColor: Pallete.secondaryColor,
+                radius: 20,
+                child: Icon(Icons.location_on,
+                    color: Colors.white, size: 20),
+              ),
             ),
           ),
           Positioned(
@@ -93,12 +136,13 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Color(0xFF2C3146),
                 radius: 18,
-                child: Icon(Icons.directions_car, color: Colors.white, size: 16),
+                child: Icon(Icons.directions_car,
+                    color: Colors.white, size: 16),
               ),
             ),
           ),
-          
-          // Bottom Card
+
+          // Bottom card
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -112,44 +156,47 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
                 ),
                 boxShadow: const [
                   BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 20,
-                    offset: Offset(0, -5),
-                  ),
+                      color: Colors.black26,
+                      blurRadius: 20,
+                      offset: Offset(0, -5)),
                 ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // User info row
+                  // Customer info + estimated earning
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          const CircleAvatar(
+                          CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=12'),
+                            backgroundColor:
+                                Pallete.secondaryColor.withValues(alpha: 0.2),
+                            child: const Icon(Icons.person,
+                                color: Pallete.secondaryColor, size: 30),
                           ),
                           const SizedBox(width: 16),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Alex\nJohnson',
+                                'Customer',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  height: 1.1,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  const Icon(Icons.star, color: Pallete.secondaryColor, size: 14),
+                                  const Icon(Icons.star,
+                                      color: Pallete.secondaryColor,
+                                      size: 14),
                                   const SizedBox(width: 4),
                                   Text(
-                                    '4.9 (124\nreviews)',
+                                    'Requires Assistance',
                                     style: TextStyle(
                                       color: Pallete.textSecondaryColor,
                                       fontSize: 12,
@@ -161,10 +208,10 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
+                          const Text(
                             'ESTIMATED\nEARNING',
                             textAlign: TextAlign.right,
                             style: TextStyle(
@@ -174,10 +221,12 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
                               letterSpacing: 1.0,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
-                            '\$85.00',
-                            style: TextStyle(
+                            serviceRequest.price != null
+                                ? '\$${serviceRequest.price!.toStringAsFixed(2)}'
+                                : '\$—',
+                            style: const TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
@@ -186,91 +235,111 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Job Info Grid
+
+                  // Job info grid
                   Row(
                     children: [
-                      Expanded(child: _buildInfoItem('VEHICLE', 'Tesla Model 3')),
-                      Expanded(child: _buildInfoItem('SERVICE', 'Brake Check')),
+                      Expanded(
+                          child: _buildInfoItem('VEHICLE',
+                              serviceRequest.vehicleInfo ?? '—')),
+                      Expanded(
+                          child: _buildInfoItem('SERVICE',
+                              serviceRequest.requestType.displayName)),
                     ],
                   ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Expanded(child: _buildInfoItem('DISTANCE', '2.4 miles')),
-                      Expanded(child: _buildInfoItem('TRAVEL TIME', '8 mins')),
+                      Expanded(
+                        child: _buildInfoItem(
+                          'DISTANCE',
+                          serviceRequest.distanceKm != null
+                              ? '${serviceRequest.distanceKm!.toStringAsFixed(1)} km'
+                              : 'Nearby',
+                        ),
+                      ),
+                      Expanded(
+                        child: _buildInfoItem('ISSUE TYPE',
+                            serviceRequest.issueType ?? '—'),
+                      ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Customer message
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E2333) : Colors.blue.withAlpha(10), // A dark blue tint in dark mode
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.info, color: Colors.blue),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Customer reported squeaking sounds during moderate braking.',
-                            style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black87,
-                              fontSize: 13,
-                              height: 1.4,
+
+                  // Customer's description
+                  if (serviceRequest.description != null &&
+                      serviceRequest.description!.isNotEmpty)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xFF1E2333)
+                            : Colors.blue.withValues(alpha: 0.06),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info, color: Colors.blue),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              serviceRequest.description!,
+                              style: TextStyle(
+                                color: isDark
+                                    ? Colors.white
+                                    : Colors.black87,
+                                fontSize: 13,
+                                height: 1.4,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  
+
                   const SizedBox(height: 24),
-                  
-                  // Actions
+
+                  // Accept button
                   SizedBox(
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Navigate to navigation screen
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MechanicNavigationScreen(),
-                          ),
-                        );
-                      },
+                      onPressed: isLoading ? null : onAccept,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Pallete.secondaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.check_circle, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text(
-                            'Accept Request',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                  color: Colors.white, strokeWidth: 2),
+                            )
+                          : const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check_circle, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Accept Request',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
+                  // Decline button
                   SizedBox(
                     width: double.infinity,
                     height: 56,
@@ -287,7 +356,8 @@ class MechanicIncomingRequestScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.cancel, color: Pallete.textSecondaryColor),
+                          const Icon(Icons.cancel,
+                              color: Pallete.textSecondaryColor),
                           const SizedBox(width: 8),
                           Text(
                             'Decline',

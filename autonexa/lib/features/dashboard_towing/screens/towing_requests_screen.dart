@@ -6,6 +6,7 @@ import 'package:autonexa/features/dashboard_towing/controller/towing_controller.
 import 'package:autonexa/features/dashboard_towing/widgets/towing_stat_card.dart';
 import 'package:autonexa/features/dashboard_towing/widgets/towing_request_card.dart';
 import 'package:autonexa/features/dashboard_towing/screens/towing_request_accepted_screen.dart';
+import 'package:autonexa/models/towing_dashboard_model.dart';
 
 class TowingRequestsScreen extends ConsumerWidget {
   const TowingRequestsScreen({super.key});
@@ -181,31 +182,30 @@ class TowingRequestsScreen extends ConsumerWidget {
                   data: (requests) {
                     if (requests.isEmpty) {
                       return Center(
-                        child: Text(
-                          'No active requests right now.',
-                          style: TextStyle(color: Colors.white60),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40),
+                          child: Column(
+                            children: [
+                              Icon(Icons.car_crash,
+                                  size: 56,
+                                  color: accentColor.withValues(alpha: 0.3)),
+                              const SizedBox(height: 16),
+                              Text('No active requests right now.',
+                                  style: TextStyle(color: Colors.white60)),
+                            ],
+                          ),
                         ),
                       );
                     }
                     return Column(
                       children: requests.map((request) {
-                        return TowingRequestCard(
-                          request: request,
-                          onAssign: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TowingRequestAcceptedScreen(request: request),
-                              ),
-                            );
-                          },
-                          onDecline: () {},
-                        );
+                        return _TowingRequestCardWrapper(request: request);
                       }).toList(),
                     );
                   },
                   loading: () => const Loader(),
-                  error: (error, stack) => Text(error.toString(), style: TextStyle(color: textColor)),
+                  error: (error, stack) =>
+                      Text(error.toString(), style: TextStyle(color: textColor)),
                 ),
 
                 const SizedBox(height: 16),
@@ -273,6 +273,67 @@ class TowingRequestsScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// ── Per-card wrapper that wires assign/decline to real providers ─────────────
+class _TowingRequestCardWrapper extends ConsumerWidget {
+  final TowingRequestModel request;
+  const _TowingRequestCardWrapper({required this.request});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final assignState = ref.watch(assignTowingDriverProvider);
+    final declineState = ref.watch(declineTowingRequestProvider);
+    final isLoading =
+        assignState is AsyncLoading || declineState is AsyncLoading;
+
+    return TowingRequestCard(
+      request: request,
+      onAssign: isLoading
+          ? () {}
+          : () async {
+              final ok = await ref
+                  .read(assignTowingDriverProvider.notifier)
+                  .assign(request.id, request.price);
+              if (ok && context.mounted) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        TowingRequestAcceptedScreen(request: request),
+                  ),
+                );
+              } else if (!ok && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to assign driver. Please retry.'),
+                    backgroundColor: Colors.redAccent,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
+      onDecline: isLoading
+          ? () {}
+          : () async {
+              final ok = await ref
+                  .read(declineTowingRequestProvider.notifier)
+                  .decline(request.id);
+              if (ok && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Request declined.'),
+                    backgroundColor: Colors.orange.shade700,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    margin: const EdgeInsets.all(16),
+                  ),
+                );
+              }
+            },
     );
   }
 }

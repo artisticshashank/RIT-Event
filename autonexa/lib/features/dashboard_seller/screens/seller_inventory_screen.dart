@@ -1,16 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/core/common/loader.dart';
+import 'package:autonexa/models/seller_dashboard_model.dart';
 import 'package:autonexa/features/dashboard_seller/controller/seller_controller.dart';
 import 'package:autonexa/features/dashboard_seller/widgets/inventory_product_tile.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_seller/screens/seller_add_product_screen.dart';
 
-class SellerInventoryScreen extends ConsumerWidget {
+class SellerInventoryScreen extends ConsumerStatefulWidget {
   const SellerInventoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SellerInventoryScreen> createState() =>
+      _SellerInventoryScreenState();
+}
+
+class _SellerInventoryScreenState extends ConsumerState<SellerInventoryScreen> {
+  Future<void> _confirmDelete(
+      BuildContext context, InventoryProductModel product) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Theme.of(context).cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Delete Product',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text(
+          'Are you sure you want to delete "${product.name}"? This cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Delete',
+                style: TextStyle(color: Colors.redAccent)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true || !mounted) return;
+
+    final success =
+        await ref.read(deleteProductProvider.notifier).delete(product.id);
+
+    if (!mounted) return;
+    if (success) {
+      ref.invalidate(sellerInventoryProvider);
+      ref.invalidate(sellerOverviewProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('"${product.name}" deleted.'),
+          backgroundColor: Pallete.secondaryColor,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          margin: const EdgeInsets.all(16),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to delete. Try again.'),
+          backgroundColor: Colors.redAccent,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final inventoryFuture = ref.watch(sellerInventoryProvider);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -123,8 +186,15 @@ class SellerInventoryScreen extends ConsumerWidget {
                 ...products.map(
                   (product) => InventoryProductTile(
                     product: product,
-                    onEdit: () {},
-                    onDelete: () {},
+                    onEdit: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Edit product coming soon'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    },
+                    onDelete: () => _confirmDelete(context, product),
                   ),
                 ),
 

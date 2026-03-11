@@ -1,11 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
+import 'package:autonexa/features/dashboard_seller/controller/seller_controller.dart';
 import 'package:autonexa/theme/pallete.dart';
 
-class SellerOrderDetailsScreen extends StatelessWidget {
+class SellerOrderDetailsScreen extends ConsumerStatefulWidget {
   final DetailedOrderModel order;
 
   const SellerOrderDetailsScreen({super.key, required this.order});
+
+  @override
+  ConsumerState<SellerOrderDetailsScreen> createState() =>
+      _SellerOrderDetailsScreenState();
+}
+
+class _SellerOrderDetailsScreenState
+    extends ConsumerState<SellerOrderDetailsScreen> {
+  late String _currentStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentStatus = widget.order.status;
+  }
+
+  String _nextStatus() {
+    switch (_currentStatus.toUpperCase()) {
+      case 'NEW':
+      case 'PENDING':
+        return 'PROCESSING';
+      case 'PROCESSING':
+        return 'SHIPPED';
+      case 'SHIPPED':
+        return 'DELIVERED';
+      default:
+        return _currentStatus;
+    }
+  }
+
+  bool _canAdvance() {
+    return !['DELIVERED', 'CANCELLED']
+        .contains(_currentStatus.toUpperCase());
+  }
+
+  Future<void> _advanceStatus() async {
+    final next = _nextStatus();
+    final success = await ref
+        .read(updateOrderStatusProvider.notifier)
+        .updateStatus(widget.order.id, next);
+    if (!mounted) return;
+    if (success) {
+      setState(() => _currentStatus = next);
+      ref.invalidate(sellerOrdersProvider);
+      ref.invalidate(sellerOverviewProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Order updated to $next'),
+          backgroundColor: Pallete.secondaryColor,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          margin: const EdgeInsets.all(16),
+        ),
+      );
+    }
+  }
 
   Widget _buildStepIcon(
     IconData icon,
@@ -178,6 +238,7 @@ class SellerOrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final order = widget.order;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Exact colors from Mockup
@@ -359,26 +420,32 @@ class SellerOrderDetailsScreen extends StatelessWidget {
                           width: double.infinity,
                           height: 48,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: _canAdvance() ? _advanceStatus : null,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: accentColor,
                               foregroundColor: Colors.white,
+                              disabledBackgroundColor: Colors.white24,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Update to Shipped',
-                                  style: TextStyle(
+                                  _canAdvance()
+                                      ? 'Update to ${_nextStatus()}'
+                                      : 'Order ${_currentStatus}',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
                                 ),
-                                SizedBox(width: 8),
-                                Icon(Icons.arrow_forward_rounded, size: 20),
+                                if (_canAdvance()) ...
+                                  const [
+                                    SizedBox(width: 8),
+                                    Icon(Icons.arrow_forward_rounded, size: 20),
+                                  ],
                               ],
                             ),
                           ),

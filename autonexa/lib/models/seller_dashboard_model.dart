@@ -73,7 +73,7 @@ class InventoryProductModel {
       name: map['name'] ?? '',
       sku: map['sku'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
-      stock: map['stock']?.toInt() ?? 0,
+      stock: map['stock_quantity']?.toInt() ?? 0,
       iconCode: map['icon_code'] ?? 'parts',
     );
   }

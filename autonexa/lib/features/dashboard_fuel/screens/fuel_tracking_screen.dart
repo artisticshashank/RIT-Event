@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/models/fuel_dashboard_model.dart';
 import 'package:autonexa/theme/pallete.dart';
+import 'package:autonexa/features/dashboard_fuel/controller/fuel_controller.dart';
+import 'package:autonexa/core/common/loader.dart';
 
-class FuelTrackingScreen extends StatelessWidget {
+class FuelTrackingScreen extends ConsumerWidget {
   final FuelRequestModel request;
 
   const FuelTrackingScreen({super.key, required this.request});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDark ? Colors.white : Colors.black;
     final subTextColor = isDark ? Colors.white60 : Colors.black54;
@@ -336,27 +339,114 @@ class FuelTrackingScreen extends StatelessWidget {
                   
                   const SizedBox(height: 24),
                   
+                  // Dynamic Status Action Buttons
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final arrivingState = ref.watch(fuelMarkArrivingProvider);
+                      final completeState = ref.watch(fuelMarkCompleteProvider);
+                      
+                      final isArrivingLoading = arrivingState is AsyncLoading;
+                      final isCompleteLoading = completeState is AsyncLoading;
+                      
+                      if (request.status == 'searching' || request.status == 'accepted' || request.status == 'NEW') {
+                        // Mark Arriving
+                        return SizedBox(
+                           width: double.infinity,
+                           height: 60,
+                           child: ElevatedButton(
+                              onPressed: isArrivingLoading ? null : () async {
+                                final success = await ref.read(fuelMarkArrivingProvider.notifier).markArriving(request.id);
+                                if (success && context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Marked as Arriving!')),
+                                  );
+                                  Navigator.pop(context); // Pop back to dashboard to refresh
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                 backgroundColor: Pallete.secondaryColor,
+                                 foregroundColor: Colors.white,
+                                 shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                 )
+                              ),
+                              child: isArrivingLoading 
+                                ? const Loader() 
+                                : const Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                    Text('Mark as Arriving', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    SizedBox(width: 12),
+                                    Icon(Icons.directions_car),
+                                 ],
+                              ),
+                           ),
+                        );
+                      } else if (request.status == 'arriving') {
+                         // Mark Complete
+                         return SizedBox(
+                           width: double.infinity,
+                           height: 60,
+                           child: ElevatedButton(
+                              onPressed: isCompleteLoading ? null : () async {
+                                final success = await ref.read(fuelMarkCompleteProvider.notifier).markComplete(request.id);
+                                if (success && context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Job Completed Successfully!')),
+                                  );
+                                  Navigator.pop(context); // Pop back to dashboard
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                 backgroundColor: Colors.green,
+                                 foregroundColor: Colors.white,
+                                 shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                 )
+                              ),
+                              child: isCompleteLoading 
+                                ? const Loader() 
+                                : const Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                    Text('Complete Job', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    SizedBox(width: 12),
+                                    Icon(Icons.check_circle),
+                                 ],
+                              ),
+                           ),
+                        );
+                      } else {
+                         return Container(
+                           padding: const EdgeInsets.all(16),
+                           decoration: BoxDecoration(
+                             color: Colors.green.withValues(alpha: 0.1),
+                             borderRadius: BorderRadius.circular(20)
+                           ),
+                           child: const Center(
+                             child: Text('Job Completed', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                           ),
+                         );
+                      }
+                    },
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
                   // View Order Summary button
                   SizedBox(
                      width: double.infinity,
-                     height: 60,
-                     child: ElevatedButton(
+                     height: 50,
+                     child: OutlinedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                           backgroundColor: Colors.white,
-                           foregroundColor: Colors.black,
+                        style: OutlinedButton.styleFrom(
+                           side: BorderSide(color: borderColor),
+                           foregroundColor: textColor,
                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                            )
                         ),
-                        child: const Row(
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           children: [
-                              Text('View Order Summary', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                              SizedBox(width: 12),
-                              Icon(Icons.arrow_forward),
-                           ],
-                        ),
+                        child: const Text('View Order Summary', style: TextStyle(fontWeight: FontWeight.bold)),
                      ),
                   ),
                   

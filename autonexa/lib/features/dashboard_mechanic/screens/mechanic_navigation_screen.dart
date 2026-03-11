@@ -3,12 +3,18 @@ import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/core/common/floating_bottom_nav_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
+import 'package:autonexa/models/service_request_model.dart';
+import 'package:autonexa/models/enums.dart';
+import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_controller.dart';
 
 class MechanicNavigationScreen extends ConsumerStatefulWidget {
-  const MechanicNavigationScreen({super.key});
+  final ServiceRequestModel serviceRequest;
+  const MechanicNavigationScreen(
+      {super.key, required this.serviceRequest});
 
   @override
-  ConsumerState<MechanicNavigationScreen> createState() => _MechanicNavigationScreenState();
+  ConsumerState<MechanicNavigationScreen> createState() =>
+      _MechanicNavigationScreenState();
 }
 
 class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScreen> {
@@ -256,37 +262,105 @@ class _MechanicNavigationScreenState extends ConsumerState<MechanicNavigationScr
                         
                         const SizedBox(height: 24),
                         
-                        // Arrived Button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Go back or to another screen
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Pallete.secondaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.location_on, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  'ARRIVED AT LOCATION',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.5,
+                        // Arrived / Complete button — REAL
+                        Builder(
+                          builder: (ctx) {
+                            final job = widget.serviceRequest;
+                            final arrivingState =
+                                ref.watch(markArrivingProvider);
+                            final completeState =
+                                ref.watch(markCompleteProvider);
+                            final isArriving = job.status ==
+                                ServiceStatus.arriving;
+                            final isLoading =
+                                arrivingState is AsyncLoading ||
+                                    completeState is AsyncLoading;
+
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 56,
+                              child: ElevatedButton(
+                                onPressed: isLoading
+                                    ? null
+                                    : () async {
+                                        if (!isArriving) {
+                                          final ok = await ref
+                                              .read(markArrivingProvider
+                                                  .notifier)
+                                              .markArriving(job.id);
+                                          if (ok && ctx.mounted) {
+                                            setState(() {});
+                                            ScaffoldMessenger.of(ctx)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: const Text(
+                                                    'Marked as Arriving!'),
+                                                backgroundColor:
+                                                    Pallete.secondaryColor,
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                                margin:
+                                                    const EdgeInsets.all(16),
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          final ok = await ref
+                                              .read(markCompleteProvider
+                                                  .notifier)
+                                              .markComplete(job.id);
+                                          if (ok && ctx.mounted) {
+                                            Navigator.pop(ctx);
+                                          }
+                                        }
+                                      },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isArriving
+                                      ? Colors.green
+                                      : Pallete.secondaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                                child: isLoading
+                                    ? const SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            isArriving
+                                                ? Icons.check_circle
+                                                : Icons.location_on,
+                                            color: Colors.white,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            isArriving
+                                                ? 'MARK JOB COMPLETE'
+                                                : 'ARRIVED AT LOCATION',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            );
+                          },
                         ),
                         
                         const SizedBox(height: 100), // Space for bottom nav

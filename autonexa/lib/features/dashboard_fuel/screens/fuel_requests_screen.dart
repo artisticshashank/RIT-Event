@@ -6,6 +6,7 @@ import 'package:autonexa/features/dashboard_fuel/controller/fuel_controller.dart
 import 'package:autonexa/features/dashboard_fuel/screens/fuel_request_accepted_screen.dart';
 import 'package:autonexa/features/dashboard_fuel/widgets/fuel_stat_card.dart';
 import 'package:autonexa/features/dashboard_fuel/widgets/fuel_request_card.dart';
+import 'package:autonexa/models/fuel_dashboard_model.dart';
 
 class FuelRequestsScreen extends ConsumerWidget {
   const FuelRequestsScreen({super.key});
@@ -218,31 +219,34 @@ class FuelRequestsScreen extends ConsumerWidget {
                   data: (requests) {
                     if (requests.isEmpty) {
                       return Center(
-                        child: Text(
-                          'No incoming requests right now.',
-                          style: TextStyle(color: Colors.white60),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40),
+                          child: Column(
+                            children: [
+                              Icon(Icons.ev_station_outlined,
+                                  size: 56,
+                                  color: accentColor.withValues(alpha: 0.4)),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No incoming requests right now.',
+                                style: TextStyle(color: Colors.white60),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     }
                     return Column(
                       children: requests.map((request) {
-                        return FuelRequestCard(
+                        return _FuelRequestCardWrapper(
                           request: request,
-                          onAccept: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FuelRequestAcceptedScreen(request: request),
-                              ),
-                            );
-                          },
-                          onDecline: () {},
                         );
                       }).toList(),
                     );
                   },
                   loading: () => const Loader(),
-                  error: (error, stack) => Text(error.toString(), style: TextStyle(color: textColor)),
+                  error: (error, stack) =>
+                      Text(error.toString(), style: TextStyle(color: textColor)),
                 ),
 
                 const SizedBox(height: 120), // Pad for floating nav bar
@@ -251,6 +255,67 @@ class FuelRequestsScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// ── Per-card wrapper that wires accept/decline to real providers ─────────────
+class _FuelRequestCardWrapper extends ConsumerWidget {
+  final FuelRequestModel request;
+  const _FuelRequestCardWrapper({required this.request});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final acceptState = ref.watch(acceptFuelRequestProvider);
+    final declineState = ref.watch(declineFuelRequestProvider);
+    final isLoading =
+        acceptState is AsyncLoading || declineState is AsyncLoading;
+
+    return FuelRequestCard(
+      request: request,
+      onAccept: isLoading
+          ? () {}
+          : () async {
+              final ok = await ref
+                  .read(acceptFuelRequestProvider.notifier)
+                  .accept(request.id, request.price);
+              if (ok && context.mounted) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        FuelRequestAcceptedScreen(request: request),
+                  ),
+                );
+              } else if (!ok && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to accept request. Please retry.'),
+                    backgroundColor: Colors.redAccent,
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
+      onDecline: isLoading
+          ? () {}
+          : () async {
+              final ok = await ref
+                  .read(declineFuelRequestProvider.notifier)
+                  .decline(request.id);
+              if (ok && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Request declined.'),
+                    backgroundColor: Colors.orange.shade700,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    margin: const EdgeInsets.all(16),
+                  ),
+                );
+              }
+            },
     );
   }
 }

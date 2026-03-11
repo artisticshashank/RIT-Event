@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
+import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_user/screens/post_request_screen.dart';
 import 'package:autonexa/features/dashboard_user/screens/request_list_screen.dart';
 
@@ -242,10 +243,14 @@ class SosTabView extends StatelessWidget {
               crossAxisSpacing: 16,
               childAspectRatio: 1.5,
               children: [
-                _buildQuickRequestCard(context, 'Towing', Icons.rv_hookup),
-                _buildQuickRequestCard(context, 'Jump Start', Icons.battery_charging_full),
-                _buildQuickRequestCard(context, 'Fuel Delivery', Icons.local_gas_station),
-                _buildQuickRequestCard(context, 'Flat Tire', Icons.tire_repair),
+                _buildQuickRequestCard(context, 'Towing', Icons.rv_hookup,
+                    ServiceType.towing),
+                _buildQuickRequestCard(context, 'Jump Start',
+                    Icons.battery_charging_full, ServiceType.jump_start),
+                _buildQuickRequestCard(context, 'Fuel Delivery',
+                    Icons.local_gas_station, ServiceType.fuel_share),
+                _buildQuickRequestCard(context, 'Flat Tire',
+                    Icons.tire_repair, ServiceType.flat_tire),
               ],
             ),
           ),
@@ -301,7 +306,8 @@ class SosTabView extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickRequestCard(BuildContext context, String title, IconData icon) {
+  Widget _buildQuickRequestCard(BuildContext context, String title,
+      IconData icon, ServiceType serviceType) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
 
@@ -309,7 +315,10 @@ class SosTabView extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const PostRequestScreen()),
+          MaterialPageRoute(
+            builder: (context) =>
+                PostRequestScreen(preselectedType: serviceType),
+          ),
         );
       },
       child: Container(

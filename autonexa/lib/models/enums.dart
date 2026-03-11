@@ -27,6 +27,23 @@ extension ProviderCategoryExt on ProviderCategory {
 
 extension ServiceTypeExt on ServiceType {
   String get value => name;
+
+  String get displayName {
+    switch (this) {
+      case ServiceType.fuel_share:
+        return 'Fuel Delivery';
+      case ServiceType.towing:
+        return 'Towing';
+      case ServiceType.mechanical_repair:
+        return 'Mechanical Repair';
+      case ServiceType.flat_tire:
+        return 'Flat Tire';
+      case ServiceType.jump_start:
+        return 'Jump Start';
+      case ServiceType.parts_delivery:
+        return 'Parts Delivery';
+    }
+  }
 }
 
 extension ServiceStatusExt on ServiceStatus {
