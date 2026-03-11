@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
+
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_seller/controller/seller_controller.dart';
@@ -279,7 +281,11 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
                                 Icons.share,
                                 color: Colors.white,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Share.share(
+                                  'Check out GearHead Pro on Autonexa!\nhttps://autonexa.com/seller/gearhead-pro',
+                                );
+                              },
                             ),
                             IconButton(
                               icon: const Icon(
