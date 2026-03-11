@@ -1,39 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:autonexa/features/auth/controller/auth_controller.dart';
+import 'package:autonexa/core/common/floating_bottom_nav_bar.dart';
+import 'package:autonexa/features/dashboard_towing/screens/towing_requests_screen.dart';
 
-class TowingDashboardScreen extends ConsumerWidget {
+class TowingDashboardScreen extends ConsumerStatefulWidget {
   const TowingDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider)!;
+  ConsumerState<TowingDashboardScreen> createState() => _TowingDashboardScreenState();
+}
+
+class _TowingDashboardScreenState extends ConsumerState<TowingDashboardScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = const [
+    TowingRequestsScreen(),
+    Center(child: Text('Drivers List Placeholder', style: TextStyle(color: Colors.white))),
+    Center(child: Text('Fleet Map Placeholder', style: TextStyle(color: Colors.white))),
+    Center(child: Text('Settings Placeholder', style: TextStyle(color: Colors.white))),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    // Exact deep background from mockup
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF141A28) : Theme.of(context).scaffoldBackgroundColor;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Towing Agency Dashboard'),
-        actions: [
-          IconButton(
-            onPressed: () => ref.read(authControllerProvider.notifier).logOut(),
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome, ${user.name}!',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Roadside Assistance Fleet',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _pages,
         ),
+      ),
+      extendBody: true,
+      bottomNavigationBar: FloatingBottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          NavBarItem(icon: Icons.list_alt, label: 'REQUESTS'),
+          NavBarItem(icon: Icons.person, label: 'DRIVERS'),
+          NavBarItem(icon: Icons.local_shipping, label: 'FLEET'),
+          NavBarItem(icon: Icons.settings, label: 'SETTINGS'),
+        ],
       ),
     );
   }
