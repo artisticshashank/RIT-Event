@@ -214,3 +214,40 @@ Future<void> updateP2pAvailability(
       .updateP2pAvailability(user.id, isAvailable, lat: lat, lng: lng);
   ref.read(p2pAvailabilityProvider.notifier).state = isAvailable;
 }
+
+// ── Place Order ───────────────────────────────────────────────────────────────
+class PlaceOrderNotifier extends AsyncNotifier<void> {
+  @override
+  Future<void> build() async {}
+
+  Future<bool> placeOrder({
+    required List<Map<String, dynamic>> cartItems,
+    required double totalAmount,
+    required String shippingAddress,
+  }) async {
+    state = const AsyncLoading();
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) throw Exception('Not authenticated');
+      final repo = ref.read(userDashboardRepositoryProvider);
+      
+      final res = await repo.placeOrder(
+        customerId: user.id,
+        cartItems: cartItems,
+        totalAmount: totalAmount,
+        shippingAddress: shippingAddress,
+      );
+      
+      state = const AsyncData(null);
+      ref.invalidate(userOrdersProvider);
+      return res.fold((_) => false, (_) => true);
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return false;
+    }
+  }
+}
+
+final placeOrderProvider = AsyncNotifierProvider<PlaceOrderNotifier, void>(
+  PlaceOrderNotifier.new,
+);

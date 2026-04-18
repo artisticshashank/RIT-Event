@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
@@ -43,6 +44,7 @@ class AddProductNotifier extends AsyncNotifier<void> {
     required int stock,
     String? sku,
     String? category,
+    File? imageFile,
   }) async {
     state = const AsyncLoading();
     try {
@@ -55,6 +57,7 @@ class AddProductNotifier extends AsyncNotifier<void> {
         stock: stock,
         sku: sku,
         category: category,
+        imageFile: imageFile,
       );
       state = const AsyncData(null);
       return success;
@@ -82,6 +85,7 @@ class UpdateProductNotifier extends AsyncNotifier<void> {
     required int stock,
     String? sku,
     String? category,
+    File? imageFile,
   }) async {
     state = const AsyncLoading();
     try {
@@ -94,6 +98,7 @@ class UpdateProductNotifier extends AsyncNotifier<void> {
         stock: stock,
         sku: sku,
         category: category,
+        imageFile: imageFile,
       );
       state = const AsyncData(null);
       return success;

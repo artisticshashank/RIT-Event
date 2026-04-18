@@ -26,6 +26,8 @@ class FuelRequestModel {
   final String status;
   final String fuelType;
   final String imageUrl;
+  final double locationLat;
+  final double locationLng;
 
   FuelRequestModel({
     required this.id,
@@ -37,6 +39,8 @@ class FuelRequestModel {
     required this.status,
     required this.fuelType,
     required this.imageUrl,
+    required this.locationLat,
+    required this.locationLng,
   });
 
   factory FuelRequestModel.fromMap(Map<String, dynamic> map) {
@@ -50,6 +54,8 @@ class FuelRequestModel {
       status: map['status'] ?? 'NEW',
       fuelType: map['fuel_type'] ?? '',
       imageUrl: map['image_url'] ?? '',
+      locationLat: map['location_lat']?.toDouble() ?? 0.0,
+      locationLng: map['location_lng']?.toDouble() ?? 0.0,
     );
   }
 }

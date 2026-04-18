@@ -4,14 +4,35 @@ import 'package:autonexa/models/towing_dashboard_model.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_towing/controller/towing_controller.dart';
 import 'package:autonexa/core/common/loader.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-class TowingTrackingScreen extends ConsumerWidget {
+class TowingTrackingScreen extends ConsumerStatefulWidget {
   final TowingRequestModel request;
 
   const TowingTrackingScreen({super.key, required this.request});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TowingTrackingScreen> createState() => _TowingTrackingScreenState();
+}
+
+class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
+  final MapController _mapController = MapController();
+  final LatLng _towingLocation = const LatLng(37.7749, -122.4194);
+  late LatLng _customerLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _customerLocation = LatLng(
+      widget.request.locationLat != 0 ? widget.request.locationLat : 37.7790,
+      widget.request.locationLng != 0 ? widget.request.locationLng : -122.4210,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final request = widget.request;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = isDark ? const Color(0xFF1E2436) : Colors.white;
     final textColor = isDark ? Colors.white : Colors.black;
@@ -68,99 +89,60 @@ class TowingTrackingScreen extends ConsumerWidget {
       ),
       body: Stack(
         children: [
-          // Simulated Map Background
+          // Real Flutter Map Background
           Positioned.fill(
-            child: Container(
-              color: isDark ? const Color(0xFF1E2436) : Colors.grey[300],
-              child: Image.asset(
-                'assets/images/map_overlay.png', // Generic map slice assuming the user has one or it fails silently
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: isDark ? const Color(0xFF1A1F2C) : Colors.grey[300],
-                    child: Center(
-                      child: Icon(
-                        Icons.map,
-                        size: 100,
-                        color: Colors.grey.withValues(alpha: 0.2),
-                      ),
-                    ),
-                  );
-                },
+            child: FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: _towingLocation,
+                initialZoom: 14.0,
               ),
-            ),
-          ),
-
-          // Floating Icon on map (Customer)
-          Align(
-            alignment: const Alignment(0, -0.4),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    request.customerName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                TileLayer(
+                  urlTemplate: isDark
+                      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                  subdomains: const ['a', 'b', 'c', 'd'],
                 ),
-                const SizedBox(height: 4),
-                const Icon(Icons.location_on, color: Colors.red, size: 36),
-              ],
-            ),
-          ),
-
-          // Tow Truck Pin
-          Align(
-            alignment: const Alignment(0.3, 0.1),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Pallete.secondaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    'Tow Truck',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Pallete.secondaryColor.withValues(alpha: 0.3),
-                        shape: BoxShape.circle,
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _towingLocation,
+                      width: 60,
+                      height: 60,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Pallete.secondaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Pallete.secondaryColor.withValues(alpha: 0.4),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.local_shipping,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                       ),
                     ),
-                    const Icon(
-                      Icons.local_shipping,
-                      color: Pallete.secondaryColor,
-                      size: 28,
+                    Marker(
+                      point: _customerLocation,
+                      width: 50,
+                      height: 50,
+                      child: const Column(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.redAccent,
+                            size: 40,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -187,7 +169,7 @@ class TowingTrackingScreen extends ConsumerWidget {
                   ),
                   child: IconButton(
                     icon: Icon(Icons.my_location, color: textColor),
-                    onPressed: () {},
+                    onPressed: () => _mapController.move(_towingLocation, 15.0),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -206,7 +188,7 @@ class TowingTrackingScreen extends ConsumerWidget {
                     children: [
                       IconButton(
                         icon: Icon(Icons.add, color: textColor),
-                        onPressed: () {},
+                        onPressed: () => _mapController.move(_mapController.camera.center, _mapController.camera.zoom + 1),
                       ),
                       Container(
                         width: 24,
@@ -215,7 +197,7 @@ class TowingTrackingScreen extends ConsumerWidget {
                       ),
                       IconButton(
                         icon: Icon(Icons.remove, color: textColor),
-                        onPressed: () {},
+                        onPressed: () => _mapController.move(_mapController.camera.center, _mapController.camera.zoom - 1),
                       ),
                     ],
                   ),

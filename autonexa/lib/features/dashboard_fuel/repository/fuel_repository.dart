@@ -55,7 +55,7 @@ class FuelRepository {
           .from('service_requests')
           .select('''
             id, vehicle_info, fuel_quantity, fuel_type, price, distance_km,
-            status, created_at,
+            status, created_at, location_lat, location_lng,
             requester:requester_id ( id, name, avatar_url )
           ''')
           .eq('request_type', ServiceType.fuel_share.value)
@@ -75,6 +75,8 @@ class FuelRepository {
             status: e['status'] ?? 'searching',
             fuelType: e['fuel_type'] ?? '',
             imageUrl: requester['avatar_url'] ?? '',
+            locationLat: e['location_lat']?.toDouble() ?? 0.0,
+            locationLng: e['location_lng']?.toDouble() ?? 0.0,
           );
         }).toList();
       }
@@ -95,6 +97,8 @@ class FuelRepository {
         status: 'searching',
         fuelType: '95 OCT',
         imageUrl: '',
+        locationLat: 37.7790,
+        locationLng: -122.4210,
       ),
       FuelRequestModel(
         id: '2',
@@ -106,6 +110,8 @@ class FuelRepository {
         status: 'searching',
         fuelType: 'DIESEL',
         imageUrl: '',
+        locationLat: 37.7790,
+        locationLng: -122.4210,
       ),
       FuelRequestModel(
         id: '3',
@@ -117,6 +123,8 @@ class FuelRepository {
         status: 'searching',
         fuelType: '98 OCT',
         imageUrl: '',
+        locationLat: 37.7790,
+        locationLng: -122.4210,
       ),
     ];
   }
@@ -128,7 +136,7 @@ class FuelRepository {
           .from('service_requests')
           .select('''
             id, vehicle_info, fuel_quantity, fuel_type, price, distance_km,
-            status, created_at,
+            status, created_at, location_lat, location_lng,
             requester:requester_id ( id, name, avatar_url )
           ''')
           .eq('request_type', ServiceType.fuel_share.value)
@@ -150,6 +158,8 @@ class FuelRepository {
             status: 'completed',
             fuelType: e['fuel_type'] ?? '',
             imageUrl: requester['avatar_url'] ?? '',
+            locationLat: e['location_lat']?.toDouble() ?? 0.0,
+            locationLng: e['location_lng']?.toDouble() ?? 0.0,
           );
         }).toList();
       }

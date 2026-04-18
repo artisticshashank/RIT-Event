@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
@@ -142,8 +143,17 @@ class SellerRepository {
     required int stock,
     String? sku,
     String? category,
+    File? imageFile,
   }) async {
     try {
+      String? imageUrl;
+      if (imageFile != null) {
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}';
+        final path = '$sellerId/$fileName';
+        await _supabase.storage.from('product_images').upload(path, imageFile);
+        imageUrl = _supabase.storage.from('product_images').getPublicUrl(path);
+      }
+
       await _supabase.from('spare_parts').insert({
         'seller_id': sellerId,
         'name': name,
@@ -153,6 +163,7 @@ class SellerRepository {
         'sku': sku ?? 'AN-${DateTime.now().millisecondsSinceEpoch % 100000}',
         'category': category ?? 'parts',
         'icon_code': 'parts',
+        if (imageUrl != null) 'image_url': imageUrl,
       });
       return true;
     } catch (e) {
@@ -170,8 +181,17 @@ class SellerRepository {
     required int stock,
     String? sku,
     String? category,
+    File? imageFile,
   }) async {
     try {
+      String? imageUrl;
+      if (imageFile != null) {
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}';
+        final path = 'update/$fileName';
+        await _supabase.storage.from('product_images').upload(path, imageFile);
+        imageUrl = _supabase.storage.from('product_images').getPublicUrl(path);
+      }
+
       await _supabase
           .from('spare_parts')
           .update({
@@ -181,6 +201,7 @@ class SellerRepository {
             'stock_quantity': stock,
             'sku': sku,
             'category': category,
+            if (imageUrl != null) 'image_url': imageUrl,
           })
           .eq('id', productId);
       return true;

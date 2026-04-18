@@ -4,14 +4,35 @@ import 'package:autonexa/models/fuel_dashboard_model.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_fuel/controller/fuel_controller.dart';
 import 'package:autonexa/core/common/loader.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-class FuelTrackingScreen extends ConsumerWidget {
+class FuelTrackingScreen extends ConsumerStatefulWidget {
   final FuelRequestModel request;
 
   const FuelTrackingScreen({super.key, required this.request});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FuelTrackingScreen> createState() => _FuelTrackingScreenState();
+}
+
+class _FuelTrackingScreenState extends ConsumerState<FuelTrackingScreen> {
+  final MapController _mapController = MapController();
+  final LatLng _techLocation = const LatLng(37.7749, -122.4194);
+  late LatLng _customerLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _customerLocation = LatLng(
+      widget.request.locationLat != 0 ? widget.request.locationLat : 37.7790,
+      widget.request.locationLng != 0 ? widget.request.locationLng : -122.4210,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final request = widget.request;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDark ? Colors.white : Colors.black;
     final subTextColor = isDark ? Colors.white60 : Colors.black54;
@@ -73,67 +94,62 @@ class FuelTrackingScreen extends ConsumerWidget {
       ),
       body: Stack(
         children: [
-          // Simulated Map Background
+          // Real Flutter Map Background
           Positioned.fill(
-            child: Container(
-              color: mapBgColor,
-              child: Center(
-                child: Icon(
-                  Icons.map,
-                  size: 200,
-                  color: Colors.white.withValues(alpha: 0.02),
-                ),
+            child: FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: _techLocation,
+                initialZoom: 14.0,
               ),
-            ),
-          ),
-
-          // Current User / Tech Marker
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.35,
-            left: MediaQuery.of(context).size.width * 0.4,
-            child: Column(
               children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: Pallete.secondaryColor,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Pallete.secondaryColor.withValues(alpha: 0.4),
-                        blurRadius: 20,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.local_shipping,
-                    color: Colors.white,
-                    size: 28,
-                  ),
+                TileLayer(
+                  urlTemplate: isDark
+                      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                  subdomains: const ['a', 'b', 'c', 'd'],
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(
-                      color: Pallete.secondaryColor.withValues(alpha: 0.5),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _techLocation,
+                      width: 60,
+                      height: 60,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Pallete.secondaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Pallete.secondaryColor.withValues(alpha: 0.4),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.local_shipping,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    '${request.customerName.split(" ").first.toUpperCase()} IS HERE',
-                    style: const TextStyle(
-                      color: Pallete.secondaryColor,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
+                    Marker(
+                      point: _customerLocation,
+                      width: 50,
+                      height: 50,
+                      child: const Column(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.redAccent,
+                            size: 40,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -173,7 +189,10 @@ class FuelTrackingScreen extends ConsumerWidget {
                     shape: BoxShape.circle,
                     border: Border.all(color: borderColor),
                   ),
-                  child: const Icon(Icons.my_location, color: Colors.white70),
+                  child: IconButton(
+                    icon: const Icon(Icons.my_location, color: Colors.white70),
+                    onPressed: () => _mapController.move(_techLocation, 15.0),
+                  ),
                 ),
               ],
             ),
@@ -192,12 +211,12 @@ class FuelTrackingScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => _mapController.move(_mapController.camera.center, _mapController.camera.zoom + 1),
                     icon: const Icon(Icons.add, color: Colors.white70),
                   ),
                   Divider(height: 1, color: borderColor),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => _mapController.move(_mapController.camera.center, _mapController.camera.zoom - 1),
                     icon: const Icon(Icons.remove, color: Colors.white70),
                   ),
                 ],

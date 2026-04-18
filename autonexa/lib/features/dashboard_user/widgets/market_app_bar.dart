@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/shopping_cart_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:autonexa/features/dashboard_user/controller/cart_provider.dart';
 
-class MarketAppBar extends StatelessWidget {
+class MarketAppBar extends ConsumerWidget {
   const MarketAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartItems = ref.watch(cartProvider);
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: Row(
@@ -54,25 +58,26 @@ class MarketAppBar extends StatelessWidget {
                       );
                     },
                   ),
-                  Positioned(
-                    right: 4,
-                    top: 4,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Pallete.secondaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Text(
-                        '3',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                  if (cartItems.isNotEmpty)
+                    Positioned(
+                      right: 4,
+                      top: 4,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Pallete.secondaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          '${cartItems.length}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
               IconButton(

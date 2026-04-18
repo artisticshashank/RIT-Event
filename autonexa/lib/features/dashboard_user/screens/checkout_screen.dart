@@ -4,6 +4,7 @@ import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/order_success_screen.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/features/dashboard_user/controller/cart_provider.dart';
+import 'package:autonexa/features/dashboard_user/controller/user_dashboard_controller.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   final double totalAmount;
@@ -585,16 +586,32 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     'Pay \$${widget.totalAmount.toStringAsFixed(2)} Now',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    final cartItems = ref.read(cartProvider);
+                    if (cartItems.isEmpty) return;
+
                     // Update the global user address before success
                     ref.read(userAddressProvider.notifier).updateAddress(_addressController.text);
-                    ref.read(cartProvider.notifier).clearCart();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OrderSuccessScreen(),
-                      ),
+                    
+                    final success = await ref.read(placeOrderProvider.notifier).placeOrder(
+                      cartItems: cartItems,
+                      totalAmount: widget.totalAmount,
+                      shippingAddress: _addressController.text,
                     );
+                    
+                    if (success && mounted) {
+                      ref.read(cartProvider.notifier).clearCart();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderSuccessScreen(),
+                        ),
+                      );
+                    } else if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Failed to place order.')),
+                      );
+                    }
                   },
                 ),
               ),

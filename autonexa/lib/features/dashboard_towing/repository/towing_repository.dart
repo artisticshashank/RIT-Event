@@ -58,7 +58,7 @@ class TowingRepository {
       final res = await _supabase
           .from('service_requests')
           .select('''
-            id, vehicle_info, issue_type, price, distance_km, status, created_at,
+            id, vehicle_info, issue_type, price, distance_km, status, created_at, location_lat, location_lng,
             requester:requester_id ( id, name, avatar_url )
           ''')
           .eq('request_type', ServiceType.towing.value)
@@ -82,6 +82,8 @@ class TowingRepository {
             price: (e['price'] as num?)?.toDouble() ?? 0.0,
             imageUrl: requester['avatar_url'] ?? '',
             status: e['status'] ?? 'searching',
+            locationLat: e['location_lat']?.toDouble() ?? 0.0,
+            locationLng: e['location_lng']?.toDouble() ?? 0.0,
           );
         }).toList();
       }
@@ -102,6 +104,8 @@ class TowingRepository {
         price: 120.00,
         status: 'searching',
         imageUrl: '',
+        locationLat: 37.7790,
+        locationLng: -122.4210,
       ),
       TowingRequestModel(
         id: '2',
@@ -113,6 +117,8 @@ class TowingRepository {
         price: 350.00,
         status: 'searching',
         imageUrl: '',
+        locationLat: 37.7790,
+        locationLng: -122.4210,
       ),
     ];
   }
@@ -123,7 +129,7 @@ class TowingRepository {
       final res = await _supabase
           .from('service_requests')
           .select('''
-            id, vehicle_info, issue_type, price, distance_km, status, created_at,
+            id, vehicle_info, issue_type, price, distance_km, status, created_at, location_lat, location_lng,
             requester:requester_id ( id, name, avatar_url )
           ''')
           .eq('request_type', ServiceType.towing.value)
@@ -148,6 +154,8 @@ class TowingRepository {
             price: (e['price'] as num?)?.toDouble() ?? 0.0,
             imageUrl: requester['avatar_url'] ?? '',
             status: 'completed',
+            locationLat: e['location_lat']?.toDouble() ?? 0.0,
+            locationLng: e['location_lng']?.toDouble() ?? 0.0,
           );
         }).toList();
       }

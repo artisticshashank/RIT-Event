@@ -40,6 +40,8 @@ class TowingRequestModel {
   final double price;
   final String imageUrl;
   final String status;
+  final double locationLat;
+  final double locationLng;
 
   TowingRequestModel({
     required this.id,
@@ -51,6 +53,8 @@ class TowingRequestModel {
     required this.price,
     required this.imageUrl,
     required this.status,
+    required this.locationLat,
+    required this.locationLng,
   });
 
   factory TowingRequestModel.fromMap(Map<String, dynamic> map) {
@@ -64,6 +68,8 @@ class TowingRequestModel {
       price: map['price']?.toDouble() ?? 0.0,
       imageUrl: map['image_url'] ?? '',
       status: map['status'] ?? 'PENDING',
+      locationLat: map['location_lat']?.toDouble() ?? 0.0,
+      locationLng: map['location_lng']?.toDouble() ?? 0.0,
     );
   }
 }

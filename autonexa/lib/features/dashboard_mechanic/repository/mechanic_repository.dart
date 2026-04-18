@@ -23,8 +23,13 @@ class MechanicRepository {
         .eq('status', ServiceStatus.searching.value)
         .order('created_at', ascending: false)
         .map(
-          (events) =>
-              events.map((e) => ServiceRequestModel.fromMap(e)).toList(),
+          (events) => events
+              .map((e) => ServiceRequestModel.fromMap(e))
+              .where((r) => 
+                  r.requestType == ServiceType.mechanical_repair ||
+                  r.requestType == ServiceType.flat_tire ||
+                  r.requestType == ServiceType.jump_start)
+              .toList(),
         );
   }
 

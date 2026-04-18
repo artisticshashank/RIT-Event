@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/features/dashboard_seller/controller/seller_controller.dart';
@@ -36,6 +38,22 @@ class _SellerAddProductScreenState
     'Body Parts',
     'Other',
   ];
+
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      _showSnack('Failed to pick image', isError: true);
+    }
+  }
 
   @override
   void initState() {
@@ -99,6 +117,7 @@ class _SellerAddProductScreenState
                 ? null
                 : _skuController.text.trim(),
             category: _selectedCategory,
+            imageFile: _selectedImage,
           );
     } else {
       success = await ref
@@ -113,6 +132,7 @@ class _SellerAddProductScreenState
                 ? null
                 : _skuController.text.trim(),
             category: _selectedCategory,
+            imageFile: _selectedImage,
           );
     }
 
@@ -272,28 +292,45 @@ class _SellerAddProductScreenState
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: accentColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: accentColor.withValues(alpha: 0.5),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      width: 72,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        color: accentColor.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: accentColor.withValues(alpha: 0.5),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.add_a_photo_outlined,
-                        color: accentColor,
-                        size: 28,
+                      child: Center(
+                        child: Icon(
+                          Icons.add_a_photo_outlined,
+                          color: accentColor,
+                          size: 28,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
-                  ...List.generate(
-                    3,
-                    (index) => Container(
+                  if (_selectedImage != null)
+                    Container(
+                      width: 72,
+                      height: 72,
+                      margin: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: accentColor),
+                        image: DecorationImage(
+                          image: FileImage(_selectedImage!),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  if (_selectedImage == null)
+                    Container(
                       width: 72,
                       height: 72,
                       margin: const EdgeInsets.only(right: 12),
@@ -310,7 +347,6 @@ class _SellerAddProductScreenState
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
 

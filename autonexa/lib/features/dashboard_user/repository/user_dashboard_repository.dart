@@ -283,4 +283,48 @@ class UserDashboardRepository {
       return left(e.toString());
     }
   }
+
+  // ── Place Order ────────────────────────────────────────────────────────
+  Future<Either<String, bool>> placeOrder({
+    required String customerId,
+    required List<Map<String, dynamic>> cartItems,
+    required double totalAmount,
+    required String shippingAddress,
+  }) async {
+    try {
+      Map<String, List<Map<String, dynamic>>> sellerItems = {};
+      for (var item in cartItems) {
+        final part = item['part'] as SparePartModel;
+        if (!sellerItems.containsKey(part.sellerId)) {
+          sellerItems[part.sellerId] = [];
+        }
+        sellerItems[part.sellerId]!.add(item);
+      }
+
+      for (var entry in sellerItems.entries) {
+        String sellerId = entry.key;
+        List<Map<String, dynamic>> items = entry.value;
+
+        double sellerTotal = items.fold(0.0, (sum, item) => sum + ((item['part'] as SparePartModel).price * (item['quantity'] as int)));
+        
+        String info = items.map((e) => "${e['quantity']}x ${(e['part'] as SparePartModel).name}").join(', ');
+
+        final orderNumber = 'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}-${sellerId.substring(0, 3)}';
+
+        await _supabase.from('orders').insert({
+          'order_number': orderNumber,
+          'customer_id': customerId,
+          'seller_id': sellerId,
+          'total_amount': sellerTotal,
+          'status': 'NEW',
+          'info': info,
+          'shipping_address': shippingAddress,
+        });
+      }
+      return right(true);
+    } catch (e) {
+      print('Place order error: $e');
+      return left(e.toString());
+    }
+  }
 }
