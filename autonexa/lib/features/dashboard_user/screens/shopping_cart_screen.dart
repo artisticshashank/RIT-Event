@@ -1,94 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
-import 'package:autonexa/models/spare_part_model.dart';
 import 'package:autonexa/features/dashboard_user/widgets/cart_item_card.dart';
 import 'package:autonexa/features/dashboard_user/screens/checkout_screen.dart';
+import 'package:autonexa/features/dashboard_user/controller/cart_provider.dart';
 
-// Since we don't have a real cart state yet, we'll use a local state for demo
-class ShoppingCartScreen extends StatefulWidget {
+class ShoppingCartScreen extends ConsumerWidget {
   const ShoppingCartScreen({super.key});
 
   @override
-  State<ShoppingCartScreen> createState() => _ShoppingCartScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartItems = ref.watch(cartProvider);
+    final cartNotifier = ref.read(cartProvider.notifier);
 
-class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
-  // Dummy data similar to the image
-  final List<Map<String, dynamic>> _cartItems = [
-    {
-      'part': SparePartModel(
-        id: '1',
-        sellerId: '',
-        name: 'Performance Brake Pads',
-        price: 120.00,
-      ),
-      'quantity': 1,
-    },
-    {
-      'part': SparePartModel(
-        id: '2',
-        sellerId: '',
-        name: 'Iridium Spark Plugs',
-        price: 45.00,
-      ),
-      'quantity': 4,
-    },
-    {
-      'part': SparePartModel(
-        id: '3',
-        sellerId: '',
-        name: 'Synthetic Motor Oil',
-        price: 60.00,
-      ),
-      'quantity': 1,
-    },
-  ];
-
-  void _incrementQuantity(int index) {
-    setState(() {
-      _cartItems[index]['quantity']++;
-    });
-  }
-
-  void _decrementQuantity(int index) {
-    setState(() {
-      if (_cartItems[index]['quantity'] > 1) {
-        _cartItems[index]['quantity']--;
-      }
-    });
-  }
-
-  void _removeItem(int index) {
-    setState(() {
-      _cartItems.removeAt(index);
-    });
-  }
-
-  void _clearCart() {
-    setState(() {
-      _cartItems.clear();
-    });
-  }
-
-  double get _subtotal {
-    return _cartItems.fold(
-      0,
+    double subtotal = cartItems.fold(
+      0.0,
       (sum, item) => sum + (item['part'].price * item['quantity']),
     );
-  }
+    double shipping = cartItems.isEmpty ? 0 : 12.50;
+    double tax = subtotal * 0.08;
+    double total = subtotal + shipping + tax;
 
-  double get _shipping => _cartItems.isEmpty ? 0 : 12.50;
-  double get _tax => _subtotal * 0.08; // 8% tax
-  double get _total => _subtotal + _shipping + _tax;
-
-  @override
-  Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
     final surfaceColor = Theme.of(context).cardColor;
     final iconBgColor = isDark
         ? const Color(0xFF23253B)
-        : Colors.grey.shade200; // Blueish dark grey for circular buttons
+        : Colors.grey.shade200;
 
     return Scaffold(
       body: SafeArea(
@@ -121,8 +59,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     icon: Icons.delete_outline,
                     color: iconBgColor,
                     iconColor: Pallete.secondaryColor,
-                    onTap: _clearCart,
-                    badge: _cartItems.isNotEmpty,
+                    onTap: cartNotifier.clearCart,
+                    badge: cartItems.isNotEmpty,
                   ),
                 ],
               ),
@@ -137,7 +75,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   children: [
                     const SizedBox(height: 16),
                     // Item List
-                    if (_cartItems.isEmpty)
+                    if (cartItems.isEmpty)
                       const Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 40),
@@ -149,13 +87,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       )
                     else
                       ...List.generate(
-                        _cartItems.length,
+                        cartItems.length,
                         (index) => CartItemCard(
-                          part: _cartItems[index]['part'],
-                          quantity: _cartItems[index]['quantity'],
-                          onIncrement: () => _incrementQuantity(index),
-                          onDecrement: () => _decrementQuantity(index),
-                          onRemove: () => _removeItem(index),
+                          part: cartItems[index]['part'],
+                          quantity: cartItems[index]['quantity'],
+                          onIncrement: () => cartNotifier.incrementQuantity(index),
+                          onDecrement: () => cartNotifier.decrementQuantity(index),
+                          onRemove: () => cartNotifier.removeItem(index),
                         ),
                       ),
 
@@ -250,11 +188,11 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       ),
                       child: Column(
                         children: [
-                          _buildSummaryRow('Subtotal', _subtotal, false),
+                          _buildSummaryRow('Subtotal', subtotal, false, context),
                           const SizedBox(height: 16),
-                          _buildSummaryRow('Shipping', _shipping, false),
+                          _buildSummaryRow('Shipping', shipping, false, context),
                           const SizedBox(height: 16),
-                          _buildSummaryRow('Tax (8%)', _tax, false),
+                          _buildSummaryRow('Tax (8%)', tax, false, context),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
                             child: Divider(
@@ -276,7 +214,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                 ),
                               ),
                               Text(
-                                '\$${_total.toStringAsFixed(2)}',
+                                '\$${total.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -318,14 +256,14 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     elevation: 5,
                     shadowColor: Pallete.secondaryColor.withValues(alpha: 0.5),
                   ),
-                  onPressed: _cartItems.isEmpty
+                  onPressed: cartItems.isEmpty
                       ? null
                       : () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CheckoutScreen(totalAmount: _total),
+                                  CheckoutScreen(totalAmount: total),
                             ),
                           );
                         },
@@ -352,7 +290,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
-  Widget _buildSummaryRow(String label, double amount, bool isTotal) {
+  Widget _buildSummaryRow(String label, double amount, bool isTotal, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

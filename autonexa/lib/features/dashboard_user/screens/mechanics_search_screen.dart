@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/widgets/search_and_filter_bar.dart';
 import 'package:autonexa/features/dashboard_user/widgets/mechanic_card.dart';
 import 'package:autonexa/features/dashboard_user/screens/mechanic_profile_screen.dart';
+import 'package:autonexa/features/dashboard_user/controller/user_dashboard_controller.dart';
+import 'package:autonexa/core/common/loader.dart';
 
-class MechanicsSearchScreen extends StatelessWidget {
+class MechanicsSearchScreen extends ConsumerWidget {
   const MechanicsSearchScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
 
@@ -54,42 +57,35 @@ class MechanicsSearchScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            MechanicCard(
-              name: 'Elite Auto Care',
-              specialization: 'General Repair & Maintenance',
-              rating: 4.8,
-              reviews: 124,
-              distance: 2.1,
-              imageUrl:
-                  'https://images.unsplash.com/photo-1632823465306-eddc87597148?q=80&w=200&auto=format&fit=crop', // Garage
-              onBook: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MechanicProfileScreen(),
-                  ),
+            ref.watch(mechanicsListProvider).when(
+              data: (mechanics) {
+                if (mechanics.isEmpty) {
+                  return const Center(child: Text("No mechanics near you."));
+                }
+                return Column(
+                  children: mechanics.map((m) {
+                    return MechanicCard(
+                      name: m.name.isNotEmpty ? m.name : 'Unknown Mechanic',
+                      specialization: 'General Repair',
+                      rating: 4.8,
+                      reviews: 120,
+                      distance: 2.5,
+                      imageUrl:
+                          'https://images.unsplash.com/photo-1632823465306-eddc87597148?q=80&w=200&auto=format&fit=crop',
+                      onBook: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MechanicProfileScreen(),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
                 );
               },
-            ),
-            MechanicCard(
-              name: 'Swift Engine Masters',
-              specialization: 'Engine & Transmission Specialst',
-              rating: 4.9,
-              reviews: 312,
-              distance: 4.5,
-              imageUrl:
-                  'https://images.unsplash.com/photo-1530046339160-ce3e530cfcd1?q=80&w=200&auto=format&fit=crop', // Mechanic
-              onBook: () {},
-            ),
-            MechanicCard(
-              name: 'City Tyres & Brakes',
-              specialization: 'Tire Replacement, Brake Service',
-              rating: 4.5,
-              reviews: 89,
-              distance: 1.2,
-              imageUrl:
-                  'https://images.unsplash.com/photo-1549646537-8e68449ce710?q=80&w=200&auto=format&fit=crop', // Tires
-              onBook: () {},
+              loading: () => const Loader(),
+              error: (err, stack) => Center(child: Text('Error: $err')),
             ),
           ],
         ),

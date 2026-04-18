@@ -42,6 +42,7 @@ class ServiceRequestModel {
   final String? issueType;
   final double? price;
   final double? distanceKm;
+  final List<String>? images;
   // JOIN data
   final ResponderInfo? responder;
 
@@ -62,6 +63,7 @@ class ServiceRequestModel {
     this.issueType,
     this.price,
     this.distanceKm,
+    this.images,
     this.responder,
   });
 
@@ -82,6 +84,7 @@ class ServiceRequestModel {
     String? issueType,
     double? price,
     double? distanceKm,
+    List<String>? images,
     ResponderInfo? responder,
   }) {
     return ServiceRequestModel(
@@ -101,6 +104,7 @@ class ServiceRequestModel {
       issueType: issueType ?? this.issueType,
       price: price ?? this.price,
       distanceKm: distanceKm ?? this.distanceKm,
+      images: images ?? this.images,
       responder: responder ?? this.responder,
     );
   }
@@ -123,6 +127,7 @@ class ServiceRequestModel {
       if (issueType != null) 'issue_type': issueType,
       if (price != null) 'price': price,
       if (distanceKm != null) 'distance_km': distanceKm,
+      if (images != null && images!.isNotEmpty) 'images': images,
     };
   }
 
@@ -157,6 +162,7 @@ class ServiceRequestModel {
       issueType: map['issue_type'],
       price: map['price']?.toDouble(),
       distanceKm: map['distance_km']?.toDouble(),
+      images: map['images'] != null ? List<String>.from(map['images']) : null,
       responder: responderInfo,
     );
   }

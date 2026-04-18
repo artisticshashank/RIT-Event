@@ -1,21 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/order_success_screen.dart';
+import 'package:autonexa/features/auth/controller/auth_controller.dart';
+import 'package:autonexa/features/dashboard_user/controller/cart_provider.dart';
 
-class CheckoutScreen extends StatefulWidget {
+class CheckoutScreen extends ConsumerStatefulWidget {
   final double totalAmount;
 
   const CheckoutScreen({super.key, required this.totalAmount});
 
   @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
+  ConsumerState<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
+class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   int _shippingMethod = 0; // 0 = Express, 1 = Standard
   int _paymentMethod = 0; // 0 = Card, 1 = Apple Pay, 2 = Google Pay, 3 = COD
 
-  Widget _buildTextField(String hint, {bool isHalf = false}) {
+  late TextEditingController _nameController;
+  late TextEditingController _addressController;
+  late TextEditingController _cityController;
+  late TextEditingController _phoneController;
+
+  void _initFields() {
+    final user = ref.read(userProvider);
+    final address = ref.read(userAddressProvider);
+    _nameController = TextEditingController(text: user?.name ?? '');
+    _phoneController = TextEditingController(text: user?.phone ?? '');
+    _addressController = TextEditingController(text: address);
+    _cityController = TextEditingController(text: "Springfield");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initFields();
+      setState(() {});
+    });
+    // Temporary initialize with empty so build doesn't fail before postFrameCallback
+    _nameController = TextEditingController();
+    _phoneController = TextEditingController();
+    _addressController = TextEditingController();
+    _cityController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _addressController.dispose();
+    _cityController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildTextField(String hint, TextEditingController controller, {bool isHalf = false}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: isHalf
@@ -30,6 +70,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
       ),
       child: TextField(
+        controller: controller,
         style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
         decoration: InputDecoration(
           hintText: hint,
@@ -190,6 +231,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double _shippingcost = _shippingMethod == 0 ? 25.0 : 0.0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
     return Scaffold(
@@ -267,7 +309,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
               ),
-              _buildTextField('John Doe'),
+              _buildTextField('John Doe', _nameController),
               const Padding(
                 padding: EdgeInsets.only(left: 4, bottom: 8),
                 child: Text(
@@ -278,7 +320,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
               ),
-              _buildTextField('123 Luxury Lane'),
+              _buildTextField('123 Luxury Lane', _addressController),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -295,7 +337,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                       ),
-                      _buildTextField('New York', isHalf: true),
+                      _buildTextField('New York', _cityController, isHalf: true),
                     ],
                   ),
                   Column(
@@ -311,7 +353,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                       ),
-                      _buildTextField('+1 (555) 000-0000', isHalf: true),
+                      _buildTextField('+1 (555) 000-0000', _phoneController, isHalf: true),
                     ],
                   ),
                 ],
@@ -467,7 +509,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Subtotal',
                           style: TextStyle(color: Pallete.textSecondaryColor),
                         ),
-                        Text('\$1,250.00', style: TextStyle(color: textColor)),
+                        Text('\$${(widget.totalAmount * 0.92 - _shippingcost).toStringAsFixed(2)}', style: TextStyle(color: textColor)),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -478,7 +520,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Shipping fee',
                           style: TextStyle(color: Pallete.textSecondaryColor),
                         ),
-                        Text('\$25.00', style: TextStyle(color: textColor)),
+                        Text('\$$_shippingcost', style: TextStyle(color: textColor)),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -489,7 +531,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Taxes',
                           style: TextStyle(color: Pallete.textSecondaryColor),
                         ),
-                        Text('\$12.50', style: TextStyle(color: textColor)),
+                        Text('\$${(widget.totalAmount * 0.08).toStringAsFixed(2)}', style: TextStyle(color: textColor)),
                       ],
                     ),
                     Padding(
@@ -510,9 +552,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             fontSize: 16,
                           ),
                         ),
-                        const Text(
-                          '\$1,287.50',
-                          style: TextStyle(
+                        Text(
+                          '\$${widget.totalAmount.toStringAsFixed(2)}',
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                             color: Pallete.secondaryColor,
@@ -539,11 +581,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     shadowColor: Pallete.secondaryColor.withValues(alpha: 0.5),
                   ),
                   icon: const Icon(Icons.lock),
-                  label: const Text(
-                    'Pay \$1,287.50 Now',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  label: Text(
+                    'Pay \$${widget.totalAmount.toStringAsFixed(2)} Now',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
+                    // Update the global user address before success
+                    ref.read(userAddressProvider.notifier).updateAddress(_addressController.text);
+                    ref.read(cartProvider.notifier).clearCart();
                     Navigator.push(
                       context,
                       MaterialPageRoute(

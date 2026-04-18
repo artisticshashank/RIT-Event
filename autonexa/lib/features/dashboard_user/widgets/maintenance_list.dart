@@ -3,6 +3,8 @@ import 'package:autonexa/theme/pallete.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/features/dashboard_user/controller/user_dashboard_controller.dart';
 import 'package:autonexa/models/enums.dart';
+import 'package:autonexa/features/dashboard_user/screens/request_tracking_screen.dart';
+import 'package:autonexa/models/service_request_model.dart';
 
 class MaintenanceList extends ConsumerWidget {
   const MaintenanceList({super.key});
@@ -49,6 +51,7 @@ class MaintenanceList extends ConsumerWidget {
                   children: [
                     _buildMaintenanceItem(
                       context: context,
+                      request: null,
                       title: 'Tire Rotation',
                       subtitle: 'Due in 550 miles',
                       icon: Icons.tire_repair,
@@ -58,6 +61,7 @@ class MaintenanceList extends ConsumerWidget {
                     const SizedBox(height: 16),
                     _buildMaintenanceItem(
                       context: context,
+                      request: null,
                       title: 'Brake Fluid Check',
                       subtitle: 'Scheduled: Oct 12, 2024',
                       icon: Icons.water_drop,
@@ -76,6 +80,7 @@ class MaintenanceList extends ConsumerWidget {
                   final service = services[index];
                   return _buildMaintenanceItem(
                     context: context,
+                    request: service,
                     title: service.requestType.name
                         .split('_')
                         .map((e) => e[0].toUpperCase() + e.substring(1))
@@ -120,6 +125,7 @@ class MaintenanceList extends ConsumerWidget {
 
   Widget _buildMaintenanceItem({
     required BuildContext context,
+    ServiceRequestModel? request,
     required String title,
     required String subtitle,
     required IconData icon,
@@ -129,8 +135,19 @@ class MaintenanceList extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
 
-    return Container(
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () {
+        if (request != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RequestTrackingScreen(request: request),
+            ),
+          );
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
         color: cardBgColor,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
@@ -209,6 +226,7 @@ class MaintenanceList extends ConsumerWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

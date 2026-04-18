@@ -10,6 +10,7 @@ class UserModel {
   final double? lastKnownLat;
   final double? lastKnownLng;
   final DateTime? createdAt;
+  final String? address;
 
   UserModel({
     required this.id,
@@ -21,6 +22,7 @@ class UserModel {
     this.lastKnownLat,
     this.lastKnownLng,
     this.createdAt,
+    this.address,
   });
 
   UserModel copyWith({
@@ -33,6 +35,7 @@ class UserModel {
     double? lastKnownLat,
     double? lastKnownLng,
     DateTime? createdAt,
+    String? address,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -44,6 +47,7 @@ class UserModel {
       lastKnownLat: lastKnownLat ?? this.lastKnownLat,
       lastKnownLng: lastKnownLng ?? this.lastKnownLng,
       createdAt: createdAt ?? this.createdAt,
+      address: address ?? this.address,
     );
   }
 
@@ -58,6 +62,7 @@ class UserModel {
       if (lastKnownLat != null) 'last_known_lat': lastKnownLat,
       if (lastKnownLng != null) 'last_known_lng': lastKnownLng,
       if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
+      if (address != null) 'address': address,
     };
   }
 
@@ -76,6 +81,7 @@ class UserModel {
       createdAt: map['created_at'] != null
           ? DateTime.tryParse(map['created_at'])
           : null,
+      address: map['address'],
     );
   }
 

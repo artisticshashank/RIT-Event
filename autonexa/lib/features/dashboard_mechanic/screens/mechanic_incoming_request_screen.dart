@@ -5,6 +5,8 @@ import 'package:autonexa/models/service_request_model.dart';
 import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_controller.dart';
 import 'package:autonexa/features/dashboard_mechanic/screens/mechanic_navigation_screen.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class MechanicIncomingRequestScreen extends ConsumerWidget {
   final ServiceRequestModel serviceRequest;
@@ -96,52 +98,67 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
       ),
       body: Stack(
         children: [
-          // Map background
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: isDark
-                ? const Color(0xFF1E2333)
-                : Colors.blue.withValues(alpha: 0.12),
-            child: Center(
-              child: Icon(
-                Icons.map,
-                size: 200,
-                color: isDark ? Colors.white10 : Colors.black12,
+          // Flutter Map
+          FlutterMap(
+            options: MapOptions(
+              initialCenter: LatLng(
+                serviceRequest.locationLat != 0 ? serviceRequest.locationLat : 37.7749,
+                serviceRequest.locationLng != 0 ? serviceRequest.locationLng : -122.4194,
               ),
+              initialZoom: 13.0,
             ),
-          ),
-
-          // Map markers
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.3,
-            left: MediaQuery.of(context).size.width * 0.4,
-            child: CircleAvatar(
-              backgroundColor: Pallete.secondaryColor.withValues(alpha: 0.3),
-              radius: 30,
-              child: const CircleAvatar(
-                backgroundColor: Pallete.secondaryColor,
-                radius: 20,
-                child: Icon(Icons.location_on, color: Colors.white, size: 20),
+            children: [
+              TileLayer(
+                urlTemplate: isDark
+                    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                subdomains: const ['a', 'b', 'c', 'd'],
               ),
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.3 + 10,
-            right: MediaQuery.of(context).size.width * 0.2,
-            child: const CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 22,
-              child: CircleAvatar(
-                backgroundColor: Color(0xFF2C3146),
-                radius: 18,
-                child: Icon(
-                  Icons.directions_car,
-                  color: Colors.white,
-                  size: 16,
-                ),
+              MarkerLayer(
+                markers: [
+                  // Customer Location Marker
+                  Marker(
+                    point: LatLng(
+                      serviceRequest.locationLat != 0 ? serviceRequest.locationLat : 37.7749,
+                      serviceRequest.locationLng != 0 ? serviceRequest.locationLng : -122.4194,
+                    ),
+                    width: 60,
+                    height: 60,
+                    child: CircleAvatar(
+                      backgroundColor: Pallete.secondaryColor.withValues(alpha: 0.3),
+                      radius: 30,
+                      child: const CircleAvatar(
+                        backgroundColor: Pallete.secondaryColor,
+                        radius: 20,
+                        child: Icon(Icons.location_on, color: Colors.white, size: 20),
+                      ),
+                    ),
+                  ),
+                  // Mechanic Mock Marker
+                  Marker(
+                    point: LatLng(
+                      (serviceRequest.locationLat != 0 ? serviceRequest.locationLat : 37.7749) + 0.005,
+                      (serviceRequest.locationLng != 0 ? serviceRequest.locationLng : -122.4194) + 0.005,
+                    ),
+                    width: 44,
+                    height: 44,
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 22,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xFF2C3146),
+                        radius: 18,
+                        child: Icon(
+                          Icons.directions_car,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+            ],
           ),
 
           // Bottom card

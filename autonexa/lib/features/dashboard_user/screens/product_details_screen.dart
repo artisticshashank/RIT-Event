@@ -44,7 +44,7 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
             ),
           ),
-          const ProductBottomBar(),
+          ProductBottomBar(part: part),
         ],
       ),
     );

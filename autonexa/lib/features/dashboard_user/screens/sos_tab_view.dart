@@ -3,6 +3,7 @@ import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_user/screens/post_request_screen.dart';
 import 'package:autonexa/features/dashboard_user/screens/request_list_screen.dart';
+import 'package:autonexa/features/dashboard_user/screens/sos_map_screen.dart';
 
 class SosTabView extends StatelessWidget {
   const SosTabView({super.key});
@@ -155,19 +156,26 @@ class SosTabView extends StatelessWidget {
           // Map Preview
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
-                  ), // Dummy map image
-                  fit: BoxFit.cover,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SosMapScreen()),
+                );
+              },
+              child: Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                      'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
+                    ), // Dummy map image
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              child: Stack(
+                child: Stack(
                 children: [
                   Positioned(
                     bottom: 16,
@@ -229,6 +237,7 @@ class SosTabView extends StatelessWidget {
                 ],
               ),
             ),
+          ),
           ),
           const SizedBox(height: 24),
 

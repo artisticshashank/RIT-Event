@@ -1,10 +1,13 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/models/vehicle_model.dart';
 import 'package:autonexa/models/service_request_model.dart';
 import 'package:autonexa/models/spare_part_model.dart';
+import 'package:autonexa/models/user_model.dart';
 import 'package:autonexa/models/enums.dart';
+import 'package:autonexa/models/seller_dashboard_model.dart';
 import 'package:fpdart/fpdart.dart';
+import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userDashboardRepositoryProvider = Provider((ref) {
   return UserDashboardRepository(supabase: Supabase.instance.client);
@@ -92,8 +95,27 @@ class UserDashboardRepository {
     String? fuelType,
     String? issueType,
     double? price,
+    List<File>? evidenceFiles,
   }) async {
     try {
+      List<String> imageUrls = [];
+
+      if (evidenceFiles != null && evidenceFiles.isNotEmpty) {
+        for (var file in evidenceFiles) {
+          final fileName = '${DateTime.now().millisecondsSinceEpoch}_${file.path.split('/').last}';
+          final path = '$requesterId/$fileName';
+          
+          await _supabase.storage
+              .from('service_evidence')
+              .upload(path, file);
+
+          final publicUrl = _supabase.storage
+              .from('service_evidence')
+              .getPublicUrl(path);
+          imageUrls.add(publicUrl);
+        }
+      }
+
       final res = await _supabase
           .from('service_requests')
           .insert({
@@ -109,6 +131,7 @@ class UserDashboardRepository {
             'issue_type': issueType,
             'price': price,
             'status': ServiceStatus.searching.value,
+            if (imageUrls.isNotEmpty) 'images': imageUrls,
           })
           .select()
           .single();
@@ -211,6 +234,53 @@ class UserDashboardRepository {
       return right(List<Map<String, dynamic>>.from(res));
     } catch (e) {
       return right([]);
+    }
+  }
+
+  // ── Fetch Mechanics ────────────────────────────────────────────────────────
+  Future<Either<String, List<UserModel>>> getMechanics() async {
+    try {
+      final res = await _supabase
+          .from('users')
+          .select()
+          .eq('role', ProviderCategory.mechanic.value);
+      return right((res as List).map((e) => UserModel.fromMap(e)).toList());
+    } catch (e) {
+      print('Get mechanics error: $e');
+      return right([]);
+    }
+  }
+
+  // ── Get user orders ────────────────────────────────────────────────────────
+  Future<Either<String, List<DetailedOrderModel>>> getUserOrders(String userId) async {
+    try {
+      final res = await _supabase
+          .from('orders')
+          .select('''
+            id, order_number, status, total_amount, info, image_url, created_at,
+            seller:seller_id ( name )
+          ''')
+          .eq('customer_id', userId)
+          .order('created_at', ascending: false);
+
+      return right((res as List).map((e) {
+        final seller = e['seller'] as Map<String, dynamic>? ?? {};
+        return DetailedOrderModel(
+          id: e['id'] ?? '',
+          status: e['status'] ?? 'NEW',
+          orderNumber: e['order_number'] ?? '',
+          customerName: seller['name'] ?? 'Seller', // We use customerName field for Seller name here
+          info: e['info'] ?? '',
+          date: e['created_at'] != null
+              ? DateTime.tryParse(e['created_at'])?.toLocal().toString().substring(0, 10) ?? ''
+              : '',
+          price: (e['total_amount'] as num?)?.toDouble() ?? 0.0,
+          imageUrl: e['image_url'] ?? '',
+        );
+      }).toList());
+    } catch (e) {
+      print('Get user orders error: $e');
+      return left(e.toString());
     }
   }
 }

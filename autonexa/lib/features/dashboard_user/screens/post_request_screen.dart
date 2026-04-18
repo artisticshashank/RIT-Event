@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_user/controller/user_dashboard_controller.dart';
@@ -8,7 +12,14 @@ import 'package:autonexa/features/dashboard_user/widgets/evidence_uploader.dart'
 
 class PostRequestScreen extends ConsumerStatefulWidget {
   final ServiceType? preselectedType;
-  const PostRequestScreen({super.key, this.preselectedType});
+  final double? initialLat;
+  final double? initialLng;
+  const PostRequestScreen({
+    super.key,
+    this.preselectedType,
+    this.initialLat,
+    this.initialLng,
+  });
 
   @override
   ConsumerState<PostRequestScreen> createState() => _PostRequestScreenState();
@@ -24,6 +35,12 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
   String? _selectedServiceType;
   String? _selectedProblemCategory;
   String? _selectedVehicleInfo;
+
+  List<File> _evidenceImages = [];
+  final ImagePicker _picker = ImagePicker();
+
+  double? _lat;
+  double? _lng;
 
   // ── Fuel-specific fields ──────────────────────────────────────────────────
   String? _selectedFuelType;
@@ -83,9 +100,19 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
   @override
   void initState() {
     super.initState();
+    _lat = widget.initialLat;
+    _lng = widget.initialLng;
+
     if (widget.preselectedType != null) {
       _selectedServiceType = widget.preselectedType!.displayName;
     }
+
+    if (_lat != null && _lng != null) {
+      _getAddressFromCoords(_lat!, _lng!);
+    } else {
+      _getCurrentLocation();
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final vehicles = ref.read(userVehiclesProvider).value;
       if (vehicles != null && vehicles.isNotEmpty) {
@@ -93,6 +120,54 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         setState(() => _selectedVehicleInfo = '${v.make} ${v.model} ${v.year}');
       }
     });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        _showSnack('Location services are disabled.', isError: true);
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          _showSnack('Location permissions are denied.', isError: true);
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        _showSnack('Location permissions are permanently denied.', isError: true);
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      setState(() {
+        _lat = position.latitude;
+        _lng = position.longitude;
+      });
+      _getAddressFromCoords(position.latitude, position.longitude);
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+    }
+  }
+
+  Future<void> _getAddressFromCoords(double lat, double lng) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+      if (placemarks.isNotEmpty) {
+        final p = placemarks.first;
+        final address = '${p.street}, ${p.subLocality}, ${p.locality}, ${p.postalCode}';
+        setState(() {
+          _locationController.text = address;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error reverse geocoding: $e');
+    }
   }
 
   @override
@@ -135,8 +210,8 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         .read(createServiceRequestProvider.notifier)
         .create(
           requestType: _mapToServiceType(_selectedServiceType),
-          locationLat: 0.0,
-          locationLng: 0.0,
+          locationLat: _lat ?? 0.0,
+          locationLng: _lng ?? 0.0,
           locationAddress: _locationController.text.trim().isEmpty
               ? null
               : _locationController.text.trim(),
@@ -148,6 +223,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               ? _selectedTowingIssue
               : _selectedProblemCategory,
           price: _currentBudgetMin.toDouble(),
+          evidenceFiles: _evidenceImages,
         );
 
     if (!mounted) return;
@@ -170,6 +246,23 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         margin: const EdgeInsets.all(16),
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    if (_evidenceImages.length >= 5) {
+      _showSnack('You can only upload up to 5 images', isError: true);
+      return;
+    }
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+      if (pickedFile != null) {
+        setState(() {
+          _evidenceImages.add(File(pickedFile.path));
+        });
+      }
+    } catch (e) {
+      _showSnack('Failed to pick image', isError: true);
+    }
   }
 
   Widget _buildDropdown({
@@ -465,7 +558,15 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               ],
             ),
             const SizedBox(height: 16),
-            const EvidenceUploader(),
+            EvidenceUploader(
+              images: _evidenceImages,
+              onAdd: _pickImage,
+              onRemove: (index) {
+                setState(() {
+                  _evidenceImages.removeAt(index);
+                });
+              },
+            ),
             const SizedBox(height: 32),
 
             // ── Location ───────────────────────────────────────────────────

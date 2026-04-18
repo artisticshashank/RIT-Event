@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
@@ -5,7 +6,9 @@ import 'package:autonexa/models/spare_part_model.dart';
 import 'package:autonexa/features/dashboard_user/repository/user_dashboard_repository.dart';
 import 'package:autonexa/models/vehicle_model.dart';
 import 'package:autonexa/models/service_request_model.dart';
+import 'package:autonexa/models/user_model.dart';
 import 'package:autonexa/models/enums.dart';
+import 'package:autonexa/models/seller_dashboard_model.dart';
 
 // ── User vehicles ─────────────────────────────────────────────────────────────
 final userVehiclesProvider = FutureProvider<List<VehicleModel>>((ref) async {
@@ -64,6 +67,20 @@ final sparePartsProvider = FutureProvider<List<SparePartModel>>((ref) async {
   return res.fold((_) => [], (r) => r);
 });
 
+// ── Mechanics list ────────────────────────────────────────────────────────────
+final mechanicsListProvider = FutureProvider<List<UserModel>>((ref) async {
+  final res = await ref.read(userDashboardRepositoryProvider).getMechanics();
+  return res.fold((_) => [], (r) => r);
+});
+
+// ── User orders ───────────────────────────────────────────────────────────────
+final userOrdersProvider = FutureProvider<List<DetailedOrderModel>>((ref) async {
+  final user = ref.watch(userProvider);
+  if (user == null) return [];
+  final res = await ref.read(userDashboardRepositoryProvider).getUserOrders(user.id);
+  return res.fold((_) => [], (r) => r);
+});
+
 // ── Add Vehicle action ─────────────────────────────────────────────────────────
 class AddVehicleNotifier extends AsyncNotifier<void> {
   @override
@@ -118,6 +135,7 @@ class CreateServiceRequestNotifier extends AsyncNotifier<void> {
     String? fuelType,
     String? issueType,
     double? price,
+    List<File>? evidenceFiles,
   }) async {
     state = const AsyncLoading();
     try {
@@ -136,6 +154,7 @@ class CreateServiceRequestNotifier extends AsyncNotifier<void> {
         fuelType: fuelType,
         issueType: issueType,
         price: price,
+        evidenceFiles: evidenceFiles,
       );
       state = const AsyncData(null);
       // Invalidate so the list refreshes

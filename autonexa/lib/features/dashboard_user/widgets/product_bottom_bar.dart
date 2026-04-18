@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/shopping_cart_screen.dart';
+import 'package:autonexa/models/spare_part_model.dart';
+import 'package:autonexa/features/dashboard_user/controller/cart_provider.dart';
 
-class ProductBottomBar extends StatelessWidget {
-  const ProductBottomBar({super.key});
+class ProductBottomBar extends ConsumerWidget {
+  final SparePartModel part;
+  const ProductBottomBar({super.key, required this.part});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
 
@@ -55,6 +59,7 @@ class ProductBottomBar extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    ref.read(cartProvider.notifier).addToCart(part);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

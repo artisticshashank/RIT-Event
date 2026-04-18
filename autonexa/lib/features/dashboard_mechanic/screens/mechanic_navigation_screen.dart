@@ -6,6 +6,8 @@ import 'package:autonexa/features/auth/controller/auth_controller.dart';
 import 'package:autonexa/models/service_request_model.dart';
 import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_controller.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class MechanicNavigationScreen extends ConsumerStatefulWidget {
   final ServiceRequestModel serviceRequest;
@@ -19,6 +21,19 @@ class MechanicNavigationScreen extends ConsumerStatefulWidget {
 class _MechanicNavigationScreenState
     extends ConsumerState<MechanicNavigationScreen> {
   int _currentIndex = 0;
+  final MapController _mapController = MapController();
+  final LatLng _mechanicLocation = const LatLng(37.7749, -122.4194); // Mock current mechanic location
+  late final LatLng _customerLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Assuming mock customer location if real data not available
+    _customerLocation = LatLng(
+      widget.serviceRequest.locationLat != 0 ? widget.serviceRequest.locationLat : 37.7790,
+      widget.serviceRequest.locationLng != 0 ? widget.serviceRequest.locationLng : -122.4210,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,69 +44,106 @@ class _MechanicNavigationScreenState
       backgroundColor: isDark ? const Color(0xFF10141F) : Colors.white,
       body: Stack(
         children: [
-          // Dummy Map Background
-          Container(
+          // Flutter Map
+          SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.7,
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF151924) : Colors.grey[300],
-            ),
-            child: Stack(
+            child: FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: _mechanicLocation,
+                initialZoom: 14.0,
+              ),
               children: [
-                Center(
-                  child: Icon(
-                    Icons.map,
-                    size: 250,
-                    color: isDark ? Colors.white10 : Colors.black12,
-                  ),
+                TileLayer(
+                  urlTemplate: isDark
+                      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                  subdomains: const ['a', 'b', 'c', 'd'],
                 ),
-                // Location ripple
-                Center(
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Pallete.secondaryColor.withAlpha(20),
-                    ),
-                    child: Center(
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Pallete.secondaryColor,
-                          border: Border.all(color: Colors.white, width: 2),
-                        ),
-                        child: const Icon(
-                          Icons.navigation,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                MarkerLayer(
+                  markers: [
+                    // Mechanic Marker
+                    Marker(
+                      point: _mechanicLocation,
+                      width: 60,
+                      height: 60,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Pallete.secondaryColor.withAlpha(50),
+                            ),
+                          ),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Pallete.secondaryColor,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            child: const Icon(
+                              Icons.navigation,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-                // Map controls
-                Positioned(
-                  right: 16,
-                  top: 140,
-                  child: Column(
-                    children: [
-                      _buildMapButton(Icons.add, isDark),
-                      const SizedBox(height: 8),
-                      _buildMapButton(Icons.remove, isDark),
-                      const SizedBox(height: 24),
-                      CircleAvatar(
-                        backgroundColor: Pallete.secondaryColor,
-                        radius: 24,
-                        child: const Icon(
-                          Icons.my_location,
-                          color: Colors.white,
-                        ),
+                    // Customer Marker
+                    Marker(
+                      point: _customerLocation,
+                      width: 50,
+                      height: 50,
+                      child: const Column(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.redAccent,
+                            size: 40,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
+                // Map controls overlay
+                Stack(
+                  children: [
+                    Positioned(
+                      right: 16,
+                      top: 140,
+                      child: Column(
+                        children: [
+                          _buildMapButton(Icons.add, isDark, () {
+                            _mapController.move(_mapController.camera.center, _mapController.camera.zoom + 1);
+                          }),
+                          const SizedBox(height: 8),
+                          _buildMapButton(Icons.remove, isDark, () {
+                            _mapController.move(_mapController.camera.center, _mapController.camera.zoom - 1);
+                          }),
+                          const SizedBox(height: 24),
+                          GestureDetector(
+                            onTap: () => _mapController.move(_mechanicLocation, 15.0),
+                            child: CircleAvatar(
+                              backgroundColor: Pallete.secondaryColor,
+                              radius: 24,
+                              child: const Icon(
+                                Icons.my_location,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -445,11 +497,14 @@ class _MechanicNavigationScreenState
     );
   }
 
-  Widget _buildMapButton(IconData icon, bool isDark) {
-    return CircleAvatar(
-      backgroundColor: isDark ? const Color(0xFF1E2333) : Colors.white,
-      radius: 24,
-      child: Icon(icon, color: isDark ? Colors.white : Colors.black),
+  Widget _buildMapButton(IconData icon, bool isDark, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CircleAvatar(
+        backgroundColor: isDark ? const Color(0xFF1E2333) : Colors.white,
+        radius: 24,
+        child: Icon(icon, color: isDark ? Colors.white : Colors.black),
+      ),
     );
   }
 

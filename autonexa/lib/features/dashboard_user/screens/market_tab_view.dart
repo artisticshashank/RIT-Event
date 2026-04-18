@@ -5,6 +5,7 @@ import 'package:autonexa/features/dashboard_user/controller/user_dashboard_contr
 import 'package:autonexa/features/dashboard_user/widgets/market_app_bar.dart';
 import 'package:autonexa/models/spare_part_model.dart';
 import 'package:autonexa/features/dashboard_user/screens/product_details_screen.dart';
+import 'package:autonexa/features/dashboard_user/controller/cart_provider.dart';
 
 class MarketTabView extends ConsumerWidget {
   const MarketTabView({super.key});
@@ -115,7 +116,7 @@ class MarketTabView extends ConsumerWidget {
                   ),
                   itemCount: displayParts.length,
                   itemBuilder: (context, index) {
-                    return _buildProductCard(context, displayParts[index]);
+                    return _buildProductCard(context, displayParts[index], ref);
                   },
                 );
               },
@@ -167,7 +168,7 @@ class MarketTabView extends ConsumerWidget {
     );
   }
 
-  Widget _buildProductCard(BuildContext context, SparePartModel part) {
+  Widget _buildProductCard(BuildContext context, SparePartModel part, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = Theme.of(context).cardColor;
 
@@ -310,16 +311,29 @@ class MarketTabView extends ConsumerWidget {
                           color: Pallete.secondaryColor,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Pallete.secondaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.add_shopping_cart,
-                          size: 16,
-                          color: Colors.white,
+                      GestureDetector(
+                        onTap: () {
+                          ref.read(cartProvider.notifier).addToCart(part);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('${part.name} added to cart!'),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Pallete.secondaryColor,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Pallete.secondaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.add_shopping_cart,
+                            size: 16,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],

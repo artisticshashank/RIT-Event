@@ -4,6 +4,7 @@ import 'package:autonexa/models/vehicle_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/features/dashboard_user/controller/user_dashboard_controller.dart';
 import 'package:autonexa/features/dashboard_user/screens/diagnostic_report_screen.dart';
+import 'package:autonexa/features/dashboard_user/screens/add_vehicle_screen.dart';
 
 class VehicleCard extends ConsumerWidget {
   const VehicleCard({super.key});
@@ -15,29 +16,88 @@ class VehicleCard extends ConsumerWidget {
     return vehiclesAsync.when(
       data: (vehicles) {
         if (vehicles.isEmpty) {
-          // Placeholder if no vehicle is found
-          return _buildCard(context, null);
+          return _buildAddVehicleCard(context);
         }
         return _buildCard(context, vehicles.first);
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text(err.toString())),
+      loading: () => const SizedBox(height: 250, child: Center(child: CircularProgressIndicator())),
+      error: (err, stack) => SizedBox(height: 250, child: Center(child: Text(err.toString()))),
     );
   }
 
-  Widget _buildCard(BuildContext context, VehicleModel? vehicle) {
+  Widget _buildAddVehicleCard(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = isDark ? Colors.white : Pallete.textColor;
 
-    // Fallback data
-    final carName = vehicle != null
-        ? '${vehicle.make} ${vehicle.model}'
-        : 'Tesla Model 3';
-    // We mock performance/battery/etc since they are not in VehicleModel
-    final carSubtitle = vehicle != null
-        ? '${vehicle.year}'
-        : 'Dual Motor Performance';
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AddVehicleScreen()),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        padding: const EdgeInsets.all(24.0),
+        decoration: BoxDecoration(
+          color: cardBgColor,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Pallete.secondaryColor.withOpacity(0.5),
+            width: 2,
+            style: BorderStyle.solid,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Pallete.secondaryColor.withOpacity(isDark ? 0.3 : 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Pallete.secondaryColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.add, color: Pallete.secondaryColor, size: 40),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Add Your Vehicle',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Add your vehicle to enable proactive service tracking and smart features.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Pallete.textSecondaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard(BuildContext context, VehicleModel vehicle) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardBgColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final textColor = isDark ? Colors.white : Pallete.textColor;
+
+    // Fallback data mapping
+    final carName = '${vehicle.make} ${vehicle.model}';
+    final carSubtitle = '${vehicle.year}';
     const battery = '85%';
     const odometer = '12,450';
     const range = '264';

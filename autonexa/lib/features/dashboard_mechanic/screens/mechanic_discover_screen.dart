@@ -7,6 +7,8 @@ import 'package:autonexa/core/common/loader.dart';
 import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_controller.dart';
 import 'package:autonexa/features/dashboard_mechanic/widgets/nearby_request_card.dart';
 import 'package:autonexa/features/dashboard_mechanic/screens/mechanic_incoming_request_screen.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class MechanicDiscoverScreen extends ConsumerStatefulWidget {
   const MechanicDiscoverScreen({super.key});
@@ -97,26 +99,58 @@ class _MechanicDiscoverScreenState
         SliverToBoxAdapter(
           child: Column(
             children: [
-              // Map placeholder with Online toggle
+              // Flutter Map with Online toggle overlay
               Container(
                 height: 250,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E2333) : Colors.grey[300],
-                  borderRadius: const BorderRadius.only(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
                 ),
+                clipBehavior: Clip.antiAlias,
                 child: Stack(
                   children: [
-                    Center(
-                      child: Icon(
-                        Icons.map,
-                        size: 100,
-                        color: isDark ? Colors.white10 : Colors.black12,
+                    FlutterMap(
+                      options: const MapOptions(
+                        initialCenter: LatLng(37.7749, -122.4194),
+                        initialZoom: 12.0,
                       ),
+                      children: [
+                        TileLayer(
+                          urlTemplate: isDark
+                              ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                              : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                          subdomains: const ['a', 'b', 'c', 'd'],
+                        ),
+                        // Request markers
+                        pendingAsync.when(
+                          data: (jobs) => MarkerLayer(
+                            markers: jobs.map((job) {
+                              return Marker(
+                                point: LatLng(
+                                  job.locationLat != 0 ? job.locationLat : 37.7749 + (0.01 * jobs.indexOf(job)),
+                                  job.locationLng != 0 ? job.locationLng : -122.4194 + (0.01 * jobs.indexOf(job)),
+                                ),
+                                width: 30,
+                                height: 30,
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: job.requestType == ServiceType.towing || job.requestType == ServiceType.jump_start
+                                      ? Pallete.secondaryColor
+                                      : Colors.blue,
+                                  size: 24,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          loading: () => const SizedBox.shrink(),
+                          error: (_, __) => const SizedBox.shrink(),
+                        ),
+                      ],
                     ),
+
                     // Online toggle — tapping calls Supabase
                     Positioned(
                       top: 16,
@@ -195,25 +229,6 @@ class _MechanicDiscoverScreenState
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
-                      ),
-                    ),
-                    // Map pins
-                    Positioned(
-                      top: 100,
-                      left: 100,
-                      child: Icon(
-                        Icons.location_on,
-                        size: 40,
-                        color: Pallete.secondaryColor,
-                      ),
-                    ),
-                    Positioned(
-                      top: 150,
-                      right: 120,
-                      child: Icon(
-                        Icons.location_pin,
-                        size: 30,
-                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ],

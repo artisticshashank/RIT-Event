@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/mechanics_search_screen.dart';
+import 'package:autonexa/features/dashboard_user/screens/user_orders_screen.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -43,8 +44,16 @@ class QuickActions extends StatelessWidget {
               _buildActionItem(context, Icons.settings, 'SPARE PARTS'),
               _buildActionItem(
                 context,
-                Icons.warning_amber_rounded,
-                'ROADSIDE',
+                Icons.shopping_bag,
+                'MY ORDERS',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserOrdersScreen(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
