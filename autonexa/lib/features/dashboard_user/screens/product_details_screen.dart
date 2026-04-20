@@ -35,7 +35,11 @@ class ProductDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProductImageSlider(imageUrl: _getImageForPart(part.name)),
+                  ProductImageSlider(
+                    imageUrl: (part.imageUrl != null && part.imageUrl!.isNotEmpty)
+                        ? part.imageUrl!
+                        : _getImageForPart(part.name),
+                  ),
                   ProductInfo(part: part),
                   const ProductSpecs(),
                   const SizedBox(height: 16),

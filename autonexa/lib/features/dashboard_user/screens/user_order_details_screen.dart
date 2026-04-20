@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
 
@@ -73,7 +73,7 @@ class UserOrderDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             _infoRow('Seller', order.customerName, textColor), // We use customerName field for seller name
             _infoRow('Date', order.date, textColor),
-            _infoRow('Total Amount', '\$${order.price.toStringAsFixed(2)}', textColor),
+            _infoRow('Total Amount', '₹${order.price.toStringAsFixed(2)}', textColor),
             const Divider(height: 48),
             
             Text(
@@ -132,3 +132,4 @@ class UserOrderDetailsScreen extends StatelessWidget {
     );
   }
 }
+

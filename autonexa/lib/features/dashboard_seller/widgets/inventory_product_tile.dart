@@ -57,8 +57,16 @@ class InventoryProductTile extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDark ? Colors.white : Colors.grey[200],
               borderRadius: BorderRadius.circular(8),
+              image: product.imageUrl.isNotEmpty
+                  ? DecorationImage(
+                      image: NetworkImage(product.imageUrl),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
-            child: Icon(_getIcon(), color: Colors.black87, size: 32),
+            child: product.imageUrl.isEmpty
+                ? Icon(_getIcon(), color: Colors.black87, size: 32)
+                : null,
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -84,7 +92,7 @@ class InventoryProductTile extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '\$${product.price.toStringAsFixed(2)}',
+                      '₹${product.price.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: accentColor,
                         fontWeight: FontWeight.bold,
@@ -139,3 +147,4 @@ class InventoryProductTile extends StatelessWidget {
     );
   }
 }
+

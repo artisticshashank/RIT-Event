@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -271,7 +271,7 @@ class _SellerAddProductScreenState
               ),
               const SizedBox(height: 24),
 
-              // Product Photos row (UI only — storage integration is optional)
+              // Product Photos row (UI only â€” storage integration is optional)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -402,7 +402,7 @@ class _SellerAddProductScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildLabel('Price (\$) *', textColor),
+                        _buildLabel('Price (₹) *', textColor),
                         _buildTextField(
                           hintText: '0.00',
                           keyboardType: TextInputType.number,
@@ -617,3 +617,4 @@ class _SellerAddProductScreenState
     );
   }
 }
+

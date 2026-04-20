@@ -6,6 +6,7 @@ import 'package:autonexa/features/dashboard_towing/controller/towing_controller.
 import 'package:autonexa/core/common/loader.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart' hide ServiceStatus;
 
 class TowingTrackingScreen extends ConsumerStatefulWidget {
   final TowingRequestModel request;
@@ -18,8 +19,9 @@ class TowingTrackingScreen extends ConsumerStatefulWidget {
 
 class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
   final MapController _mapController = MapController();
-  final LatLng _towingLocation = const LatLng(37.7749, -122.4194);
+  LatLng? _towingLocation;
   late LatLng _customerLocation;
+  bool _isLoadingMapLocation = true;
 
   @override
   void initState() {
@@ -28,6 +30,33 @@ class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
       widget.request.locationLat != 0 ? widget.request.locationLat : 37.7790,
       widget.request.locationLng != 0 ? widget.request.locationLng : -122.4210,
     );
+    _fetchCurrentLocation();
+  }
+
+  Future<void> _fetchCurrentLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation,
+      );
+      if (mounted) {
+        setState(() {
+          _towingLocation = LatLng(position.latitude, position.longitude);
+          _isLoadingMapLocation = false;
+        });
+        _mapController.move(_towingLocation!, 15.0);
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingMapLocation = false);
+    }
   }
 
   @override
@@ -94,7 +123,7 @@ class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
             child: FlutterMap(
               mapController: _mapController,
               options: MapOptions(
-                initialCenter: _towingLocation,
+                initialCenter: _towingLocation ?? const LatLng(37.7749, -122.4194),
                 initialZoom: 14.0,
               ),
               children: [
@@ -104,32 +133,43 @@ class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
                       : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
                   subdomains: const ['a', 'b', 'c', 'd'],
                 ),
+                if (_towingLocation != null)
+                  PolylineLayer(
+                    polylines: [
+                      Polyline(
+                        points: [_towingLocation!, _customerLocation],
+                        color: Pallete.secondaryColor,
+                        strokeWidth: 5.0,
+                      ),
+                    ],
+                  ),
                 MarkerLayer(
                   markers: [
-                    Marker(
-                      point: _towingLocation,
-                      width: 60,
-                      height: 60,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Pallete.secondaryColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Pallete.secondaryColor.withValues(alpha: 0.4),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.local_shipping,
-                          color: Colors.white,
-                          size: 28,
+                    if (_towingLocation != null)
+                      Marker(
+                        point: _towingLocation!,
+                        width: 60,
+                        height: 60,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Pallete.secondaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Pallete.secondaryColor.withValues(alpha: 0.4),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.local_shipping,
+                            color: Colors.white,
+                            size: 28,
+                          ),
                         ),
                       ),
-                    ),
                     Marker(
                       point: _customerLocation,
                       width: 50,
@@ -168,8 +208,14 @@ class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
                     ],
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.my_location, color: textColor),
-                    onPressed: () => _mapController.move(_towingLocation, 15.0),
+                    icon: Icon(_isLoadingMapLocation ? Icons.hourglass_empty : Icons.my_location, color: textColor),
+                    onPressed: () {
+                      if (_towingLocation != null) {
+                        _mapController.move(_towingLocation!, 15.0);
+                      } else {
+                        _fetchCurrentLocation();
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -446,7 +492,7 @@ class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Total: \$${request.price.toInt()}',
+                                  'Total: ₹${request.price.toInt()}',
                                   style: const TextStyle(
                                     color: Colors.greenAccent,
                                     fontSize: 12,
@@ -657,3 +703,4 @@ class _TowingTrackingScreenState extends ConsumerState<TowingTrackingScreen> {
     );
   }
 }
+

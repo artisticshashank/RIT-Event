@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_seller/screens/seller_order_details_screen.dart';
@@ -152,7 +152,7 @@ class DetailedOrderCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '\$${order.price.toStringAsFixed(2)}',
+                      '₹${order.price.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: accentColor,
                         fontSize: 18,
@@ -226,3 +226,4 @@ class DetailedOrderCard extends StatelessWidget {
     );
   }
 }
+

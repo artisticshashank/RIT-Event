@@ -4,8 +4,12 @@ import 'package:autonexa/features/dashboard_user/widgets/mechanic_stat_card.dart
 import 'package:autonexa/features/dashboard_user/widgets/service_offered_card.dart';
 import 'package:autonexa/features/dashboard_user/widgets/customer_review_card.dart';
 
+import 'package:autonexa/models/user_model.dart';
+import 'package:autonexa/features/dashboard_user/screens/post_request_screen.dart';
+
 class MechanicProfileScreen extends StatelessWidget {
-  const MechanicProfileScreen({super.key});
+  final UserModel mechanic;
+  const MechanicProfileScreen({super.key, required this.mechanic});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class MechanicProfileScreen extends StatelessWidget {
 
               // Name and Title
               Text(
-                'Alex Rivera',
+                mechanic.name.isNotEmpty ? mechanic.name : 'Unknown Mechanic',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -114,7 +118,7 @@ class MechanicProfileScreen extends StatelessWidget {
                   const Icon(Icons.star, color: Colors.amber, size: 16),
                   const SizedBox(width: 4),
                   Text(
-                    '4.9 (850 reviews)   •   12 years exp.',
+                    '4.9 (850 reviews)   â€¢   12 years exp.',
                     style: TextStyle(
                       fontSize: 12,
                       color: textColor?.withValues(alpha: 0.8),
@@ -183,7 +187,7 @@ class MechanicProfileScreen extends StatelessWidget {
                     const MechanicStatCard(
                       title: 'Repairs',
                       value: '1.2k+',
-                      subtitle: '↗ 5% this mo',
+                      subtitle: 'â†— 5% this mo',
                       subtitleColor: Colors.tealAccent,
                     ),
                     const SizedBox(width: 12),
@@ -252,19 +256,19 @@ class MechanicProfileScreen extends StatelessWidget {
                 icon: Icons.oil_barrel,
                 title: 'Full Synthetic Oil Change',
                 description: 'Includes filter and 21-point inspection',
-                price: '\$85+',
+                price: '₹85+',
               ),
               const ServiceOfferedCard(
                 icon: Icons.settings, // brake icon analog
                 title: 'Brake Pad Replacement',
                 description: 'Per axle, ceramic pads',
-                price: '\$180+',
+                price: '₹180+',
               ),
               const ServiceOfferedCard(
                 icon: Icons.auto_graph,
                 title: 'Engine Diagnostic',
                 description: 'Full scan and detailed report',
-                price: '\$120+',
+                price: '₹120+',
               ),
               const SizedBox(height: 32),
 
@@ -334,7 +338,14 @@ class MechanicProfileScreen extends StatelessWidget {
                     letterSpacing: 1.2,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PostRequestScreen(),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -343,3 +354,4 @@ class MechanicProfileScreen extends StatelessWidget {
     );
   }
 }
+

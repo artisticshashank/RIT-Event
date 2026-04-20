@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/order_success_screen.dart';
@@ -367,7 +367,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 0,
                 'Express Delivery',
                 '1-2 business days',
-                '\$25.00',
+                '₹25.00',
               ),
               _buildShippingOption(
                 1,
@@ -510,7 +510,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           'Subtotal',
                           style: TextStyle(color: Pallete.textSecondaryColor),
                         ),
-                        Text('\$${(widget.totalAmount * 0.92 - _shippingcost).toStringAsFixed(2)}', style: TextStyle(color: textColor)),
+                        Text('₹${(widget.totalAmount * 0.92 - _shippingcost).toStringAsFixed(2)}', style: TextStyle(color: textColor)),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -521,7 +521,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           'Shipping fee',
                           style: TextStyle(color: Pallete.textSecondaryColor),
                         ),
-                        Text('\$$_shippingcost', style: TextStyle(color: textColor)),
+                        Text('₹$_shippingcost', style: TextStyle(color: textColor)),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -532,7 +532,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           'Taxes',
                           style: TextStyle(color: Pallete.textSecondaryColor),
                         ),
-                        Text('\$${(widget.totalAmount * 0.08).toStringAsFixed(2)}', style: TextStyle(color: textColor)),
+                        Text('₹${(widget.totalAmount * 0.08).toStringAsFixed(2)}', style: TextStyle(color: textColor)),
                       ],
                     ),
                     Padding(
@@ -554,7 +554,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           ),
                         ),
                         Text(
-                          '\$${widget.totalAmount.toStringAsFixed(2)}',
+                          '₹${widget.totalAmount.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -583,7 +583,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   icon: const Icon(Icons.lock),
                   label: Text(
-                    'Pay \$${widget.totalAmount.toStringAsFixed(2)} Now',
+                    'Pay ₹${widget.totalAmount.toStringAsFixed(2)} Now',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () async {
@@ -622,3 +622,4 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     );
   }
 }
+

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 class Pallete {
   // AutoNexa Premium Theme Colors (Based on AI Market UI)
   static const Color primaryColor = Color(
-    0xFF1E1E1E,
-  ); // Dark Grey/Black for main actions
-  static const Color secondaryColor = Color(0xFFFF5236); // Vibrant Coral/Red
-  static const Color accentColor = Color(0xFFFF5236);
+    0xFFE65100,
+  ); // Dark Orange for main actions
+  static const Color secondaryColor = Color(0xFFFF9800); // Lighter Orange
+  static const Color accentColor = Color(0xFFFF6D00);
 
   static const Color backgroundColor = Color(
-    0xFFF7F7F7,
-  ); // Very light greyish white
-  static const Color surfaceColor = Color(0xFFFFFFFF); // Pure white cards
-  static const Color textColor = Color(0xFF1E1E1E); // Dark text
-  static const Color textSecondaryColor = Color(0xFF8A8A8E); // Soft grey text
+    0xFF121212,
+  ); // Deep dark background
+  static const Color surfaceColor = Color(0xFF1E1E1E); // Dark surface/cards
+  static const Color textColor = Color(0xFFEEEEEE); // Light text
+  static const Color textSecondaryColor = Color(0xFFAAAAAA); // Soft grey text
 
   static var lightModeAppTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: backgroundColor,
@@ -74,15 +74,15 @@ class Pallete {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: const Color(0x1FFFFFFF),
+      fillColor: const Color(0xFF1E1E1E), // Slightly lighter than background
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(100),
@@ -90,7 +90,7 @@ class Pallete {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(100),
-        borderSide: const BorderSide(color: Colors.white, width: 2),
+        borderSide: const BorderSide(color: primaryColor, width: 2),
       ),
       labelStyle: const TextStyle(color: Colors.grey),
       hintStyle: const TextStyle(color: Colors.grey),

@@ -8,6 +8,7 @@ import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_controller.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart' hide ServiceStatus;
 
 class MechanicNavigationScreen extends ConsumerStatefulWidget {
   final ServiceRequestModel serviceRequest;
@@ -22,17 +23,49 @@ class _MechanicNavigationScreenState
     extends ConsumerState<MechanicNavigationScreen> {
   int _currentIndex = 0;
   final MapController _mapController = MapController();
-  final LatLng _mechanicLocation = const LatLng(37.7749, -122.4194); // Mock current mechanic location
+  LatLng? _mechanicLocation;
   late final LatLng _customerLocation;
+  bool _isLoadingLocation = true;
 
   @override
   void initState() {
     super.initState();
-    // Assuming mock customer location if real data not available
-    _customerLocation = LatLng(
-      widget.serviceRequest.locationLat != 0 ? widget.serviceRequest.locationLat : 37.7790,
-      widget.serviceRequest.locationLng != 0 ? widget.serviceRequest.locationLng : -122.4210,
-    );
+    // Use actual customer coordinates or fallback
+    final lat = widget.serviceRequest.locationLat;
+    final lng = widget.serviceRequest.locationLng;
+    _customerLocation = (lat != 0.0 && lng != 0.0) 
+        ? LatLng(lat, lng) 
+        : const LatLng(20.5937, 78.9629);
+
+    _fetchLocation();
+  }
+
+  Future<void> _fetchLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation,
+      );
+      
+      if (mounted) {
+        setState(() {
+          _mechanicLocation = LatLng(position.latitude, position.longitude);
+          _isLoadingLocation = false;
+        });
+        _mapController.move(_mechanicLocation!, 15.0);
+      }
+    } catch (e) {
+      debugPrint('Navigation map location error: $e');
+      if (mounted) setState(() => _isLoadingLocation = false);
+    }
   }
 
   @override
@@ -51,7 +84,7 @@ class _MechanicNavigationScreenState
             child: FlutterMap(
               mapController: _mapController,
               options: MapOptions(
-                initialCenter: _mechanicLocation,
+                initialCenter: _mechanicLocation ?? _customerLocation,
                 initialZoom: 14.0,
               ),
               children: [
@@ -61,41 +94,52 @@ class _MechanicNavigationScreenState
                       : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
                   subdomains: const ['a', 'b', 'c', 'd'],
                 ),
+                if (_mechanicLocation != null)
+                  PolylineLayer(
+                    polylines: [
+                      Polyline(
+                        points: [_mechanicLocation!, _customerLocation],
+                        color: Pallete.secondaryColor,
+                        strokeWidth: 5.0,
+                      ),
+                    ],
+                  ),
                 MarkerLayer(
                   markers: [
                     // Mechanic Marker
-                    Marker(
-                      point: _mechanicLocation,
-                      width: 60,
-                      height: 60,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Pallete.secondaryColor.withAlpha(50),
+                    if (_mechanicLocation != null)
+                      Marker(
+                        point: _mechanicLocation!,
+                        width: 60,
+                        height: 60,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallete.secondaryColor.withAlpha(50),
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Pallete.secondaryColor,
-                              border: Border.all(color: Colors.white, width: 2),
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallete.secondaryColor,
+                                border: Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: const Icon(
+                                Icons.navigation,
+                                color: Colors.white,
+                                size: 18,
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.navigation,
-                              color: Colors.white,
-                              size: 18,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                     // Customer Marker
                     Marker(
                       point: _customerLocation,
@@ -130,12 +174,16 @@ class _MechanicNavigationScreenState
                           }),
                           const SizedBox(height: 24),
                           GestureDetector(
-                            onTap: () => _mapController.move(_mechanicLocation, 15.0),
+                            onTap: () {
+                              if (_mechanicLocation != null) {
+                                _mapController.move(_mechanicLocation!, 15.0);
+                              }
+                            },
                             child: CircleAvatar(
                               backgroundColor: Pallete.secondaryColor,
                               radius: 24,
-                              child: const Icon(
-                                Icons.my_location,
+                              child: Icon(
+                                _isLoadingLocation ? Icons.hourglass_empty : Icons.my_location,
                                 color: Colors.white,
                               ),
                             ),

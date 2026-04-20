@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/track_order_screen.dart';
 
@@ -153,6 +153,14 @@ class OrderSuccessScreen extends StatelessWidget {
                       width: 80,
                       height: 80,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 80,
+                          height: 80,
+                          color: Pallete.textSecondaryColor.withValues(alpha: 0.2),
+                          child: const Icon(Icons.image_not_supported, color: Pallete.textSecondaryColor),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -167,6 +175,8 @@ class OrderSuccessScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         const Text(
@@ -175,10 +185,12 @@ class OrderSuccessScreen extends StatelessWidget {
                             color: Pallete.textSecondaryColor,
                             fontSize: 12,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          '\$1,249.00',
+                          '₹1,249.00',
                           style: TextStyle(
                             color: Pallete.secondaryColor,
                             fontWeight: FontWeight.bold,
@@ -251,3 +263,4 @@ class OrderSuccessScreen extends StatelessWidget {
     );
   }
 }
+

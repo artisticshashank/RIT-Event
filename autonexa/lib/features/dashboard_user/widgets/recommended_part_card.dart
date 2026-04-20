@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 
 class RecommendedPartCard extends StatelessWidget {
@@ -87,7 +87,7 @@ class RecommendedPartCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '\$124.99',
+                        '₹124.99',
                         style: TextStyle(
                           color: Theme.of(context).textTheme.bodyLarge?.color,
                           fontWeight: FontWeight.bold,
@@ -155,3 +155,4 @@ class RecommendedPartCard extends StatelessWidget {
     );
   }
 }
+

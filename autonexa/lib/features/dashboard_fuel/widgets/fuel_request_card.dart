@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/models/fuel_dashboard_model.dart';
 import 'package:autonexa/theme/pallete.dart';
 
@@ -143,7 +143,7 @@ class FuelRequestCard extends StatelessWidget {
               ),
               // Price
               Text(
-                '\$${request.price.toStringAsFixed(2)}',
+                '₹${request.price.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: accentColor,
                   fontSize: 18,
@@ -212,3 +212,4 @@ class FuelRequestCard extends StatelessWidget {
     );
   }
 }
+

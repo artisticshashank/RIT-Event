@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/core/common/loader.dart';
 import 'package:autonexa/theme/pallete.dart';
@@ -86,7 +86,7 @@ class FuelRequestsScreen extends ConsumerWidget {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              'Online • Station #402',
+                              'Online â€¢ Station #402',
                               style: TextStyle(
                                 color: accentColor,
                                 fontSize: 14,
@@ -133,7 +133,7 @@ class FuelRequestsScreen extends ConsumerWidget {
                       FuelStatCard(
                         title: 'REVENUE',
                         value:
-                            '\$${(overview.revenue / 1000).toStringAsFixed(1)}k',
+                            '₹${(overview.revenue / 1000).toStringAsFixed(1)}k',
                         growth: overview.revenueGrowth,
                         leftBorderColor: Colors.orangeAccent,
                         growthColor: Colors.greenAccent,
@@ -289,7 +289,7 @@ class FuelRequestsScreen extends ConsumerWidget {
   }
 }
 
-// ── Per-card wrapper that wires accept/decline to real providers ─────────────
+// â”€â”€ Per-card wrapper that wires accept/decline to real providers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 class _FuelRequestCardWrapper extends ConsumerWidget {
   final FuelRequestModel request;
   const _FuelRequestCardWrapper({required this.request});
@@ -349,3 +349,4 @@ class _FuelRequestCardWrapper extends ConsumerWidget {
     );
   }
 }
+

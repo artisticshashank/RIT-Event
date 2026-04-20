@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/core/common/loader.dart';
@@ -163,7 +163,7 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '\$${total.toStringAsFixed(2)}',
+                        '₹${total.toStringAsFixed(2)}',
                         style: TextStyle(
                           color: textColor,
                           fontSize: 32,
@@ -312,7 +312,7 @@ class _TowingEarningsScreenState extends ConsumerState<TowingEarningsScreen> {
           style: const TextStyle(color: Colors.white54, fontSize: 11),
         ),
         Text(
-          '\$${amount.toStringAsFixed(2)}',
+          '₹${amount.toStringAsFixed(2)}',
           style: TextStyle(
             color: color,
             fontWeight: FontWeight.bold,
@@ -384,7 +384,7 @@ class _TxnCard extends StatelessWidget {
     final isReceived = txn.paymentStatus == PaymentStatus.received;
     final dateStr = txn.completedAt != null
         ? '${txn.completedAt!.day}/${txn.completedAt!.month}/${txn.completedAt!.year}'
-        : '—';
+        : 'â€”';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -437,7 +437,7 @@ class _TxnCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '+\$${txn.agreedAmount.toStringAsFixed(2)}',
+                '+₹${txn.agreedAmount.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: isDark ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold,
@@ -459,3 +459,4 @@ class _TxnCard extends StatelessWidget {
     );
   }
 }
+

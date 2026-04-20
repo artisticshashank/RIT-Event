@@ -6,6 +6,7 @@ import 'package:autonexa/features/dashboard_fuel/controller/fuel_controller.dart
 import 'package:autonexa/core/common/loader.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart' hide ServiceStatus;
 
 class FuelTrackingScreen extends ConsumerStatefulWidget {
   final FuelRequestModel request;
@@ -18,8 +19,9 @@ class FuelTrackingScreen extends ConsumerStatefulWidget {
 
 class _FuelTrackingScreenState extends ConsumerState<FuelTrackingScreen> {
   final MapController _mapController = MapController();
-  final LatLng _techLocation = const LatLng(37.7749, -122.4194);
+  LatLng? _techLocation;
   late LatLng _customerLocation;
+  bool _isLoadingMapLocation = true;
 
   @override
   void initState() {
@@ -28,6 +30,33 @@ class _FuelTrackingScreenState extends ConsumerState<FuelTrackingScreen> {
       widget.request.locationLat != 0 ? widget.request.locationLat : 37.7790,
       widget.request.locationLng != 0 ? widget.request.locationLng : -122.4210,
     );
+    _fetchCurrentLocation();
+  }
+
+  Future<void> _fetchCurrentLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation,
+      );
+      if (mounted) {
+        setState(() {
+          _techLocation = LatLng(position.latitude, position.longitude);
+          _isLoadingMapLocation = false;
+        });
+        _mapController.move(_techLocation!, 15.0);
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingMapLocation = false);
+    }
   }
 
   @override
@@ -99,7 +128,7 @@ class _FuelTrackingScreenState extends ConsumerState<FuelTrackingScreen> {
             child: FlutterMap(
               mapController: _mapController,
               options: MapOptions(
-                initialCenter: _techLocation,
+                initialCenter: _techLocation ?? const LatLng(37.7749, -122.4194),
                 initialZoom: 14.0,
               ),
               children: [
@@ -109,32 +138,43 @@ class _FuelTrackingScreenState extends ConsumerState<FuelTrackingScreen> {
                       : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
                   subdomains: const ['a', 'b', 'c', 'd'],
                 ),
+                if (_techLocation != null)
+                  PolylineLayer(
+                    polylines: [
+                      Polyline(
+                        points: [_techLocation!, _customerLocation],
+                        color: Pallete.secondaryColor,
+                        strokeWidth: 5.0,
+                      ),
+                    ],
+                  ),
                 MarkerLayer(
                   markers: [
-                    Marker(
-                      point: _techLocation,
-                      width: 60,
-                      height: 60,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Pallete.secondaryColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Pallete.secondaryColor.withValues(alpha: 0.4),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.local_shipping,
-                          color: Colors.white,
-                          size: 28,
+                    if (_techLocation != null)
+                      Marker(
+                        point: _techLocation!,
+                        width: 60,
+                        height: 60,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Pallete.secondaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Pallete.secondaryColor.withValues(alpha: 0.4),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.local_shipping,
+                            color: Colors.white,
+                            size: 28,
+                          ),
                         ),
                       ),
-                    ),
                     Marker(
                       point: _customerLocation,
                       width: 50,
@@ -190,8 +230,14 @@ class _FuelTrackingScreenState extends ConsumerState<FuelTrackingScreen> {
                     border: Border.all(color: borderColor),
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.my_location, color: Colors.white70),
-                    onPressed: () => _mapController.move(_techLocation, 15.0),
+                    icon: Icon(_isLoadingMapLocation ? Icons.hourglass_empty : Icons.my_location, color: Colors.white70),
+                    onPressed: () {
+                      if (_techLocation != null) {
+                        _mapController.move(_techLocation!, 15.0);
+                      } else {
+                        _fetchCurrentLocation();
+                      }
+                    },
                   ),
                 ),
               ],

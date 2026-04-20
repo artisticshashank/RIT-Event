@@ -57,6 +57,7 @@ class InventoryProductModel {
   final double price;
   final int stock;
   final String iconCode;
+  final String imageUrl;
 
   InventoryProductModel({
     required this.id,
@@ -65,6 +66,7 @@ class InventoryProductModel {
     required this.price,
     required this.stock,
     required this.iconCode,
+    required this.imageUrl,
   });
 
   factory InventoryProductModel.fromMap(Map<String, dynamic> map) {
@@ -75,6 +77,7 @@ class InventoryProductModel {
       price: map['price']?.toDouble() ?? 0.0,
       stock: map['stock_quantity']?.toInt() ?? 0,
       iconCode: map['icon_code'] ?? 'parts',
+      imageUrl: map['image_url'] ?? '',
     );
   }
 }

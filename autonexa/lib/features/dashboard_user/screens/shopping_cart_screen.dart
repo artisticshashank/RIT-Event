@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/widgets/cart_item_card.dart';
@@ -214,7 +214,7 @@ class ShoppingCartScreen extends ConsumerWidget {
                                 ),
                               ),
                               Text(
-                                '\$${total.toStringAsFixed(2)}',
+                                '₹${total.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -302,7 +302,7 @@ class ShoppingCartScreen extends ConsumerWidget {
           ),
         ),
         Text(
-          '\$${amount.toStringAsFixed(2)}',
+          '₹${amount.toStringAsFixed(2)}',
           style: TextStyle(
             fontSize: 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
@@ -348,3 +348,4 @@ class ShoppingCartScreen extends ConsumerWidget {
     );
   }
 }
+

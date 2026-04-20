@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/core/common/loader.dart';
 import 'package:autonexa/features/auth/controller/auth_controller.dart';
@@ -104,7 +104,7 @@ class SellerOverviewScreen extends ConsumerWidget {
                 DashboardTopMetricCard(
                   icon: Icons.payments_outlined,
                   title: 'Total Sales',
-                  value: '\$${data.totalSales.toStringAsFixed(0)}',
+                  value: '₹${data.totalSales.toStringAsFixed(0)}',
                   badgeText: '+${data.salesGrowth.toStringAsFixed(0)}%',
                 ),
                 const SizedBox(width: 16),
@@ -184,3 +184,4 @@ class SellerOverviewScreen extends ConsumerWidget {
     );
   }
 }
+

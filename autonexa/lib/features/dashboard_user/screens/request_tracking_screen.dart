@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/service_request_model.dart';
 import 'package:autonexa/models/enums.dart';
@@ -80,7 +80,7 @@ class RequestTrackingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Status banner ────────────────────────────────────────────
+            // â”€â”€ Status banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
@@ -148,7 +148,7 @@ class RequestTrackingScreen extends StatelessWidget {
             const TrackingTimeline(),
             const SizedBox(height: 32),
 
-            // ── Provider info card ─────────────────────────────────────
+            // â”€â”€ Provider info card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             if (responder != null) ...[
               Text(
                 'YOUR PROVIDER',
@@ -255,7 +255,7 @@ class RequestTrackingScreen extends StatelessWidget {
               const SizedBox(height: 24),
             ],
 
-            // ── Request Details ────────────────────────────────────────
+            // â”€â”€ Request Details â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Text(
               'REQUEST DETAILS',
               style: TextStyle(
@@ -288,7 +288,7 @@ class RequestTrackingScreen extends StatelessWidget {
                   if (request.price != null)
                     _detailRow(
                       Icons.payments,
-                      '\$${request.price!.toStringAsFixed(2)} agreed price',
+                      '₹${request.price!.toStringAsFixed(2)} agreed price',
                       isDark,
                     ),
                   if (request.fuelType != null)
@@ -366,3 +366,4 @@ class RequestTrackingScreen extends StatelessWidget {
     }
   }
 }
+

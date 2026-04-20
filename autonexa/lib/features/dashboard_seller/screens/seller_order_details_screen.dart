@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
@@ -196,7 +196,7 @@ class _SellerOrderDetailsScreenState
             ),
           ),
           Text(
-            '\$${price.toStringAsFixed(2)}',
+            '₹${price.toStringAsFixed(2)}',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
         ],
@@ -603,9 +603,9 @@ class _SellerOrderDetailsScreenState
                     ),
                     child: Column(
                       children: [
-                        _buildSummaryRow('Subtotal', '\$166.99'),
-                        _buildSummaryRow('Shipping Fee', '\$12.00'),
-                        _buildSummaryRow('Tax (6%)', '\$10.02'),
+                        _buildSummaryRow('Subtotal', '₹166.99'),
+                        _buildSummaryRow('Shipping Fee', '₹12.00'),
+                        _buildSummaryRow('Tax (6%)', '₹10.02'),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Divider(
@@ -614,7 +614,7 @@ class _SellerOrderDetailsScreenState
                         ),
                         _buildSummaryRow(
                           'Total Amount',
-                          '\$189.01', // Ideally order.price.toStringAsFixed(2), but hardcoded for mockup fidelity
+                          '₹189.01', // Ideally order.price.toStringAsFixed(2), but hardcoded for mockup fidelity
                           isTotal: true,
                           valueColor: accentColor,
                         ),
@@ -714,3 +714,4 @@ class _SellerOrderDetailsScreenState
     );
   }
 }
+

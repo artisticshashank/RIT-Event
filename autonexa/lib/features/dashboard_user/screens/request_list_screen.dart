@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/service_request_model.dart';
@@ -78,7 +78,7 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
     );
   }
 
-  // ── Status badge ────────────────────────────────────────────────────────────
+  // â”€â”€ Status badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   String _statusLabel(ServiceRequestModel r) {
     switch (r.status.name) {
       case 'searching':
@@ -105,7 +105,7 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
     }
   }
 
-  // ── Active requests tab ─────────────────────────────────────────────────────
+  // â”€â”€ Active requests tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildActiveTab() {
     final requestsAsync = ref.watch(activeRequestsProvider);
     return requestsAsync.when(
@@ -196,7 +196,7 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
     );
   }
 
-  // ── History tab ─────────────────────────────────────────────────────────────
+  // â”€â”€ History tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Widget _buildHistoryTab() {
     final historyAsync = ref.watch(requestHistoryProvider);
     return historyAsync.when(
@@ -265,7 +265,7 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
                     children: [
                       Text(
                         r.price != null
-                            ? '\$${r.price!.toStringAsFixed(2)}'
+                            ? '₹${r.price!.toStringAsFixed(2)}'
                             : '',
                         style: const TextStyle(
                           color: Pallete.secondaryColor,
@@ -382,3 +382,4 @@ class _RequestListScreenState extends ConsumerState<RequestListScreen>
     );
   }
 }
+

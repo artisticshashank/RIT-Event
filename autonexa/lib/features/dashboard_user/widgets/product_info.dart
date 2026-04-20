@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/spare_part_model.dart';
 
@@ -61,7 +61,7 @@ class ProductInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '\$${part.price.toStringAsFixed(2)}',
+                '₹${part.price.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class ProductInfo extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Text(
-                  '\$${originalPrice.toStringAsFixed(2)}',
+                  '₹${originalPrice.toStringAsFixed(2)}',
                   style: const TextStyle(
                     fontSize: 14,
                     color: Pallete.textSecondaryColor,
@@ -106,3 +106,4 @@ class ProductInfo extends StatelessWidget {
     );
   }
 }
+

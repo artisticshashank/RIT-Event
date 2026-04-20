@@ -67,7 +67,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       theme: Pallete.lightModeAppTheme,
       darkTheme: Pallete.darkModeAppTheme,
       themeMode: ThemeMode
-          .light, // Added this line to force the light theme based on UI mockup
+          .dark, // Changed to force dark orange theme
       routerDelegate: RoutemasterDelegate(
         routesBuilder: (context) {
           final user = ref.watch(userProvider);

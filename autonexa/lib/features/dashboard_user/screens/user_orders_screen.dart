@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/seller_dashboard_model.dart';
@@ -122,7 +122,7 @@ class _UserOrderCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${order.price.toStringAsFixed(2)}',
+                        '₹${order.price.toStringAsFixed(2)}',
                         style: const TextStyle(
                           color: Pallete.secondaryColor,
                           fontWeight: FontWeight.bold,
@@ -165,3 +165,4 @@ class _UserOrderCard extends StatelessWidget {
     }
   }
 }
+

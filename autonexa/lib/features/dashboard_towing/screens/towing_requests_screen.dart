@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/core/common/loader.dart';
 import 'package:autonexa/theme/pallete.dart';
@@ -147,7 +147,7 @@ class TowingRequestsScreen extends ConsumerWidget {
                       ),
                       TowingStatCard(
                         title: 'REVENUE',
-                        value: '\$${overview.revenue.toInt()}',
+                        value: '₹${overview.revenue.toInt()}',
                       ),
                       TowingStatCard(
                         title: 'DRIVERS',
@@ -314,7 +314,7 @@ class TowingRequestsScreen extends ConsumerWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '${overview.activeJobPins} Active job pins • ${overview.liveTrucks} Trucks live',
+                                '${overview.activeJobPins} Active job pins â€¢ ${overview.liveTrucks} Trucks live',
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.8),
                                   fontSize: 13,
@@ -340,7 +340,7 @@ class TowingRequestsScreen extends ConsumerWidget {
   }
 }
 
-// ── Per-card wrapper that wires assign/decline to real providers ─────────────
+// â”€â”€ Per-card wrapper that wires assign/decline to real providers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 class _TowingRequestCardWrapper extends ConsumerWidget {
   final TowingRequestModel request;
   const _TowingRequestCardWrapper({required this.request});
@@ -401,3 +401,4 @@ class _TowingRequestCardWrapper extends ConsumerWidget {
     );
   }
 }
+

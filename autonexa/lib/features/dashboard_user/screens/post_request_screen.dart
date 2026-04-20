@@ -9,6 +9,8 @@ import 'package:autonexa/models/enums.dart';
 import 'package:autonexa/features/dashboard_user/controller/user_dashboard_controller.dart';
 import 'package:autonexa/features/dashboard_user/widgets/form_section_header.dart';
 import 'package:autonexa/features/dashboard_user/widgets/evidence_uploader.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class PostRequestScreen extends ConsumerStatefulWidget {
   final ServiceType? preselectedType;
@@ -42,11 +44,11 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
   double? _lat;
   double? _lng;
 
-  // ── Fuel-specific fields ──────────────────────────────────────────────────
+  // â”€â”€ Fuel-specific fields â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   String? _selectedFuelType;
   String? _selectedFuelQuantity;
 
-  // ── Towing-specific fields ─────────────────────────────────────────────────
+  // â”€â”€ Towing-specific fields â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   String? _selectedTowingIssue;
 
   final List<String> _serviceTypes = [
@@ -144,7 +146,9 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         return;
       }
 
-      final position = await Geolocator.getCurrentPosition();
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      );
       setState(() {
         _lat = position.latitude;
         _lng = position.longitude;
@@ -365,7 +369,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Service Type ──────────────────────────────────────────────
+            // â”€â”€ Service Type â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const FormSectionHeader(
               title: 'Service Type',
               icon: Icons.build_circle,
@@ -387,7 +391,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             ),
             const SizedBox(height: 24),
 
-            // ── Fuel-specific section ─────────────────────────────────────
+            // â”€â”€ Fuel-specific section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             if (_isFuelRequest) ...[
               const FormSectionHeader(
                 title: 'Fuel Details',
@@ -428,7 +432,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               const SizedBox(height: 24),
             ],
 
-            // ── Towing-specific section ───────────────────────────────────
+            // â”€â”€ Towing-specific section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             if (_isTowingRequest) ...[
               const FormSectionHeader(
                 title: 'Issue Details',
@@ -453,7 +457,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               const SizedBox(height: 24),
             ],
 
-            // ── Vehicle Details ────────────────────────────────────────────
+            // â”€â”€ Vehicle Details â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const FormSectionHeader(
               title: 'Vehicle Details',
               icon: Icons.directions_car,
@@ -488,7 +492,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                     context: context,
                   ),
 
-            // Problem Category — only for mechanical/tire/jump
+            // Problem Category â€” only for mechanical/tire/jump
             if (_isMechanicalRequest) ...[
               const SizedBox(height: 16),
               const Text(
@@ -509,7 +513,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             ],
             const SizedBox(height: 32),
 
-            // ── Describe issue ─────────────────────────────────────────────
+            // â”€â”€ Describe issue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const FormSectionHeader(
               title: 'Describe the Issue',
               icon: Icons.edit_note,
@@ -540,7 +544,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             ),
             const SizedBox(height: 32),
 
-            // ── Evidence ───────────────────────────────────────────────────
+            // â”€â”€ Evidence â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
@@ -569,7 +573,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             ),
             const SizedBox(height: 32),
 
-            // ── Location ───────────────────────────────────────────────────
+            // â”€â”€ Location â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             const FormSectionHeader(
               title: 'Service Location',
               icon: Icons.location_on,
@@ -586,10 +590,23 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.my_location,
-                    color: Pallete.secondaryColor,
-                    size: 20,
+                  GestureDetector(
+                    onTap: () {
+                      _showSnack('Fetching precise location...');
+                      _getCurrentLocation();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Pallete.secondaryColor.withAlpha(30),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.my_location,
+                        color: Pallete.secondaryColor,
+                        size: 20,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -612,21 +629,49 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             ),
             const SizedBox(height: 16),
             Container(
-              height: 120,
+              height: 160,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
-                  ),
-                  fit: BoxFit.cover,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: Pallete.secondaryColor.withOpacity(0.2),
+                  width: 2,
                 ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: LatLng(_lat ?? 20.5937, _lng ?? 78.9629),
+                  initialZoom: 14.0,
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: isDark
+                        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                    subdomains: const ['a', 'b', 'c', 'd'],
+                  ),
+                  if (_lat != null && _lng != null)
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          point: LatLng(_lat!, _lng!),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.location_on,
+                            color: Colors.redAccent,
+                            size: 40,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
               ),
             ),
             const SizedBox(height: 32),
 
-            // ── Budget ─────────────────────────────────────────────────────
+            // â”€â”€ Budget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -635,7 +680,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
                   icon: Icons.payments,
                 ),
                 Text(
-                  '\$${_currentBudgetMin.toInt()} - \$${_currentBudgetMax.toInt()}',
+                  '₹${_currentBudgetMin.toInt()} - ₹${_currentBudgetMax.toInt()}',
                   style: const TextStyle(
                     color: Pallete.secondaryColor,
                     fontWeight: FontWeight.bold,
@@ -662,14 +707,14 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '\$50',
+                  '₹50',
                   style: TextStyle(
                     color: Pallete.textSecondaryColor,
                     fontSize: 12,
                   ),
                 ),
                 Text(
-                  '\$2,000+',
+                  '₹2,000+',
                   style: TextStyle(
                     color: Pallete.textSecondaryColor,
                     fontSize: 12,
@@ -679,7 +724,7 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
             ),
             const SizedBox(height: 48),
 
-            // ── Submit ─────────────────────────────────────────────────────
+            // â”€â”€ Submit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -730,3 +775,4 @@ class _PostRequestScreenState extends ConsumerState<PostRequestScreen> {
     );
   }
 }
+

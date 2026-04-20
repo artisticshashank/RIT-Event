@@ -5,6 +5,7 @@ class SparePartModel {
   final String? description;
   final double price;
   final int stockQuantity;
+  final String? imageUrl;
 
   SparePartModel({
     required this.id,
@@ -13,6 +14,7 @@ class SparePartModel {
     this.description,
     required this.price,
     this.stockQuantity = 0,
+    this.imageUrl,
   });
 
   SparePartModel copyWith({
@@ -22,6 +24,7 @@ class SparePartModel {
     String? description,
     double? price,
     int? stockQuantity,
+    String? imageUrl,
   }) {
     return SparePartModel(
       id: id ?? this.id,
@@ -30,6 +33,7 @@ class SparePartModel {
       description: description ?? this.description,
       price: price ?? this.price,
       stockQuantity: stockQuantity ?? this.stockQuantity,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -41,6 +45,7 @@ class SparePartModel {
       if (description != null) 'description': description,
       'price': price,
       'stock_quantity': stockQuantity,
+      if (imageUrl != null) 'image_url': imageUrl,
     };
   }
 
@@ -52,6 +57,7 @@ class SparePartModel {
       description: map['description'],
       price: map['price']?.toDouble() ?? 0.0,
       stockQuantity: map['stock_quantity']?.toInt() ?? 0,
+      imageUrl: map['image_url'],
     );
   }
 }

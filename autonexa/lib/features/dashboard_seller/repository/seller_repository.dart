@@ -148,7 +148,7 @@ class SellerRepository {
     try {
       String? imageUrl;
       if (imageFile != null) {
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}';
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split(RegExp(r'[/\\]')).last}';
         final path = '$sellerId/$fileName';
         await _supabase.storage.from('product_images').upload(path, imageFile);
         imageUrl = _supabase.storage.from('product_images').getPublicUrl(path);
@@ -186,7 +186,7 @@ class SellerRepository {
     try {
       String? imageUrl;
       if (imageFile != null) {
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}';
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split(RegExp(r'[/\\]')).last}';
         final path = 'update/$fileName';
         await _supabase.storage.from('product_images').upload(path, imageFile);
         imageUrl = _supabase.storage.from('product_images').getPublicUrl(path);

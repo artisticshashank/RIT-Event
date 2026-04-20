@@ -227,6 +227,8 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider);
+    final sellerName = user?.name ?? 'Seller';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accentColor = Pallete.secondaryColor;
     final textColor = isDark ? Colors.white : Pallete.textColor;
@@ -283,7 +285,7 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
                               ),
                               onPressed: () {
                                 Share.share(
-                                  'Check out GearHead Pro on Autonexa!\nhttps://autonexa.com/seller/gearhead-pro',
+                                  'Check out $sellerName on Autonexa!\nhttps://autonexa.com/seller/${sellerName.replaceAll(' ', '-').toLowerCase()}',
                                 );
                               },
                             ),
@@ -334,7 +336,7 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'GearHead Pro',
+                  sellerName,
                   style: TextStyle(
                     color: textColor,
                     fontSize: 24,
@@ -361,7 +363,7 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
                   style: TextStyle(color: subTextColor, fontSize: 12),
                 ),
                 const SizedBox(width: 8),
-                Text('•', style: TextStyle(color: subTextColor, fontSize: 12)),
+                Text('â€¢', style: TextStyle(color: subTextColor, fontSize: 12)),
                 const SizedBox(width: 8),
                 Icon(Icons.access_time, color: subTextColor, size: 12),
                 const SizedBox(width: 4),
@@ -523,7 +525,7 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
                                   return _buildProductCard(
                                     p.iconCode.toUpperCase(),
                                     p.name,
-                                    '\$${p.price.toStringAsFixed(2)}',
+                                    '₹${p.price.toStringAsFixed(2)}',
                                     isDark,
                                     cardColor,
                                     accentColor,
@@ -683,3 +685,4 @@ class _SellerProfileScreenState extends ConsumerState<SellerProfileScreen> {
     );
   }
 }
+

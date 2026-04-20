@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/core/common/loader.dart';
@@ -203,7 +203,7 @@ class _TowingHistoryCard extends StatelessWidget {
 
           // Price
           Text(
-            '+\$${job.price.toStringAsFixed(2)}',
+            '+₹${job.price.toStringAsFixed(2)}',
             style: const TextStyle(
               color: Colors.greenAccent,
               fontWeight: FontWeight.bold,
@@ -215,3 +215,4 @@ class _TowingHistoryCard extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/service_request_model.dart';
@@ -189,7 +189,7 @@ class _MechanicMyJobsScreenState extends ConsumerState<MechanicMyJobsScreen> {
           ),
         ),
 
-        // ── Tab content: Today / History ────────────────────────────────
+        // â”€â”€ Tab content: Today / History â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if (_tabIndex == 0)
           activeAsync.when(
             data: (jobs) {
@@ -362,7 +362,7 @@ class _MechanicMyJobsScreenState extends ConsumerState<MechanicMyJobsScreen> {
                                   ),
                                 ),
                                 Text(
-                                  job.vehicleInfo ?? job.description ?? '—',
+                                  job.vehicleInfo ?? job.description ?? 'â€”',
                                   style: const TextStyle(
                                     color: Pallete.textSecondaryColor,
                                     fontSize: 12,
@@ -376,8 +376,8 @@ class _MechanicMyJobsScreenState extends ConsumerState<MechanicMyJobsScreen> {
                             children: [
                               Text(
                                 job.price != null
-                                    ? '\$${job.price!.toStringAsFixed(0)}'
-                                    : '—',
+                                    ? '₹${job.price!.toStringAsFixed(0)}'
+                                    : 'â€”',
                                 style: const TextStyle(
                                   color: Pallete.secondaryColor,
                                   fontWeight: FontWeight.bold,
@@ -438,3 +438,4 @@ class _MechanicMyJobsScreenState extends ConsumerState<MechanicMyJobsScreen> {
     }
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/core/common/loader.dart';
@@ -165,7 +165,7 @@ class _HistoryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '${job.fuelQuantity}  •  ${job.fuelType}',
+                      '${job.fuelQuantity}  â€¢  ${job.fuelType}',
                       style: TextStyle(
                         color: isDark ? Colors.white54 : Colors.black54,
                         fontSize: 12,
@@ -198,7 +198,7 @@ class _HistoryCard extends StatelessWidget {
 
           // Price
           Text(
-            '+\$${job.price.toStringAsFixed(2)}',
+            '+₹${job.price.toStringAsFixed(2)}',
             style: const TextStyle(
               color: Colors.greenAccent,
               fontWeight: FontWeight.bold,
@@ -210,3 +210,4 @@ class _HistoryCard extends StatelessWidget {
     );
   }
 }
+

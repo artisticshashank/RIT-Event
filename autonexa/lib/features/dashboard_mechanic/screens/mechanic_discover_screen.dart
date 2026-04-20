@@ -9,6 +9,7 @@ import 'package:autonexa/features/dashboard_mechanic/widgets/nearby_request_card
 import 'package:autonexa/features/dashboard_mechanic/screens/mechanic_incoming_request_screen.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart' hide ServiceStatus;
 
 class MechanicDiscoverScreen extends ConsumerStatefulWidget {
   const MechanicDiscoverScreen({super.key});
@@ -21,6 +22,38 @@ class MechanicDiscoverScreen extends ConsumerStatefulWidget {
 class _MechanicDiscoverScreenState
     extends ConsumerState<MechanicDiscoverScreen> {
   int _selectedTabIndex = 0; // 0=All, 1=Emergency, 2=Scheduled
+  final MapController _mapController = MapController();
+  LatLng? _currentLocation;
+  bool _isLoadingMapLocation = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCurrentLocation();
+  }
+
+  Future<void> _fetchCurrentLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        setState(() {
+          _currentLocation = LatLng(position.latitude, position.longitude);
+          _isLoadingMapLocation = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingMapLocation = false);
+    }
+  }
 
   // Map ServiceType to whether it's "emergency-priority"
   bool _isEmergency(ServiceRequestModel r) =>
@@ -113,8 +146,9 @@ class _MechanicDiscoverScreenState
                 child: Stack(
                   children: [
                     FlutterMap(
-                      options: const MapOptions(
-                        initialCenter: LatLng(37.7749, -122.4194),
+                      mapController: _mapController,
+                      options: MapOptions(
+                        initialCenter: _currentLocation ?? const LatLng(20.5937, 78.9629),
                         initialZoom: 12.0,
                       ),
                       children: [
@@ -130,8 +164,8 @@ class _MechanicDiscoverScreenState
                             markers: jobs.map((job) {
                               return Marker(
                                 point: LatLng(
-                                  job.locationLat != 0 ? job.locationLat : 37.7749 + (0.01 * jobs.indexOf(job)),
-                                  job.locationLng != 0 ? job.locationLng : -122.4194 + (0.01 * jobs.indexOf(job)),
+                                  job.locationLat != 0.0 ? job.locationLat : (_currentLocation?.latitude ?? 20.5937),
+                                  job.locationLng != 0.0 ? job.locationLng : (_currentLocation?.longitude ?? 78.9629),
                                 ),
                                 width: 30,
                                 height: 30,
@@ -227,6 +261,35 @@ class _MechanicDiscoverScreenState
                           error: (_, __) => const Text(
                             '—',
                             style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Live Location Getter Button
+                    Positioned(
+                      bottom: 16,
+                      right: 16,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_currentLocation != null) {
+                            _mapController.move(_currentLocation!, 15.0);
+                          } else {
+                            _fetchCurrentLocation();
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF2C3146) : Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: const [
+                              BoxShadow(color: Colors.black12, blurRadius: 10),
+                            ],
+                          ),
+                          child: Icon(
+                            _isLoadingMapLocation ? Icons.hourglass_empty : Icons.my_location,
+                            color: Pallete.secondaryColor,
                           ),
                         ),
                       ),

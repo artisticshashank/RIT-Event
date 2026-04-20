@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/spare_part_model.dart';
 
@@ -128,7 +128,7 @@ class CartItemCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$${part.price.toStringAsFixed(2)}',
+                      '₹${part.price.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -203,3 +203,4 @@ class CartItemCard extends StatelessWidget {
     );
   }
 }
+

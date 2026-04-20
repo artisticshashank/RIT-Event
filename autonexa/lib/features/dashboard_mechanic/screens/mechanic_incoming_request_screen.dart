@@ -7,8 +7,9 @@ import 'package:autonexa/features/dashboard_mechanic/controller/mechanic_control
 import 'package:autonexa/features/dashboard_mechanic/screens/mechanic_navigation_screen.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart' hide ServiceStatus;
 
-class MechanicIncomingRequestScreen extends ConsumerWidget {
+class MechanicIncomingRequestScreen extends ConsumerStatefulWidget {
   final ServiceRequestModel serviceRequest;
 
   const MechanicIncomingRequestScreen({
@@ -17,22 +18,72 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MechanicIncomingRequestScreen> createState() =>
+      _MechanicIncomingRequestScreenState();
+}
+
+class _MechanicIncomingRequestScreenState extends ConsumerState<MechanicIncomingRequestScreen> {
+  final MapController _mapController = MapController();
+  LatLng? _mechanicLocation;
+  bool _isLoadingLocation = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMechanicLocation();
+  }
+
+  Future<void> _fetchMechanicLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        setState(() {
+          _mechanicLocation = LatLng(position.latitude, position.longitude);
+          _isLoadingLocation = false;
+        });
+        _mapController.move(_mechanicLocation!, 15.0);
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingLocation = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     final acceptState = ref.watch(acceptJobProvider);
     final isLoading = acceptState is AsyncLoading;
 
+    final customerLat = widget.serviceRequest.locationLat;
+    final customerLng = widget.serviceRequest.locationLng;
+    final validCustomerLocation = customerLat != 0.0 && customerLng != 0.0;
+    
+    final customerLatLng = validCustomerLocation 
+        ? LatLng(customerLat, customerLng) 
+        : const LatLng(20.5937, 78.9629);
+
+    final resolvedMechanic = _mechanicLocation ?? LatLng(customerLatLng.latitude + 0.005, customerLatLng.longitude + 0.005);
+
     Future<void> onAccept() async {
       final success = await ref
           .read(acceptJobProvider.notifier)
-          .accept(serviceRequest.id);
+          .accept(widget.serviceRequest.id);
       if (!context.mounted) return;
       if (success) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (_) =>
-                MechanicNavigationScreen(serviceRequest: serviceRequest),
+                MechanicNavigationScreen(serviceRequest: widget.serviceRequest),
           ),
         );
       } else {
@@ -100,11 +151,9 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
         children: [
           // Flutter Map
           FlutterMap(
+            mapController: _mapController,
             options: MapOptions(
-              initialCenter: LatLng(
-                serviceRequest.locationLat != 0 ? serviceRequest.locationLat : 37.7749,
-                serviceRequest.locationLng != 0 ? serviceRequest.locationLng : -122.4194,
-              ),
+              initialCenter: customerLatLng,
               initialZoom: 13.0,
             ),
             children: [
@@ -114,14 +163,20 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                     : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
                 subdomains: const ['a', 'b', 'c', 'd'],
               ),
+              PolylineLayer(
+                polylines: [
+                  Polyline(
+                    points: [resolvedMechanic, customerLatLng],
+                    color: Pallete.secondaryColor,
+                    strokeWidth: 4.0,
+                  ),
+                ],
+              ),
               MarkerLayer(
                 markers: [
                   // Customer Location Marker
                   Marker(
-                    point: LatLng(
-                      serviceRequest.locationLat != 0 ? serviceRequest.locationLat : 37.7749,
-                      serviceRequest.locationLng != 0 ? serviceRequest.locationLng : -122.4194,
-                    ),
+                    point: customerLatLng,
                     width: 60,
                     height: 60,
                     child: CircleAvatar(
@@ -134,12 +189,9 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  // Mechanic Mock Marker
+                  // Mechanic Marker (Live or offset)
                   Marker(
-                    point: LatLng(
-                      (serviceRequest.locationLat != 0 ? serviceRequest.locationLat : 37.7749) + 0.005,
-                      (serviceRequest.locationLng != 0 ? serviceRequest.locationLng : -122.4194) + 0.005,
-                    ),
+                    point: resolvedMechanic,
                     width: 44,
                     height: 44,
                     child: const CircleAvatar(
@@ -159,6 +211,41 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                 ],
               ),
             ],
+          ),
+
+          // Live Location Getter Button
+          Positioned(
+            top: 100,
+            right: 16,
+            child: GestureDetector(
+              onTap: () {
+                if (_mechanicLocation != null) {
+                  _mapController.move(_mechanicLocation!, 15.0);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Re-centered to your location'),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                } else {
+                  _fetchMechanicLocation();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF2C3146) : Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black12, blurRadius: 10),
+                  ],
+                ),
+                child: Icon(
+                  _isLoadingLocation ? Icons.hourglass_empty : Icons.my_location,
+                  color: Pallete.secondaryColor,
+                ),
+              ),
+            ),
           ),
 
           // Bottom card
@@ -249,9 +336,9 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            serviceRequest.price != null
-                                ? '\$${serviceRequest.price!.toStringAsFixed(2)}'
-                                : '\$—',
+                            widget.serviceRequest.price != null
+                                ? '₹${widget.serviceRequest.price!.toStringAsFixed(2)}'
+                                : '₹—',
                             style: const TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -270,13 +357,13 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                       Expanded(
                         child: _buildInfoItem(
                           'VEHICLE',
-                          serviceRequest.vehicleInfo ?? '—',
+                          widget.serviceRequest.vehicleInfo ?? '—',
                         ),
                       ),
                       Expanded(
                         child: _buildInfoItem(
                           'SERVICE',
-                          serviceRequest.requestType.displayName,
+                          widget.serviceRequest.requestType.displayName,
                         ),
                       ),
                     ],
@@ -287,15 +374,15 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                       Expanded(
                         child: _buildInfoItem(
                           'DISTANCE',
-                          serviceRequest.distanceKm != null
-                              ? '${serviceRequest.distanceKm!.toStringAsFixed(1)} km'
+                          widget.serviceRequest.distanceKm != null
+                              ? '${widget.serviceRequest.distanceKm!.toStringAsFixed(1)} km'
                               : 'Nearby',
                         ),
                       ),
                       Expanded(
                         child: _buildInfoItem(
                           'ISSUE TYPE',
-                          serviceRequest.issueType ?? '—',
+                          widget.serviceRequest.issueType ?? '—',
                         ),
                       ),
                     ],
@@ -304,8 +391,8 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
 
                   // Customer's description
-                  if (serviceRequest.description != null &&
-                      serviceRequest.description!.isNotEmpty)
+                  if (widget.serviceRequest.description != null &&
+                      widget.serviceRequest.description!.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -320,7 +407,7 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              serviceRequest.description!,
+                              widget.serviceRequest.description!,
                               style: TextStyle(
                                 color: isDark ? Colors.white : Colors.black87,
                                 fontSize: 13,
@@ -437,3 +524,4 @@ class MechanicIncomingRequestScreen extends ConsumerWidget {
     );
   }
 }
+

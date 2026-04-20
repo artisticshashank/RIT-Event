@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/models/service_transaction_model.dart';
@@ -100,7 +100,7 @@ class _MechanicEarningsScreenState
 
                     const SizedBox(height: 24),
 
-                    // Total earnings card — REAL data
+                    // Total earnings card â€” REAL data
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(24),
@@ -135,7 +135,7 @@ class _MechanicEarningsScreenState
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                '\$${total.toStringAsFixed(2)}',
+                                '₹${total.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
@@ -204,7 +204,7 @@ class _MechanicEarningsScreenState
                         Expanded(
                           child: _buildMiniStat(
                             'RECEIVED',
-                            '\$${received.toStringAsFixed(0)}',
+                            '₹${received.toStringAsFixed(0)}',
                             Colors.green,
                             cardColor,
                             isDark,
@@ -214,7 +214,7 @@ class _MechanicEarningsScreenState
                         Expanded(
                           child: _buildMiniStat(
                             'PENDING',
-                            '\$${pending.toStringAsFixed(0)}',
+                            '₹${pending.toStringAsFixed(0)}',
                             Colors.orange,
                             cardColor,
                             isDark,
@@ -340,7 +340,7 @@ class _MechanicEarningsScreenState
 
                     const SizedBox(height: 32),
 
-                    // Payout history — REAL transactions
+                    // Payout history â€” REAL transactions
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -379,8 +379,8 @@ class _MechanicEarningsScreenState
                           title: 'Service Job',
                           date: t.completedAt != null
                               ? '${t.completedAt!.day}/${t.completedAt!.month}/${t.completedAt!.year}'
-                              : '—',
-                          amount: '+\$${t.agreedAmount.toStringAsFixed(2)}',
+                              : 'â€”',
+                          amount: '+₹${t.agreedAmount.toStringAsFixed(2)}',
                           status: t.paymentStatus.name.toUpperCase(),
                           statusColor: t.paymentStatus == PaymentStatus.received
                               ? Colors.green
@@ -572,3 +572,4 @@ class _MechanicEarningsScreenState
     );
   }
 }
+

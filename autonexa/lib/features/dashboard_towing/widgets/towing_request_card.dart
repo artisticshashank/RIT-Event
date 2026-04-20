@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:autonexa/models/towing_dashboard_model.dart';
 import 'package:autonexa/theme/pallete.dart';
 
@@ -86,7 +86,7 @@ class TowingRequestCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '${request.carInfo} • ',
+                              '${request.carInfo} â€¢ ',
                               style: TextStyle(
                                 color: subTextColor,
                                 fontSize: 13,
@@ -110,7 +110,7 @@ class TowingRequestCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '\$${request.price.toInt()}',
+                        '₹${request.price.toInt()}',
                         style: TextStyle(
                           color: textColor,
                           fontSize: 20,
@@ -192,3 +192,4 @@ class TowingRequestCard extends StatelessWidget {
     );
   }
 }
+

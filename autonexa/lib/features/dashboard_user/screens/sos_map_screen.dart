@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:autonexa/theme/pallete.dart';
 import 'package:autonexa/features/dashboard_user/screens/post_request_screen.dart';
 import 'package:autonexa/models/enums.dart';
@@ -12,9 +13,13 @@ class SosMapScreen extends StatefulWidget {
   State<SosMapScreen> createState() => _SosMapScreenState();
 }
 
+enum MapStyle { standard, satellite, cartoDark, cartoLight }
+
 class _SosMapScreenState extends State<SosMapScreen> {
   final MapController _mapController = MapController();
-  final LatLng _currentUserLocation = const LatLng(37.7749, -122.4194); // SF Mock
+  LatLng _currentUserLocation = const LatLng(20.5937, 78.9629); // Default India center until GPS loads
+  bool _isLoadingLocation = true;
+  MapStyle _activeMapStyle = MapStyle.satellite;
   
   Map<String, dynamic>? _selectedProvider;
 
@@ -49,6 +54,50 @@ class _SosMapScreenState extends State<SosMapScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      setState(() {
+        _currentUserLocation = LatLng(position.latitude, position.longitude);
+        _isLoadingLocation = false;
+      });
+
+      _mapController.move(_currentUserLocation, 15.0);
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+      setState(() => _isLoadingLocation = false);
+    }
+  }
+
+  String _getMapUrl() {
+    switch (_activeMapStyle) {
+      case MapStyle.satellite:
+        return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+      case MapStyle.standard:
+        return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      case MapStyle.cartoLight:
+        return 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      case MapStyle.cartoDark:
+      default:
+        return 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
@@ -66,10 +115,9 @@ class _SosMapScreenState extends State<SosMapScreen> {
             ),
             children: [
               TileLayer(
-                urlTemplate: isDark
-                    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-                    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                urlTemplate: _getMapUrl(),
                 subdomains: const ['a', 'b', 'c', 'd'],
+                userAgentPackageName: 'com.example.autonexa',
               ),
               MarkerLayer(
                 markers: [
@@ -127,23 +175,91 @@ class _SosMapScreenState extends State<SosMapScreen> {
             ],
           ),
           
-          // Back UI element
+          // Back UI element & GPS Fix
           Positioned(
             top: 50,
             left: 20,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                     BoxShadow(color: Colors.black12, blurRadius: 10),
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: cardColor,
+                      shape: BoxShape.circle,
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 10),
+                      ],
+                    ),
+                    child: Icon(Icons.arrow_back, color: textColor),
+                  ),
+                ),
+                Row(
+                  children: [
+                    // Map Style Switcher
+                    PopupMenuButton<MapStyle>(
+                      onSelected: (style) {
+                        setState(() => _activeMapStyle = style);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      color: cardColor,
+                      icon: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: cardColor,
+                          shape: BoxShape.circle,
+                          boxShadow: const [
+                            BoxShadow(color: Colors.black12, blurRadius: 10),
+                          ],
+                        ),
+                        child: Icon(Icons.layers, color: textColor),
+                      ),
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: MapStyle.standard,
+                          child: Text('Standard Map'),
+                        ),
+                        const PopupMenuItem(
+                          value: MapStyle.satellite,
+                          child: Text('Satellite View'),
+                        ),
+                        const PopupMenuItem(
+                          value: MapStyle.cartoDark,
+                          child: Text('Dark Mode'),
+                        ),
+                        const PopupMenuItem(
+                          value: MapStyle.cartoLight,
+                          child: Text('Light Mode'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 12),
+                    // GPS Location Fix
+                    GestureDetector(
+                      onTap: _getCurrentLocation,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: cardColor,
+                          shape: BoxShape.circle,
+                          boxShadow: const [
+                            BoxShadow(color: Colors.black12, blurRadius: 10),
+                          ],
+                        ),
+                        child: Icon(
+                          _isLoadingLocation ? Icons.hourglass_empty : Icons.my_location,
+                          color: Pallete.secondaryColor,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                child: Icon(Icons.arrow_back, color: textColor),
-              ),
+              ],
             ),
           ),
 

@@ -172,8 +172,10 @@ class MarketTabView extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBgColor = Theme.of(context).cardColor;
 
-    // We stub images/rating since the model doesn't have it natively
-    final imageUrl = _getImageForPart(part.name);
+    // Utilize the real database image if available, else stub based on name
+    final imageUrl = (part.imageUrl != null && part.imageUrl!.isNotEmpty)
+        ? part.imageUrl!
+        : _getImageForPart(part.name);
     final rating = (4.0 + (part.hashCode % 10) / 10).toStringAsFixed(1);
     final reviews = 50 + (part.hashCode % 150);
 
@@ -304,7 +306,7 @@ class MarketTabView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${part.price.toStringAsFixed(2)}',
+                        '₹${part.price.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -398,3 +400,4 @@ class MarketTabView extends ConsumerWidget {
     ];
   }
 }
+
